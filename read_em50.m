@@ -146,7 +146,8 @@ em50=importdata('em50.csv',',');
 % (T)ime from EM(5)0, stored by (S)tring
 em50.time_str=em50.textdata(4:size(em50.textdata,1),1);
 % (T)ime from EM(5)0, stored by (D)igits
-em50.time_digi=datenum(em50.time_str,'dd/mm/yyyy HH:MM AM');
+%em50.time_digi=datenum(em50.time_str,'dd/mm/yyyy HH:MM AM');
+em50.time_digi=datenum(em50.time_str,'dd/mm/yyyy HH:MM');
 % (N)umber of (R)eadings at EM(5)0
 em50.number_readings=size(em50.time_digi,1);
 % em

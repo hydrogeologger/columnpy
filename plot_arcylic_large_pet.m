@@ -1,6 +1,6 @@
 % this script transfers data from raw readings to specific schedules
-%for i =1 :length(sched)
-i=3;
+for i =1 :length(sched)
+%i=3;
 
 %    % for dt85g. raw here means the direct extraction of data from datalogger.
     dt85g_mask=dt85g.time_digi>sched(i).start_digi&dt85g.time_digi<sched(i).end_digi;
@@ -36,7 +36,6 @@ i=3;
     scale_mask=scale.time_digi>sched(i).start_digi&scale.time_digi<sched(i).end_digi;
     sched(i).raw.scale.time_digi=scale.time_digi(scale_mask);
     sched(i).raw.scale.water_loss=scale.weight(scale_mask,sched(i).scale_no);
-    
        % clean data
        if i==4 
        	sched(i).raw.scale.water_loss( sched(i).raw.scale.water_loss<1000  )=nan;
@@ -81,12 +80,12 @@ i=3;
 
 
 % a thorough analysis was performed and found that a coefficient 0.00005 is the best
-    if i==3
+    if i==1
 %  to obtain an accurate 
     sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
         sched(i).raw.scale.water_loss_m,...
         0.000005,sched(i).time_day_ay);
-	elseif i==4
+	elseif i==2
    sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
           sched(i).raw.scale.water_loss_m,...
            0.00005,sched(i).time_day_ay); %ok but a neg evt
@@ -167,25 +166,22 @@ i=3;
         ,sched(i).raw.em50.rh_pt4,0.8,sched(i).time_day_ay);
     sched(i).em50.temp_pt4 = csaps(sched(i).raw.em50.time_digi-sched(i).start_digi...
         ,sched(i).raw.em50.temp_pt4,0.8,sched(i).time_day_ay);
-    sched(i).em50.rh_pt5   = csaps(sched(i).raw.em50.time_digi-sched(i).start_digi...
-        ,sched(i).raw.em50.rh_pt5,0.8,sched(i).time_day_ay);
-    sched(i).em50.temp_pt5 = csaps(sched(i).raw.em50.time_digi-sched(i).start_digi...
-        ,sched(i).raw.em50.temp_pt5,0.8,sched(i).time_day_ay);
-%end
+    %sched(i).em50.rh_pt5   = csaps(sched(i).raw.em50.time_digi-sched(i).start_digi...
+    %    ,sched(i).raw.em50.rh_pt5,0.8,sched(i).time_day_ay);
+    %sched(i).em50.temp_pt5 = csaps(sched(i).raw.em50.time_digi-sched(i).start_digi...
+    %    ,sched(i).raw.em50.temp_pt5,0.8,sched(i).time_day_ay);
+end
 % check if spline interpolated evt is working
 figure;
 %subplot(3,1,1);
 plot(sched(i).time_day_ay,sched(i).accu_evap,'ro');hold on
 plot( sched(i).raw.scale.time_digi-sched(i).start_digi,...
     sched(i).raw.scale.water_loss_m,'go')
-plot(sched(i).scale.time_digi-sched(i).start_digi,sched(i).scale.water_loss_m,'go');hold on
-
-
-
+%plot(sched(i).scale.time_digi-sched(i).start_digi,sched(i).scale.water_loss_m,'go');hold on
 
 
 figure;
-subplot(2,1,1);
+subplot(3,1,1);
 plot(sched(i).time_day_ay,sched(i).accu_evap,'ro');hold on
 plot( sched(i).raw.scale.time_digi-sched(i).start_digi,...
     sched(i).raw.scale.water_loss_m,'go')
@@ -201,28 +197,28 @@ xlabel('Time(day)');ylabel('cumulative evaporation (mm)')
 %plot(sched(i).time_day_ay-sched(i).start_digi,sched(i).accu_evap,'go');hold on
 
 
-subplot(2,1,2);
+subplot(3,1,2);
 plot(sched(i).time_day_ay,sched(i).evap*c.ms2mmday,'ro');hold on
 xlabel('Time(day)');ylabel('evaporation rate (mm/day)')
 %plot(sched(i).time_day_ay2,sched(i).evap_sp2*c.ms2mmday,'go');hold on
 %plot(sched(i).time_day_ay2,sched(i).evap_sp3*c.ms2mmday,'bo');hold on
 %plot(sched(i).scale.time_digi-sched(i).start_digi,sched(i).scale.evap*c.ms2mmday,'go');hold on
 subplot(3,1,3);
-figure;
+%figure;
 plot(sched(i).raw.scale.time_digi-sched(i).raw.scale.time_digi(1),...
 sched(i).raw.scale.water_loss_m,'r-','displayname','raw');hold on
-plot(sched(i).time_day_ay,sched(i).accu_evap,'g-','displayname','0.8');hold on
-plot(sched(i).time_day_ay,sched(i).accu_evap6,'b-','displayname','0.6');hold on
-plot(sched(i).time_day_ay,sched(i).accu_evap1,'g-','displayname','0.1');hold on
-plot(sched(i).time_day_ay,sched(i).accu_evap05,'c-','displayname','0.05');hold on
-plot(sched(i).time_day_ay,sched(i).accu_evap01,'m-','displayname','0.01');hold on
-plot(sched(i).time_day_ay,sched(i).accu_evap005,'k-','displayname','0.005');hold on
-plot(sched(i).time_day_ay,sched(i).accu_evap001,'k-','displayname','0.001');hold on
+%plot(sched(i).time_day_ay,sched(i).accu_evap,'g-','displayname','0.8');hold on
+%plot(sched(i).time_day_ay,sched(i).accu_evap6,'b-','displayname','0.6');hold on
+%plot(sched(i).time_day_ay,sched(i).accu_evap1,'g-','displayname','0.1');hold on
+%plot(sched(i).time_day_ay,sched(i).accu_evap05,'c-','displayname','0.05');hold on
+%plot(sched(i).time_day_ay,sched(i).accu_evap01,'m-','displayname','0.01');hold on
+%plot(sched(i).time_day_ay,sched(i).accu_evap005,'k-','displayname','0.005');hold on
+%plot(sched(i).time_day_ay,sched(i).accu_evap001,'k-','displayname','0.001');hold on
 
 
 %i=2;
 figure; 
-%subplot(4,2,1)
+subplot(5,1,1)
 plot(sched(i).time_day_ay,sched(i).dt85g.pres_pt1,...
     'ro','displayname','pres-pt1');hold on
 plot(sched(i).time_day_ay,sched(i).dt85g.pres_pt2,...
@@ -235,8 +231,8 @@ xlabel('time (day)')
 ylabel('pressure (pa)')
 legend('show','location','southeast')
 %
-%subplot(4,2,2);
-figure
+subplot(5,1,2);
+%figure
 plot(sched(i).time_day_ay,sched(i).dt85g.temp_pt1,...
     'ro','displayname','dt85-pt1');hold on
 plot(sched(i).time_day_ay,sched(i).dt85g.temp_pt2,...
@@ -254,7 +250,8 @@ ylabel('Temperature (pa)')
 legend('show','location','southeast')
 
 
-figure
+%figure
+subplot(5,1,3);
 plot(sched(i).time_day_ay,sched(i).dt85g.vwc_pt1,...
     'ro','displayname','dt85-pt1');hold on
 plot(sched(i).time_day_ay,sched(i).dt85g.vwc_pt2,...
@@ -273,7 +270,7 @@ legend('show','location','southeast')
 
 %
 %
-%subplot(4,2,3);
+subplot(5,1,4);
 plot(sched(i).time_day_ay,sched(i).em50.rh_pt1,...
     'ro','displayname','em50-pt1');hold on
 plot(sched(i).time_day_ay,sched(i).em50.rh_pt2,...
@@ -282,14 +279,14 @@ plot(sched(i).time_day_ay,sched(i).em50.rh_pt3,...
     'bo','displayname','em50-pt3');hold on
 plot(sched(i).time_day_ay,sched(i).em50.rh_pt4,...
     'co','displayname','em50-pt4');hold on
-plot(sched(i).time_day_ay,sched(i).em50.rh_pt5,...
-    'mo','displayname','em50-pt5');hold on
+%plot(sched(i).time_day_ay,sched(i).em50.rh_pt5,...
+%    'mo','displayname','em50-pt5');hold on
 xlabel('time (day)')
 ylabel('RelativeHumidity (pa)')
 legend('show','location','southeast')
 %
 %
-%subplot(4,2,4);
+subplot(5,1,5);
 %plot(sched(i).time_day_ay,sched(i).em50.vwc_pt1,...
 %    'ro','displayname','em50-pt1');hold on
 %plot(sched(i).time_day_ay,sched(i).em50.vwc_pt2,...
@@ -308,10 +305,10 @@ plot(sched(i).time_day_ay,sched(i).em50.temp_pt3,...
     'bo','displayname','em50-pt3');hold on
 plot(sched(i).time_day_ay,sched(i).em50.temp_pt4,...
     'co','displayname','em50-pt4');hold on
-plot(sched(i).time_day_ay,sched(i).em50.temp_pt5,...
-    'mo','displayname','em50-pt5');hold on
+%plot(sched(i).time_day_ay,sched(i).em50.temp_pt5,...
+%    'mo','displayname','em50-pt5');hold on
 xlabel('time (day)')
-ylabel('RelativeHumidity (pa)')
+ylabel('Temperature (celsius)')
 legend('show','location','southeast')
 %
 %

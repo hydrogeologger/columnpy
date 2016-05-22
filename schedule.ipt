@@ -1,0 +1,13 @@
+# start time     -- the time and date that the experiment starts
+# end time       -- the time and data that the experiment finishes
+# water level    -- unit cm, means the distance from the soil surface to the water level, if unrestricted, specify as 0. if it is negative value, it is a snapshot of the  
+# Heat intensity -- unit w/m2, means the heat from the infrade lamp
+# soil type      -- 1,2,3 means the type of the soil applied.
+# output         -- if =1 the result will only be output for 60mm column, if=2 will output only for 90mm column, if =3 output for both, if =0 the result will not be output 
+# scale no       -- specify which column in scale.dat does this schedule refers
+#   [Start time]          [End Time]      [Comment on the data]  [Water level cm] [surface area]  [time scale (s)] [scale no.]  [heat intensity]  [soil type]   [output]  [Sequence] [Aero Resis.]   [Tranlation (day)]   [good or not]
+# 2015/Dec/08 12:30, 2015/Dec/29 11:00,     first calibration,      1,              0.168,            1200    ,       1
+# 2015/Dec/29 14:00, 2016/Jan/12 09:30,     second calibration,     3,              0.168,            1200      ,       1
+ 2016/Feb/16 18:00, 2016/Apr/17 11:00,     consolidometer    ,     3,              0.0177,            1200      ,       1
+ 2016/Feb/17 14:00, 2016/Apr/17 11:00,     arcylic_large_evp ,     3,              0.0095,            1200      ,       2
+ 2016/Apr/24 13:22, 2016/May/20 11:00,     arcylic_less_pet  ,     3,              0.0095,            1200      ,       1
