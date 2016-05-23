@@ -39,7 +39,9 @@ for i =1 :length(sched)
        % clean data
      if strcmpi(sched(i).tag,'arcylic_large_pet')
      	sched(i).raw.scale.water_loss( sched(i).raw.scale.water_loss<1000  )=nan;
-    end
+     elseif strcmpi(sched(i).tag,'arcylic_large_pet_chop_stg1')
+	sched(i).raw.scale.water_loss( sched(i).raw.scale.water_loss<1000  )=nan;
+     end
 
 
 
@@ -52,7 +54,7 @@ for i =1 :length(sched)
     
     sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
         sched(i).raw.scale.water_loss_m,...
-        0.8,sched(i).time_day_ay);
+        sched(i).evt_spline_coef,sched(i).time_day_ay);
 
 
 
@@ -78,29 +80,32 @@ for i =1 :length(sched)
 %        sched(i).raw.scale.water_loss_m,...
 %        0.001,sched(i).time_day_ay);
 
-
-% a thorough analysis was performed and found that a coefficient 0.00005 is the best
-    %if i==1
-    if strcmpi(sched(i).tag,'consolidometer')
-%  to obtain an accurate 
-	    sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
-        sched(i).raw.scale.water_loss_m,...
-        0.000005,sched(i).time_day_ay);
-    %elseif i==2
-    elseif strcmpi(sched(i).tag,'arcylic_large_pet')
-	sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
-          sched(i).raw.scale.water_loss_m,...
-           0.00005,sched(i).time_day_ay); %ok but a neg evt
-           %0.0005,sched(i).time_day_ay); %ok but a neg evt
-           %0.005,sched(i).time_day_ay); %ok but a neg evt
-           %0.05,sched(i).time_day_ay); %bad
-           %0.00001,sched(i).time_day_ay);
-	   %0.005 ok for 
-    elseif strcmpi(sched(i).tag,'arcylic_small_pet')
-	sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
-          sched(i).raw.scale.water_loss_m,...
-           0.005,sched(i).time_day_ay);
-   end
+%% now everything is covered by sched.evt_spline_coef
+%% a thorough analysis was performed and found that a coefficient 0.00005 is the best
+%    %if i==1
+%    if strcmpi(sched(i).tag,'consolidometer')
+%%  to obtain an accurate 
+%	    sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
+%        sched(i).raw.scale.water_loss_m,...
+%        0.000005,sched(i).time_day_ay);
+%    %elseif i==2
+%    elseif strcmpi(sched(i).tag,'arcylic_large_pet')
+%	sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
+%          sched(i).raw.scale.water_loss_m,...
+%           0.0005,sched(i).time_day_ay); % for chopped evt
+%
+%           %0.00005,sched(i).time_day_ay); % the value i delivered to ali, whith whole evt
+%           %0.0005,sched(i).time_day_ay); %ok but a neg evt
+%           %0.005,sched(i).time_day_ay); %ok but a neg evt
+%           %0.05,sched(i).time_day_ay); %bad
+%           %0.00001,sched(i).time_day_ay);
+%	   %0.005 ok for 
+%    elseif strcmpi(sched(i).tag,'arcylic_small_pet')
+%	sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
+%          sched(i).raw.scale.water_loss_m,...
+%           0.0005,sched(i).time_day_ay);
+%        %   0.005,sched(i).time_day_ay); % this one can see the daily fluctuation
+%   end
 
 % very good results
 %    sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...

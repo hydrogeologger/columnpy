@@ -3,3 +3,6 @@ read_scale
 read_em50
 read_dt85g
 extract_data_by_schedules
+%plot_arcylic_large_pet
+%plot_arcylic_small_pet
+%plot_consolidometer_pet

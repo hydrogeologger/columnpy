@@ -29,6 +29,7 @@ while tmp~=-1
     sched(i).surface_area=str2double(tmp(5));
     sched(i).dt=str2double(tmp(6));
     sched(i).scale_no=str2double(tmp(7));
+    sched(i).evt_spline_coef=str2double(tmp(8));
 
     tmp=getNextLine(fn,'criterion','without','keyword','#');
     i=i+1;
