@@ -37,9 +37,9 @@ for i =1 :length(sched)
     sched(i).raw.scale.time_digi=scale.time_digi(scale_mask);
     sched(i).raw.scale.water_loss=scale.weight(scale_mask,sched(i).scale_no);
        % clean data
-       if i==4 
-       	sched(i).raw.scale.water_loss( sched(i).raw.scale.water_loss<1000  )=nan;
-       end
+     if strcmpi(sched(i).tag,'arcylic_large_pet')
+     	sched(i).raw.scale.water_loss( sched(i).raw.scale.water_loss<1000  )=nan;
+    end
 
 
 
@@ -80,12 +80,14 @@ for i =1 :length(sched)
 
 
 % a thorough analysis was performed and found that a coefficient 0.00005 is the best
-    if i==1
+    %if i==1
+    if strcmpi(sched(i).tag,'consolidometer')
 %  to obtain an accurate 
 	    sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
         sched(i).raw.scale.water_loss_m,...
         0.000005,sched(i).time_day_ay);
-    elseif i==2
+    %elseif i==2
+    elseif strcmpi(sched(i).tag,'arcylic_large_pet')
 	sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
           sched(i).raw.scale.water_loss_m,...
            0.00005,sched(i).time_day_ay); %ok but a neg evt
@@ -94,6 +96,10 @@ for i =1 :length(sched)
            %0.05,sched(i).time_day_ay); %bad
            %0.00001,sched(i).time_day_ay);
 	   %0.005 ok for 
+    elseif strcmpi(sched(i).tag,'arcylic_small_pet')
+	sched(i).accu_evap=csaps(sched(i).raw.scale.time_digi-sched(i).start_digi,...
+          sched(i).raw.scale.water_loss_m,...
+           0.005,sched(i).time_day_ay);
    end
 
 % very good results

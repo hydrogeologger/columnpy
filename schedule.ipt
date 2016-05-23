@@ -9,5 +9,5 @@
 # 2015/Dec/08 12:30, 2015/Dec/29 11:00,     first calibration,      1,              0.168,            1200    ,       1
 # 2015/Dec/29 14:00, 2016/Jan/12 09:30,     second calibration,     3,              0.168,            1200      ,       1
  2016/Feb/16 18:00, 2016/Apr/17 11:00,     consolidometer    ,     3,              0.0177,            1200      ,       1
- 2016/Feb/17 14:00, 2016/Apr/17 11:00,     arcylic_large_evp ,     3,              0.0095,            1200      ,       2
- 2016/Apr/24 13:22, 2016/May/20 11:00,     arcylic_less_pet  ,     3,              0.0095,            1200      ,       1
+ 2016/Feb/17 14:00, 2016/Apr/17 11:00,     arcylic_large_pet ,     3,              0.0095,            1200      ,       2
+ 2016/Apr/24 13:22, 2016/May/20 11:00,     arcylic_small_pet  ,     3,              0.0095,            1200      ,       1
