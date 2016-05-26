@@ -34,6 +34,24 @@ dt85g=importdata('dt85g.csv',',');
 % (C)alibration (P)arameter for (P)ressure at DT(8)5G (B) Channel [cp8b]
 %cp8b=cali.data(5,:)';
 %cp8g=cali.data(6,:)';
+ec=struct;
+ec5(1).full_sat_rs=844.6;ec5(1).zero_sat_rs=380;ec5(1).alpha=(1-0)/(ec5(1).full_sat_rs-ec5(1).zero_sat_rs);  ec5(1).beta=-ec5(1).zero_sat_rs/(ec5(1).full_sat_rs-ec5(1).zero_sat_rs);
+ec5(2).full_sat_rs=819.4;ec5(2).zero_sat_rs=380;ec5(2).alpha=(1-0)/(ec5(2).full_sat_rs-ec5(2).zero_sat_rs);  ec5(2).beta=-ec5(2).zero_sat_rs/(ec5(2).full_sat_rs-ec5(2).zero_sat_rs);
+ec5(3).full_sat_rs=0.03; ec5(3).zero_sat_rs=.05;ec5(3).alpha=(1-0)/(ec5(3).full_sat_rs-ec5(3).zero_sat_rs);  ec5(3).beta=-ec5(3).zero_sat_rs/(ec5(3).full_sat_rs-ec5(3).zero_sat_rs);
+ec5(4).full_sat_rs=819.4;ec5(4).zero_sat_rs=380;ec5(4).alpha=(1-0)/(ec5(4).full_sat_rs-ec5(4).zero_sat_rs);  ec5(4).beta=-ec5(4).zero_sat_rs/(ec5(4).full_sat_rs-ec5(4).zero_sat_rs);
+ec5(5).full_sat_rs=837.2;ec5(5).zero_sat_rs=380;ec5(5).alpha=(1-0)/(ec5(5).full_sat_rs-ec5(5).zero_sat_rs);  ec5(5).beta=-ec5(5).zero_sat_rs/(ec5(5).full_sat_rs-ec5(5).zero_sat_rs);
+ec5(6).full_sat_rs=837.2;ec5(6).zero_sat_rs=500;ec5(6).alpha=(1-0)/(ec5(6).full_sat_rs-ec5(6).zero_sat_rs);  ec5(6).beta=-ec5(6).zero_sat_rs/(ec5(6).full_sat_rs-ec5(6).zero_sat_rs);
+ec5(1).gama=1;
+ec5(2).gama=1;
+ec5(3).gama=1;
+ec5(4).gama=1;
+ec5(5).gama=1;
+ec5(6).gama=1;
+
+
+
+
+% 450
 
 %% interpolate the result from dt85g
 % for ec5 Moisture Content(MC)=Reading*A+B
