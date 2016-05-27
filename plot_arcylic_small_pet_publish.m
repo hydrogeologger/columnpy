@@ -45,7 +45,7 @@ text(1,44,'(a)','fontweight','bold','fontsize',a.fs_ylabel)
 set(gca,'FontSize',12,'FontWeight','bold','linewidth',2)
 ylabel('Temperature (celsius)','fontweight','bold','fontsize',a.fs_ylabel)
 legend([h1,h2,h3,h4,h5],'soil surface','8cm below surface','14cm below surface',...
-	'14cm below surface','30cm below surface','50cm below surface','location','northeast')
+	'30cm below surface','50cm below surface','location','northeast')
 grid on
 
 a.fig_id=a.fig_id+1;

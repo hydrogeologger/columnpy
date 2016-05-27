@@ -6,7 +6,6 @@ iv=1;
 file_name=strcat('compare_large_small_evt.fig');
 h=figure('Name',file_name,'Position', [100, 100, 1049, 895]);
 
-%set(h,'Resize','off')
 subplot(5,1,1);
 plot(sched(i1).time_day_ay(1:iv:end)...
 	,sched(i1).accu_evap(1:iv:end)*c.m2mm,'bo');hold on
