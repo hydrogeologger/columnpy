@@ -13,15 +13,30 @@ import numpy as np
 #import constants as const
 import datetime
 class pandas_scale:
-    def __init__(self,file_path,source='raw',fn_csv='scale_merged.csv',fn_hd5='scale_merged.hd5'):
+    #def __init__(self,file_path,source='raw',fn_csv='scale_merged.csv',fn_hd5='scale_merged.hd5'):
+    def __init__(self,**kwargs ):
+
 	import pdb
         import csv
 	import numpy as np
         import pandas as pd
         #import constants as const
+        arg_defaults = {'file_path':    None,
+                    'source': 'raw' ,
+                    'fn_csv':'scale_merged.csv',
+                    'fn_hd5':'scale_merged.hd5',
+                    'names'  :None,
+                    'parse_dates':False,
+                    'sep' : '\s+',
+                    'header':0
+                       }
+        arg=arg_defaults
+        for d in kwargs:
+            arg[d]= kwargs.get(d)
 
-        fn='/home/chenming/Dropbox/tailing_column/data/column_on_roof/'
-        sys.path.append(fn)
+
+        #fn='/home/chenming/Dropbox/tailing_column/data/column_on_roof/'
+        sys.path.append(arg['file_path'])
         # no good as it does not exclude other non-directory
         #self.file_list_scale_roof=os.listdir(file_path)
         
@@ -30,26 +45,25 @@ class pandas_scale:
         #from os import listdir
         # below gives the files with the entire list
         import glob
-        self.file_path_list_scale_roof=glob.glob(file_path+"*.dat")
+        self.file_path_list=glob.glob(arg['file_path']+"*.dat")
 
         #with open(file_list_column_roof,'rb') as f:
         #    self.reader=csv.reader(f)
         #    your_list=list(self.reader)
-        self.raw_file_path=file_path
-        self.concat_file_path=file_path+'merged_data/'
+        self.raw_file_path=arg['file_path']
+        self.concat_file_path=arg['file_path']+'merged_data/'
         
-        if source=='raw':  # merging the data from raw files
-            #fn='/home/chenming/Dropbox/tailing_column/data/column_on_roof/scale_2016_Jul_01.dat'
-            self.file_list_scale_roof=os.listdir(file_path)
+        if arg['source']=='raw':  # merging the data from raw files
+            self.file_list_scale_roof=os.listdir(arg['file_path'])
             self.no_files=len(self.file_list_scale_roof)
-
-            self.df_sub=[[] for _ in xrange(len(self.file_path_list_scale_roof))]
+            self.df_sub=[[] for _ in xrange(len(self.file_path_list))]
             i=0
-            for fn in self.file_path_list_scale_roof:
-                print 'Parsing '+file_path+', %d/%d' %(i,len(self.file_list_scale_roof))
+            for fn in self.file_path_list:
+                print 'Parsing '+fn+', %d/%d' %(i,len(self.file_list_scale_roof))
                 # through multiple trial and error
                 # http://stackoverflow.com/questions/38561268/parsing-data-using-pandas-with-fixed-sequence-of-strings/38561323#38561323
-                self.df_sub[i]=pd.read_csv(fn,sep='\s+',names=['date','time','scale','stable'],parse_dates=[['date','time']])
+                #pdb.set_trace()
+                self.df_sub[i]=pd.read_csv(fn,sep=arg['sep'],names=arg['names'],parse_dates=arg['parse_dates'],header=arg['header'])
                 # http://stackoverflow.com/questions/10972410/pandas-combine-two-columns-in-a-dataframe
                 #self.df[i]['a']= self.df[i]['a'].map(str)+' '+self.df[i]['b']
                 ##http://stackoverflow.com/questions/13411544/delete-column-from-pandas-dataframe 
@@ -60,16 +74,23 @@ class pandas_scale:
                 i+=1
             #http://pandas.pydata.org/pandas-docs/stable/merging.html
             # sorting the results using 
-            self.df=pd.concat(self.df_sub,axis=0).sort(['date_time'])
+            #pdb.set_trace()
+            if i>1: 
+                self.df=pd.concat(self.df_sub,axis=0).sort(['date_time'])
+                # http://stackoverflow.com/questions/16167829/in-pandas-how-can-i-reset-index-without-adding-a-new-column
+                # to make sure that it re list the system
+                self.df=self.df.reset_index(drop=True)
+            else:
+                self.df=self.df_sub[0]
+
             
              
-        elif source=='csv':
-            print 'Parsing '+self.concat_file_path+fn_csv
-            self.df=pd.read_csv(self.concat_file_path+fn_csv,sep='\s+',names=['date','time','scale','stable'],parse_dates=[['date','time']])
-        elif source=='hdf5':
-            print 'Parsing '+self.concat_file_path+fn_hd5
-            store = pd.HDFStore(self.concat_file_path+fn_hd5)
-            #store['df']
+        elif arg['source']=='csv':
+            print 'Parsing '+self.concat_file_path+arg['fn_csv']
+            self.df=pd.read_csv(self.concat_file_path+arg['fn_csv'],sep='\s+',names=['date','time','scale','stable'],parse_dates=[['date','time']])
+        elif arg['source']=='hdf5':
+            print 'Parsing '+self.concat_file_path+arg['fn_hd5']
+            store = pd.HDFStore(self.concat_file_path+arg['fn_hd5'])
             self.df=store['df']
 
 
@@ -77,12 +98,18 @@ class pandas_scale:
         
             
     def save_as_csv(self,fn='scale_merged.csv'):
+        import os
+        folder_merged_data_exist=os.path.isdir(self.concat_file_path)
+        if not folder_merged_data_exist: os.mkdir(self.concat_file_path)
         print 'Saving dataframe to ' + self.concat_file_path+fn
+
         self.df.to_csv(self.concat_file_path+fn, sep='\t', encoding='utf-8',date_format="%d/%b/%Y %H:%M:%S"
                ,index=False,header=False)
 
     def save_as_hdf5(self,fn='scale_merged.hd5'):
         import pandas as pd
+        folder_merged_data_exist=os.path.isdir(self.concat_file_path)
+        if not folder_merged_data_exist: os.mkdir(self.concat_file_path)
         print 'Saving dataframe as hdf5 file...'+ self.concat_file_path+fn
         # http://stackoverflow.com/questions/17098654/how-to-store-data-frame-using-pandas-python 
         store = pd.HDFStore(self.concat_file_path+fn)
@@ -115,6 +142,7 @@ class concat_data_roof:
     
 #    def merge_data(self,var_in=a ): this is not good because if a is not defined, this is not going to be useful
     def merge_data(self,**kwargs ):
+        import pdb
 
         import pandas as pd
         import wafo.interpolate as wf
@@ -136,6 +164,7 @@ class concat_data_roof:
         
         #http://stackoverflow.com/questions/14920903/time-difference-in-seconds-from-numpy-timedelta64
         source_sec=(source_df['date_time']-source_df['date_time'][0])/np.timedelta64(1,'s')
+        #pdb.set_trace()
 
         interp_method=wf.SmoothSpline(source_sec,source_df[ source_keys[0]   ],p=arg['coef'])
         # warning, it is found that the Smoothspline is dependent on the x axis!!!
