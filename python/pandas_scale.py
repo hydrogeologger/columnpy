@@ -56,14 +56,14 @@ class pandas_scale:
         #    your_list=list(self.reader)
         self.raw_file_path=file_path
         self.concat_file_path=file_path+'merged_data/'
+        #pdb.set_trace()
         
         if source=='raw':  # merging the data from raw files
-            self.file_list_scale_roof=os.listdir(file_path)
-            self.no_files=len(self.file_list_scale_roof)
+            self.no_files=len(self.file_path_list)
             self.df_sub=[[] for _ in xrange(len(self.file_path_list))]
             i=0
             for fn in self.file_path_list:
-                print 'Parsing '+fn+', %d/%d' %(i,len(self.file_list_scale_roof))
+                print 'Parsing '+fn+', %d/%d' %(i,len(self.file_path_list))
                 # through multiple trial and error
                 # http://stackoverflow.com/questions/38561268/parsing-data-using-pandas-with-fixed-sequence-of-strings/38561323#38561323
                 #pdb.set_trace()
@@ -128,7 +128,7 @@ class pandas_scale:
         self.df_sub=[[] for _ in xrange(len(self.append_file_path_list))]
         i=0
         for fn in self.append_file_path_list:
-            print 'Parsing appending'+fn+', %d/%d' %(i,len(self.file_list_scale_roof))
+            print 'Parsing appending'+fn+', %d/%d' %(i,len(self.file_path_list))
             self.df_sub[i]=pd.read_csv(fn,**kwargs ) #,names=arg['names'],parse_dates=arg['parse_dates'],header=arg['header'])
             self.df=pd.concat([self.df,self.df_sub[i]])
             i+=1
@@ -239,6 +239,5 @@ class concat_data_roof:
         arg=arg_defaults
         for d in kwargs:
             arg[d]= kwargs.get(d)
-
         self.df[arg['deri_key']]=np.append(np.diff(self.df[arg['key']] ),np.nan)/self.dt_s
 
