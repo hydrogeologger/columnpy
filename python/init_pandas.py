@@ -101,7 +101,10 @@ self=scale
 sp=1
 del sp
 sp=pandas_scale.concat_data_roof()
-sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=1e-14)
+sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=5e-15)
+
+#sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=1e-9)
+#sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=1e-14)
 #sp.surf_area1=np.pi*(0.265/2)**2
 #sp.surf_area1=np.pi*(0.265/2)**2
 sp.surf_area1=np.pi*(0.22/2)**2
@@ -139,21 +142,31 @@ sp.df['rhowv_air']= constants.svp(sp.df['Tk'])*sp.df['hr'] #pascal
 #sp.df['B']=0.102*sp.df['wind5']/ np.log( 2/0.00000001   )**2
 sp.df['B']=0.102*sp.df['wind5']/ np.log( 2/0.0001   )**2
 #sp.df['B']=6430.*(1+0.536*sp.df['wind5'])  
-#sp.df['Ea']=sp.df['B']*(sp.df['rhowv_sat']-sp.df['rhowv_air'])/sp.df['lv']
-sp.df['Ea']=sp.df['B']*(constants.svp(273.15+10)-sp.df['rhowv_air'])/sp.df['lv']
+sp.df['Ea']=sp.df['B']*(sp.df['rhowv_sat']-sp.df['rhowv_air'])/sp.df['lv']
+
+
+#sp.df['Ea']=sp.df['B']*(constants.svp(273.15+7)-sp.df['rhowv_air'])/sp.df['lv']
 sp.df['drhowv_sat_dt']=constants.dsvp_dtk(  sp.df['Tk']   )
 
 sp.df['evap_weather']=sp.df['drhowv_sat_dt']/(sp.df['drhowv_sat_dt']+constants.psych)*sp.df['Er'
     ] + constants.psych/(sp.df['drhowv_sat_dt']+constants.psych)*sp.df['Ea']
 
 fig=plt.figure(figsize=(20,25))
-#plt.plot(sp.df['date_time'],sp.df['Ea']*constants.ms2mmday,'r-')
-#plt.plot(sp.df['date_time'],sp.df['Er']*constants.ms2mmday,'g-')
+plt.plot(sp.df['date_time'],sp.df['Ea']*constants.ms2mmday,'r-')
+plt.plot(sp.df['date_time'],sp.df['Er']*constants.ms2mmday,'g-')
 plt.plot(sp.df['date_time'],sp.df['evap_weather']*constants.ms2mmday,'b-')
 plt.plot(sp.df['date_time'],sp.df['evap']*constants.ms2mmday,'k-')
 
-#plt.plot(sp.df['date_time'],sp.df['Ea']*constants.ms2mmday,'k-')
 
+
+fig=plt.figure(figsize=(20,25))
+plt.plot(sp.df['date_time'],sp.df['T'],'k-')
+
+fig=plt.figure(figsize=(20,25))
+plt.plot(sp.df['date_time'],sp.df['rhowv_air'],'k-')
+plt.plot(sp.df['date_time'],sp.df['rhowv_sat'],'r-')
+fig=plt.figure(figsize=(20,25))
+plt.plot(sp.df['date_time'],sp.df['wind5'],'r-')
 #fig=plt.figure(figsize=(20,25))
 #plt.plot(sp.df['date_time'],sp.df['B']*constants.ms2mmday,'k-')
 ##sp.df['B2']=0.102*sp.df['wind5']/ np.log( 2/0.001   )**2
