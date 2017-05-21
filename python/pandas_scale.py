@@ -192,7 +192,8 @@ class concat_data_roof:
         arg_defaults = {'plot':    False,
                     'keys': ['scale'],
                     'newkeys':None ,
-                    'coef': 1e-14}
+                    'coef': 1e-14,
+                    'rm_nan':True}
         arg=arg_defaults
         for d in kwargs:
             arg[d]= kwargs.get(d)
@@ -206,8 +207,16 @@ class concat_data_roof:
         source_sec=(source_df['date_time']-source_df['date_time'][0])/np.timedelta64(1,'s')
         #pdb.set_trace()
 
+        pdb.set_trace()
         for i in source_keys:
-            interp_method=wf.SmoothSpline(source_sec,source_df[ i   ],p=arg['coef'])
+            if arg['rm_nan']==True:
+                
+                mask_idx=source_df[ i   ].isnull()
+                source_sec_no_nan=source_sec(~mask_idx)
+                source_df_no_nan=source_df[ i   ](~mask_idx)
+                interp_method=wf.SmoothSpline(source_sec_no_nan,source_df_no_nan,p=arg['coef'])
+            else:
+                interp_method=wf.SmoothSpline(source_sec,source_df[ i   ],p=arg['coef'])
             # warning, it is found that the Smoothspline is dependent on the x axis!!!
             sp_sec=(self.df['date_time']-source_df['date_time'][0])/np.timedelta64(1,'s')
             self.df[i]=interp_method(sp_sec)
@@ -216,8 +225,8 @@ class concat_data_roof:
         
             if arg['plot']==True:
                 fig, ax = plt.subplots(2,sharex=False)
-                ax[0].plot(source_df['date_time'],source_df [i]  ,'b+')
                 ax[0].plot(self.df['date_time'],self.df[i],'ro')
+                ax[0].plot(source_df['date_time'],source_df [i]  ,'b+')
                 ax[0].set_title('interpolated '+i+' result')
                 plt.show(block=False)
             # http://stackoverflow.com/questions/28694025/converting-a-datetime-column-back-to-a-string-columns-pandas-python
