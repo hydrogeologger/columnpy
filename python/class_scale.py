@@ -50,6 +50,7 @@ class scale:
         # http://stackoverflow.com/questions/6376886/what-is-the-best-way-to-create-a-string-array-in-python
         #self.station_name = ["" for x in range(self.data_no)]        
 
+	#pdb.set_trace()
         for n in np.arange(self.data_no):
             tmp=your_list[n][0].split()
             self.date_str[n]=tmp[0]
@@ -70,7 +71,6 @@ class scale:
         #self.time_dt[-1].strftime('%d/%b/%Y %H:%M:%S') %(self.data_no)
         #aa=self.time_dt[0].strftime('%d %b %Y %H %M %S')
         #bb=self.time_dt[0].strftime('%d %b %Y %H %M %S')
-	#pdb.set_trace()
         #print 'file',fn,'has %d data points, starting from ' %(self.data_no)
 	print '    file',fn,'has %d data points,' %(self.data_no)
         print '    starting from',  self.time_dt[0],'to', self.time_dt[-1] 
@@ -148,7 +148,7 @@ class scale:
         print '    starting from',  self.time_dt[0],'to', self.time_dt[-1] 
 
     def plot_scale_readings(self):
-        ''' Takes bar and does
+        ''' plot_scale_readings from scale1
                 some things to it '''
         # let me write something
         import matplotlib.pyplot as plt

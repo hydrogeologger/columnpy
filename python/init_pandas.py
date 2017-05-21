@@ -90,7 +90,13 @@ scale=pandas_scale.pandas_scale(file_path=column_roof_file_path,
 #    )
 #scale=pandas_scale.pandas_scale(file_path=column_roof_file_path,sep='\s+',source='csv',fn_csv='scale_merged.csv',fn_hd5='scale_merged.hd5')
 #scale=pandas_scale.pandas_scale(file_path=column_roof_file_path,sep='\s+',source='hd5',fn_csv='scale_merged.csv',fn_hd5='scale_merged.hd5')
-scale.df['scale']=scale.df['scale']*constants.g2kg   # convert g to kg
+#scale.df['scale']=scale.df['scale']*constants.g2kg   # convert g to kg
+# here is the place to play with the accuracy of the scales...
+# below is 50g accuracy
+#scale.df['scale']=np.around(scale.df['scale']*constants.g2kg*2,1)/2.0   # round 
+# 100g accuracy
+scale.df['scale']=np.around(scale.df['scale']*constants.g2kg,1)   # round 
+
 scale.surf_area1=np.pi*(0.265/2)**2
 
 scale.save_as_csv(fn='scale_merged.csv')
