@@ -7,9 +7,11 @@
 # scale no       -- specify which column in scale.dat does this schedule refers
 #   [Start time]          [End Time]      [Comment on the data]  [Water level cm] [surface area]  [soil thickness(m)] [porosity]  [evt,coeffi] [te_coef] [tas606_coef]   [time_surface_emerge]  [Sequence] [Aero Resis.]   [Tranlation (day)]   [good or not]
 #
- 2017/Feb/09 07:55,   2017/Feb/18 11:00,     coal_first         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/09 07:55,
- 2017/Feb/25 12:55,   2017/Mar/12 11:00,     coal_second        ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/27 12:55,
- 2017/Mar/19 07:55,   2017/Apr/02 11:00,     coal_third         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Mar/23 12:15,
+# 2017/Feb/09 07:55,   2017/Feb/18 11:00,     coal_first         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/09 07:55,
+# 2017/Feb/25 12:55,   2017/Mar/12 11:00,     coal_second        ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/27 12:55,
+# 2017/Mar/19 07:55,   2017/Apr/02 11:00,     coal_third         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Mar/23 12:15,
+# 
+#
 # 2017/Feb/07 07:55,   2017/Feb/19 11:00,     coal_first         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6   
 # 2017/Feb/26 07:55,   2017/Mar/14 11:00,     coal_second        ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6  
 # 2017/Mar/18 07:55,   2017/Apr/04 11:00,     coal_third         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6  
@@ -34,7 +36,11 @@
 # 17-04-02 10:40 y=21.5527mm at the end of the experiment
 # according to the up data, porosity =0.35 
 # for second case
-# the following results works very well for evaporation testing 2017-05-24 00:20 with ximing 
+#---------- the following results works very well for evaporation testing 2017-05-24 00:20 with ximing---------- 
 # 2017/Feb/09 07:55,   2017/Feb/18 11:00,     coal_first         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/09 07:55,
 # 2017/Feb/25 12:55,   2017/Mar/12 11:00,     coal_second        ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/25 12:55,
 # 2017/Mar/19 07:55,   2017/Apr/02 11:00,     coal_third         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Mar/21 12:15,
+#----------  the above results works very well for fredlund suction sensor---------- 
+ 2017/Feb/09 07:55,   2017/Feb/18 11:00,     coal_first         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/09 07:55,
+ 2017/Feb/25 12:55,   2017/Mar/12 11:00,     coal_second        ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Feb/25 12:55,
+ 2017/Mar/19 07:55,   2017/Apr/02 11:00,     coal_third         ,     3,              0.108,            0.04      ,      0.4,        0.000005,   8.5e-3,  18.6 ,  2017/Mar/21 06:15,
