@@ -118,29 +118,45 @@ for line in open("schedule.ipt"):
 
 ms=10
 
+#`import matplotlib.pylab as pylab
+#`params = {'legend.fontsize': 'x-large',
+#`          'figure.figsize': (10, 5),
+#`         'axes.labelsize': 10,
+#`         'axes.titlesize':'x-large',
+#`         'xtick.labelsize':'20',
+#`         'ytick.labelsize':'20'}
+#`#         'axes.grid':'linewidth=grid_width,color = '0.5''}
+#`#         'linewidth':lw,'markers.size':ms,'markers.edgewidth':mew}
+#`pylab.rcParams.update(params)
+
+
+#s script is used for calibrating load cells
 import matplotlib.pylab as pylab
-params = {'legend.fontsize': 'x-large',
+params = {'legend.fontsize': 13,
           'figure.figsize': (10, 5),
-         'axes.labelsize': 10,
+         'axes.labelsize': 12,
          'axes.titlesize':'x-large',
          'xtick.labelsize':'20',
-         'ytick.labelsize':'20'}
+         'ytick.labelsize':'20',
+#         'ytick.labelweight':'bold',
+          'axes.labelsize': 16,
+           'axes.labelweight':'bold'}
 #         'axes.grid':'linewidth=grid_width,color = '0.5''}
 #         'linewidth':lw,'markers.size':ms,'markers.edgewidth':mew}
+plt.rcParams["font.weight"] = "bold"
+plt.rcParams["axes.labelweight"] = "bold"
 pylab.rcParams.update(params)
 
-
-
-plot_fredlund_calibration=False
-plot_moisture_calibration=False
+plot_fredlund_calibration=True
+plot_moisture_calibration=True
 plot_temphum_calibration=True
 
 
 if plot_temphum_calibration:
-    fig = plt.figure(figsize=(12,16))
+    fig = plt.figure(figsize=(10,10))
     lw=4
-    ms=3
-    mew=4
+    ms=8
+    mew=3
     grid_width=2
     y_fontsize=20
 
@@ -154,63 +170,93 @@ if plot_temphum_calibration:
       ax.spines[axis].set_linewidth(2) 
     
     sch_name='redmud_first'
-    plt.semilogy(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['saltrh_2_suction'] ,'bo' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 1') 
-    plt.semilogy(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['saltrh_11_suction'] ,'ko' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 1') 
+    plt.semilogx(sp_sch[sch_name].df  ['saltrh_2_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 1') 
+    plt.semilogx(sp_sch[sch_name].df  ['saltrh_11_suction'], sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 1') 
     sch_name='redmud_second'
-    plt.semilogy(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['saltrh_2_suction'] ,'bs' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 2') 
-    plt.semilogy(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['saltrh_11_suction'] ,'ks' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
-    plt.ylabel('SOIL SUCTION (M)', fontsize=y_fontsize, labelpad=10)
-    plt.xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
-    plt.legend(bbox_to_anchor=(.5, 0.98), loc=2, borderaxespad=0.,fontsize=15)
+    #plt.semilogx(sp_sch[sch_name].df  ['saltrh_2_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'x' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 2') 
+    #plt.semilogx(sp_sch[sch_name].df  ['saltrh_11_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'x' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
+    plt.xlabel('SOIL SUCTION (m)', fontsize=y_fontsize, labelpad=10)
+    plt.ylabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
+    #plt.legend(bbox_to_anchor=(.5, 0.98), loc=2, borderaxespad=0.,fontsize=15)
     #plt.grid(linewidth=grid_width,color = '0.5')
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 
-    plt.show(block=False)
+    #plt.show(block=False)
     
-    fig.savefig('plot_temperature_humidity_calibration.png', format='png', dpi=500)
+    fig.savefig('plot_temperature_humidity_calibration.png', format='png', dpi=300)
+    plt.close()  # it is all caused by pywafo. 
 
 if plot_fredlund_calibration:
-    fig, ax = plt.subplots(3,sharex=True,figsize=(12,16))
+
     
     lw=4
-    ms=3
-    mew=4
+    ms=8
+    mew=3
     grid_width=2
     y_fontsize=20
     
-    for i in ax:
-      for axis in ['top','bottom','left','right']:
-        i.spines[axis].set_linewidth(2)
-    
+    fig = plt.figure(figsize=(12,12))
+    ax = fig.add_subplot(111)
+    for axis in ['top','bottom','left','right']:
+            ax.spines[axis].set_linewidth(2)
+
     sch_name='redmud_first'
-    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat'] ,'ro' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 1') 
-    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_19_heat'] ,'ro' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 1') 
-    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_14_heat'] ,'ro' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 1') 
+    plt.plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Red mud tailings experiment 1') 
     sch_name='redmud_second'
-    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat'] ,'gs',markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 2') 
-    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_19_heat'] ,'gs',markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 2') 
-    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_14_heat'] ,'gs',markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 2')
+    plt.plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Red mud tailings experiment 2')
     
-    ax[0].set_ylabel('NORMALIZED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
-    ax[1].set_ylabel('NORMALIZED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
-    ax[2].set_ylabel('NORMALIZED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
-    ax[2].set_xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
-    ax[0].legend(bbox_to_anchor=(.5, 0.3), loc=2, borderaxespad=0.,fontsize=15)
-    ax[1].legend(bbox_to_anchor=(.5, 0.3), loc=2, borderaxespad=0.,fontsize=15)
-    ax[2].legend(bbox_to_anchor=(.5, 0.3), loc=2, borderaxespad=0.,fontsize=15)
-    ax[0].set_title('(A)',x=0.02,y=1.0)
-    ax[1].set_title('(B)',x=0.02,y=1.0)
-    ax[2].set_title('(C)',x=0.02,y=1.0)
-    ax[0].grid(linewidth=grid_width,color = '0.5')
-    ax[1].grid(linewidth=grid_width,color = '0.5')
-    ax[2].grid(linewidth=grid_width,color = '0.5')
-    ax[0].set_ylim(-0.1,1.1)
-    ax[1].set_ylim(-0.1,1.1)
-    ax[2].set_ylim(-0.1,1.1)
+    plt.ylabel('NORMALISED TEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
+    plt.xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
+    plt.legend(bbox_to_anchor=(.4, 0.3), loc=2, borderaxespad=0.,fontsize=15)
+    plt.grid(linewidth=grid_width,color = '0.5')
+    plt.ylim(-0.1,1.1)
     
-    plt.show(block=False)
     
-    fig.savefig('normalized_temperature.png', format='png', dpi=500)
+    fig.savefig('normalised_temperature_single.png', format='png', dpi=300)
+    fig, ax = plt.subplots(3,sharex=True,figsize=(12,16))
+    plt.close()
+
+    
+#    lw=4
+#    ms=8
+#    mew=3
+#    grid_width=2
+#    y_fontsize=20
+#    
+#    for i in ax:
+#      for axis in ['top','bottom','left','right']:
+#        i.spines[axis].set_linewidth(2)
+#    
+#    sch_name='redmud_first'
+#    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat'] ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 1') 
+#    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_19_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 1') 
+#    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_14_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 1') 
+#    sch_name='redmud_second'
+#    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat'] ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 2') 
+#    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_19_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 2') 
+#    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_14_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 2')
+#    
+#    ax[0].set_ylabel('NORMALISED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
+#    ax[1].set_ylabel('NORMALISED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
+#    ax[2].set_ylabel('NORMALISED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
+#    ax[2].set_xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
+#    ax[0].legend(bbox_to_anchor=(.5, 0.3), loc=2, borderaxespad=0.,fontsize=15)
+#    ax[1].legend(bbox_to_anchor=(.5, 0.3), loc=2, borderaxespad=0.,fontsize=15)
+#    ax[2].legend(bbox_to_anchor=(.5, 0.3), loc=2, borderaxespad=0.,fontsize=15)
+#    ax[0].set_title('(A)',x=0.02,y=1.0)
+#    ax[1].set_title('(B)',x=0.02,y=1.0)
+#    ax[2].set_title('(C)',x=0.02,y=1.0)
+#    ax[0].grid(linewidth=grid_width,color = '0.5')
+#    ax[1].grid(linewidth=grid_width,color = '0.5')
+#    ax[2].grid(linewidth=grid_width,color = '0.5')
+#    ax[0].set_ylim(-0.1,1.1)
+#    ax[1].set_ylim(-0.1,1.1)
+#    ax[2].set_ylim(-0.1,1.1)
+#    
+#    #plt.show(block=False)
+#    
+#    fig.savefig('normalized_temperature.png', format='png', dpi=500)
+
 #fig, ax = plt.subplots(3,sharex=True,figsize=(12,16))
 #
 #lw=4
@@ -251,6 +297,8 @@ if plot_fredlund_calibration:
 #
 if plot_moisture_calibration:
     fig, ax = plt.subplots(2,sharex=False,figsize=(12,16))
+    fig.subplots_adjust(left=0.15, right=0.98, top=0.95, bottom=0.10)
+    plt.close()
     y_fontsize=20
     
     for i in ax:
@@ -258,28 +306,28 @@ if plot_moisture_calibration:
         i.spines[axis].set_linewidth(2)
     
     sch_name='redmud_first'
-    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_7'] ,'ro' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 1') 
-    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_8'] ,'go' ,markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 1') 
-    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_9'] ,'bo' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture A, experiment 1') 
-    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_10'],'ko' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture B, experiment 1') 
+    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_7'] ,'bo',mfc='none'  ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor, Red mud experiment 1') 
+    #ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_8'] ,'ko',mfc='none'  ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 1') 
+    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_9'] ,'bo',mfc='none'  ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture sensor, Red Mud experiment 1') 
+    #ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_10'],'ko',mfc='none'  ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture B, experiment 1') 
     sch_name='redmud_second'
-    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_7'] ,'rs',markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 2') 
-    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_8'] ,'gs',markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 2') 
-    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_9'] ,'bs',markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture A, experiment 2')
-    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_10'],'ks',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture B, experiment 2')
+    #ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_7'] ,'bx',markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction Sensor, Red Mud experiment 2') 
+    #ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_8'] ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 2') 
+    #ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_9'] ,'bx',markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture sensor, Red Mud experiment 2')
+    #ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_10'],'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture B, experiment 2')
     
     ax[0].set_ylabel('RAW READING FROM \n DIELECTRIC MOISTURE SENSORS ', fontsize=y_fontsize, labelpad=10)
     ax[1].set_ylabel('RAW READING FROM \n DIELECTRIC SUCTION SENSORS ', fontsize=y_fontsize, labelpad=20)
-    ax[0].set_xlabel('DEGREE OF SATURATION', fontsize=y_fontsize, labelpad=10)
-    ax[1].set_xlabel('DEGREE OF SATURATION', fontsize=y_fontsize, labelpad=10)
-    ax[0].legend(bbox_to_anchor=(.6, 0.98), loc=2, borderaxespad=0.,fontsize=15)
-    ax[1].legend(bbox_to_anchor=(.02, 0.37), loc=2, borderaxespad=0.,fontsize=15)
+    ax[0].set_xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
+    ax[1].set_xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
+    #ax[0].legend(bbox_to_anchor=(.6, 0.98), loc=2, borderaxespad=0.,fontsize=15)
+    #ax[1].legend(bbox_to_anchor=(.02, 0.37), loc=2, borderaxespad=0.,fontsize=15)
     ax[0].set_title('(A)',x=0.02,y=1.0)
     ax[1].set_title('(B)',x=0.02,y=1.0)
     ax[0].grid(linewidth=grid_width,color = '0.5')
     ax[1].grid(linewidth=grid_width,color = '0.5')
     
-    plt.show(block=False)
+    #plt.show(block=False)
     
     fig.savefig('plot_moisture_dielectric_suction_calibration.png', format='png', dpi=500)
 #

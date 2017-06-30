@@ -167,26 +167,27 @@ balance.df.loc[:,'commercial'][ balance.df.commercial<10000]=np.nan
 sp=1
 del sp
 sp=pandas_scale.concat_data_roof(pd.Timestamp('2017-02-07 07:55'),  pd.Timestamp('2017-04-4 12:54:11'),dt_s)
-sp.merge_data( df=scale.df, keys=['tas606'] ,plot=True ,coef=5e-16)
-sp.merge_data( df=scale.df, keys=['te'] ,plot=True ,coef=5e-16)
-sp.merge_data( df=sensors.df, keys=['saltrh_2_rh'] ,plot=True ,coef=5e-10)
-sp.merge_data( df=sensors.df, keys=['saltrh_3_rh'] ,plot=True ,coef=5e-10)
-sp.merge_data( df=sensors.df, keys=['suht_28e5_begin'] ,plot=True ,coef=5e-10)
-sp.merge_data( df=sensors.df, keys=['suht_2847_begin'] ,plot=True ,coef=5e-10)
+plot_switch=False
+sp.merge_data( df=scale.df, keys=['tas606']            ,plot=plot_switch ,coef=5e-16)
+sp.merge_data( df=scale.df, keys=['te']                ,plot=plot_switch ,coef=5e-16)
+sp.merge_data( df=sensors.df, keys=['saltrh_2_rh']     ,plot=plot_switch ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['saltrh_3_rh']     ,plot=plot_switch ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['suht_28e5_begin'] ,plot=plot_switch ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['suht_2847_begin'] ,plot=plot_switch ,coef=5e-10)
 
-sp.merge_data( df=sensors.df, keys=['suht_28e5_peak'] ,plot=True ,coef=5e-10)
-sp.merge_data( df=sensors.df, keys=['suht_2847_peak'] ,plot=True ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['suht_28e5_peak']  ,plot=plot_switch ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['suht_2847_peak']  ,plot=plot_switch ,coef=5e-10)
 
-sp.merge_data( df=sensors.df, keys=['suht_28e5_end'] ,plot=True ,coef=5e-10)
-sp.merge_data( df=sensors.df, keys=['suht_2847_end'] ,plot=True ,coef=5e-10)
-sp.merge_data( df=sensors.df, keys=['saltrh_3_tp'] ,plot=True ,coef=5e-10)
-sp.merge_data( df=sensors.df, keys=['saltrh_2_tp'] ,plot=True ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['suht_28e5_end']   ,plot=plot_switch ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['suht_2847_end']   ,plot=plot_switch ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['saltrh_3_tp']     ,plot=plot_switch ,coef=5e-10)
+sp.merge_data( df=sensors.df, keys=['saltrh_2_tp']     ,plot=plot_switch ,coef=5e-10)
 
-sp.merge_data( df=sensors.df, keys=['mo_7'] ,plot=True ,coef=5e-15)
-sp.merge_data( df=sensors.df, keys=['mo_8'] ,plot=True ,coef=5e-15)
-sp.merge_data( df=sensors.df, keys=['mo_9'] ,plot=True ,coef=5e-15)
-sp.merge_data( df=sensors.df, keys=['mo_10'] ,plot=True ,coef=5e-15)
-sp.merge_data( df=balance.df, keys=['commercial'] ,plot=True ,coef=5e-15)
+sp.merge_data( df=sensors.df, keys=['mo_7']            ,plot=plot_switch ,coef=5e-15)
+sp.merge_data( df=sensors.df, keys=['mo_8']            ,plot=plot_switch ,coef=5e-15)
+sp.merge_data( df=sensors.df, keys=['mo_9']            ,plot=plot_switch ,coef=5e-15)
+sp.merge_data( df=sensors.df, keys=['mo_10']           ,plot=plot_switch ,coef=5e-15)
+sp.merge_data( df=balance.df, keys=['commercial']      ,plot=plot_switch ,coef=5e-15)
 
 sp.df=sp.df.reset_index(drop=True)
 ## add new column
