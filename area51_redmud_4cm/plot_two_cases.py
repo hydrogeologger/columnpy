@@ -1,4 +1,21 @@
 import operator
+import sensorfun
+
+py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/sensorfun.py')
+
+import sensorfun
+reload(sensorfun)
+
+py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/figlib.py')
+import figlib
+reload(figlib)
+lw=6
+ms=8
+mew=3
+grid_width=2
+y_fontsize=20
+
+
 sp_sch={}
 for line in open("schedule.ipt"):
     li=line.strip()
@@ -114,10 +131,40 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['cum_evap_commercial'][sp_sch[sch_name].df['cum_evap_commercial']<0]=0
         sp_sch[sch_name].df['cum_evap_te'][sp_sch[sch_name].df['cum_evap_te']<0]=0
         sp_sch[sch_name].df['evap_rate_te'][sp_sch[sch_name].df['evap_rate_te']<0]=0
+        sp_sch[sch_name].df['suc_commercial']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_commercial*sp_sch[sch_name].por)
+        sp_sch[sch_name].df['mo_8_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_8'],x_offset=399,x_scale=15.0,y_scale=-20,y_offset=17.1,lamb=0.75)
+        sp_sch[sch_name].df['mo_7_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_7'],x_offset=320,x_scale=25.0,y_scale=-20,y_offset=13.8,lamb=3.0)
+        # getting the mo_9_wmc
+        #i=25 # this is the best as tested
+        #c=np.polyfit(sp_sch[sch_name].df ['mo_9'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],i)
+        #y=0
+        #for ind,key in enumerate(c):
+        #    y+=key*sp_sch[sch_name].df ['mo_9']**(i-ind)
+        #sp_sch[sch_name].df['mo_9_vwc']=y
 
+   
+        #ii=20 # this is the best as tested
+        #cc=np.polyfit(sp_sch[sch_name].df ['mo_10'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],ii)
+        #y=0
+        #for ind,key in enumerate(cc):
+        #    y+=key*sp_sch[sch_name].df ['mo_10']**(ii-ind)
+        #sp_sch[sch_name].df['mo_10_vwc']=y
+        #a=sp_sch[sch_name].df ['mo_9']
+        #b=sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial']
+        #aa=sp_sch[sch_name].df ['mo_10']
+        #i=15
+        #coef_poly=np.polyfit(sp_sch[sch_name].df ['mo_9'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],i)
+        #y=0
+        #for ind,key in enumerate(coef_poly):
+        #    y+=key*a**(i-ind)
 
-ms=10
-
+   
+        #ii=15
+        #cc=np.polyfit(aa,b,ii)
+        #yy=0
+        #for ind,key in enumerate(cc):
+        #    yy+=key*aa**(ii-ind)
+        
 #`import matplotlib.pylab as pylab
 #`params = {'legend.fontsize': 'x-large',
 #`          'figure.figsize': (10, 5),
@@ -131,30 +178,21 @@ ms=10
 
 
 #s script is used for calibrating load cells
-import matplotlib.pylab as pylab
-params = {'legend.fontsize': 13,
-          'figure.figsize': (10, 5),
-         'axes.labelsize': 12,
-         'axes.titlesize':'x-large',
-         'xtick.labelsize':'20',
-         'ytick.labelsize':'20',
-#         'ytick.labelweight':'bold',
-          'axes.labelsize': 16,
-           'axes.labelweight':'bold'}
-#         'axes.grid':'linewidth=grid_width,color = '0.5''}
-#         'linewidth':lw,'markers.size':ms,'markers.edgewidth':mew}
-plt.rcParams["font.weight"] = "bold"
-plt.rcParams["axes.labelweight"] = "bold"
-pylab.rcParams.update(params)
 
-plot_fredlund_calibration=True
+#plot_fredlund_calibration=True
+#plot_moisture_calibration=True
+#plot_temphum_calibration=True
+#plot_dielectric_suction_calibration=True
+
+plot_fredlund_calibration=False
 plot_moisture_calibration=True
-plot_temphum_calibration=True
-
+plot_temphum_calibration=False
+plot_dielectric_suction_calibration=True
+plot_volumetric_content_vs_suction=True
 
 if plot_temphum_calibration:
     fig = plt.figure(figsize=(10,10))
-    lw=4
+    lw=5
     ms=8
     mew=3
     grid_width=2
@@ -185,6 +223,81 @@ if plot_temphum_calibration:
     
     fig.savefig('plot_temperature_humidity_calibration.png', format='png', dpi=300)
     plt.close()  # it is all caused by pywafo. 
+
+
+
+if plot_dielectric_suction_calibration:
+    fig=figlib.single_fig_initialise() 
+    
+    sch_name='redmud_first'
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'], sp_sch[sch_name].df  ['mo_7_suction'] , 'cs',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+    sch_name='redmud_second'
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df  ['mo_8_suction'] , 'ms',mfc='none' ,markeredgecolor='m',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+    
+    #plt.semilogy(sp_sch[sch_name].df  ['mo_10'], np.exp(0.1*( sp_sch[sch_name].df  ['mo_10']-400 )), 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
+
+    #plt.semilogx(sp_sch[sch_name].df  ['saltrh_2_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'x' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 2') 
+    #plt.semilogx(sp_sch[sch_name].df  ['saltrh_11_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'x' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
+    plt.xlabel('RAW READING (m)', fontsize=y_fontsize, labelpad=10)
+    plt.ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
+    plt.legend(bbox_to_anchor=(.1, 0.98), loc=2, borderaxespad=0.,fontsize=15)
+    #plt.grid(linewidth=grid_width,color = '0.5')
+    plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+
+    plt.ylim([1,1e7])
+    #plt.show(block=False)
+    
+    fig.savefig('plot_dielectric_suction_calibration.png', format='png', dpi=300)
+    plt.close()  # it is all caused by pywafo. 
+    
+    header = ["mo_7", "mo_8", "suc_commercial", "mo_7_suction","mo_7_suction"]
+    sch_name='redmud_first'
+    sp_sch[sch_name].df.to_csv('plot_dielectric_suction_calibration_'+sch_name+'.csv', columns = header)
+    sch_name='redmud_second'
+    sp_sch[sch_name].df.to_csv('plot_dielectric_suction_calibration_'+sch_name+'.csv', columns = header)
+
+
+if plot_volumetric_content_vs_suction:
+    
+    fig=figlib.single_fig_initialise() 
+    [vwc_fred_xing,suction_fred_xing_kpa]=constants.swcc_fredlund_xing_1994(plot=False)
+
+    
+    sch_name='redmud_first'
+    plt.semilogx(suction_fred_xing_kpa, vwc_fred_xing, 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 1') 
+
+    plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 1') 
+    #plt.semilogx(sp_sch[sch_name].df  ['suc_commercial'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+    sch_name='redmud_second'
+    plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 2') 
+    plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 2') 
+
+    plt.ylabel('VOLUMETRIC WATER CONTENT\nFROM BALANCE', fontsize=y_fontsize, labelpad=10)
+    plt.xlabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
+
+    plt.legend(bbox_to_anchor=(.05, 0.2), loc=2, borderaxespad=0.,fontsize=12)
+    #plt.grid(linewidth=grid_width,color = '0.5')
+    plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+
+    plt.xlim([1,1e7])
+    #plt.show(block=False)
+    
+    fig.savefig('plot_volumetric_content_vs_suction.png', format='png', dpi=300)
+    
+    plt.close()  # it is all caused by pywafo. 
+    np.savetxt("plot_volumetric_content_vs_suction.csv", [sp_sch[sch_name].df  ['mo_7_suction'],sp_sch[sch_name].df ['sat_commercial'],  sp_sch[sch_name].df  ['mo_8_suction'],sp_sch[sch_name].df ['sat_commercial']]
+    , delimiter=",")
+
+    header = ["mo_7_suction", "mo_8_suction", "suc_commercial", "mo_7_suction","mo_7_suction"]
+    sch_name='redmud_first'
+    sp_sch[sch_name].df.to_csv('plot_volumetric_content_vs_suction_'+sch_name+'.csv', columns = header)
+    sch_name='redmud_second'
+    sp_sch[sch_name].df.to_csv('plot_volumetric_content_vs_suction_'+sch_name+'.csv', columns = header)
 
 if plot_fredlund_calibration:
 
@@ -296,40 +409,90 @@ if plot_fredlund_calibration:
 #
 #
 if plot_moisture_calibration:
-    fig, ax = plt.subplots(2,sharex=False,figsize=(12,16))
-    fig.subplots_adjust(left=0.15, right=0.98, top=0.95, bottom=0.10)
-    plt.close()
-    y_fontsize=20
     
-    for i in ax:
-      for axis in ['top','bottom','left','right']:
-        i.spines[axis].set_linewidth(2)
+    fig=figlib.single_fig_initialise() 
     
     sch_name='redmud_first'
-    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_7'] ,'bo',mfc='none'  ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor, Red mud experiment 1') 
-    #ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_8'] ,'ko',mfc='none'  ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 1') 
-    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_9'] ,'bo',mfc='none'  ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture sensor, Red Mud experiment 1') 
-    #ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_10'],'ko',mfc='none'  ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture B, experiment 1') 
+
+    i=25 # this is the best as tested
+    c=np.polyfit(sp_sch[sch_name].df ['mo_9'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],i)
+    y=0
+    for ind,key in enumerate(c):
+        y+=key*sp_sch[sch_name].df ['mo_9']**(i-ind)
+    sp_sch[sch_name].df['mo_9_vwc']=y
     sch_name='redmud_second'
-    #ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_7'] ,'bx',markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction Sensor, Red Mud experiment 2') 
-    #ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_8'] ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 2') 
-    #ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_9'] ,'bx',markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture sensor, Red Mud experiment 2')
-    #ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['mo_10'],'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Moisture B, experiment 2')
+    y=0
+    for ind,key in enumerate(c):
+        y+=key*sp_sch[sch_name].df ['mo_9']**(i-ind)
+    sp_sch[sch_name].df['mo_9_vwc']=y
+    sp_sch[sch_name].df['mo_9_vwc'][sp_sch[sch_name].df['mo_9_vwc']<0]=0
+    sp_sch[sch_name].df['mo_9_vwc'][sp_sch[sch_name].df['mo_9_vwc']>sp_sch[sch_name].por]=sp_sch[sch_name].por
+ 
+
+
+    sch_name='redmud_first'
+    ii=20 # this is the best as tested
+    cc=np.polyfit(sp_sch[sch_name].df ['mo_10'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],ii)
+    y=0
+    for ind,key in enumerate(cc):
+        y+=key*sp_sch[sch_name].df ['mo_10']**(ii-ind)
+    sp_sch[sch_name].df['mo_10_vwc']=y
+    sch_name='redmud_second'
+    y=0 
+    for ind,key in enumerate(cc):
+        y+=key*sp_sch[sch_name].df ['mo_10']**(ii-ind)
+    sp_sch[sch_name].df['mo_10_vwc']=y
+    sp_sch[sch_name].df['mo_10_vwc'][sp_sch[sch_name].df['mo_10_vwc']<0]=0
+    sp_sch[sch_name].df['mo_10_vwc'][sp_sch[sch_name].df['mo_10_vwc']>sp_sch[sch_name].por]=sp_sch[sch_name].por
     
-    ax[0].set_ylabel('RAW READING FROM \n DIELECTRIC MOISTURE SENSORS ', fontsize=y_fontsize, labelpad=10)
-    ax[1].set_ylabel('RAW READING FROM \n DIELECTRIC SUCTION SENSORS ', fontsize=y_fontsize, labelpad=20)
-    ax[0].set_xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
-    ax[1].set_xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
-    #ax[0].legend(bbox_to_anchor=(.6, 0.98), loc=2, borderaxespad=0.,fontsize=15)
-    #ax[1].legend(bbox_to_anchor=(.02, 0.37), loc=2, borderaxespad=0.,fontsize=15)
-    ax[0].set_title('(A)',x=0.02,y=1.0)
-    ax[1].set_title('(B)',x=0.02,y=1.0)
-    ax[0].grid(linewidth=grid_width,color = '0.5')
-    ax[1].grid(linewidth=grid_width,color = '0.5')
+    #a=sp_sch[sch_name].df ['mo_9']
+    #b=sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial']
+    #aa=sp_sch[sch_name].df ['mo_10']
+    #i=25 # this is the best as tested
+    #c=np.polyfit(a,b,i)
+    #y=0
+    #for ind,key in enumerate(c):
+    #    y+=key*a**(i-ind)
+   
+    #ii=20 # this is the best as tested
+    #cc=np.polyfit(aa,b,ii)
+    #yy=0
+    #for ind,key in enumerate(cc):
+    #    yy+=key*aa**(ii-ind)
+
+    #plt.plot(a,y, 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    #plt.plot(aa,yy, 'k-',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    sch_name='redmud_first'
+
+    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'m-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.plot(sp_sch[sch_name].df ['mo_9'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 1') 
+    plt.plot(sp_sch[sch_name].df ['mo_10'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 1') 
+
+    sch_name='redmud_second'
+    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'r-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'b-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.plot(sp_sch[sch_name].df  ['mo_9'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 2') 
+    plt.plot(sp_sch[sch_name].df  ['mo_10'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 2') 
+
     
-    #plt.show(block=False)
+    plt.ylabel('VOLUMETRIC WATER CONTENT\nFROM BALANCE', fontsize=y_fontsize, labelpad=10)
+    plt.xlabel('RAW READING FROM \n DIELECTRIC MOISTURE SENSORS ', fontsize=y_fontsize, labelpad=10)
+    plt.legend(bbox_to_anchor=(.25, 0.95), loc=2, borderaxespad=0.,fontsize=12)
+    plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+    plt.ylim([-0.05,0.58])
     
-    fig.savefig('plot_moisture_dielectric_suction_calibration.png', format='png', dpi=500)
+    
+    fig.savefig('plot_moisture_calibration.png', format='png', dpi=300)
+    plt.close()  # it is all caused by pywafo. 
+    
+    
+    header = ["mo_9", "mo_10", "sat_commercial"]
+    sch_name='redmud_first'
+    sp_sch[sch_name].df.to_csv('plot_moisture_calibration_'+sch_name+'.csv', columns = header)
+    sch_name='redmud_second'
+    sp_sch[sch_name].df.to_csv('plot_moisture_calibration_'+sch_name+'.csv', columns = header)
+
 #
 ##
 ## evaporation rate and potential evaporation, time as x axis

@@ -41,6 +41,9 @@ params = {'legend.fontsize': 13,
 #         'linewidth':lw,'markers.size':ms,'markers.edgewidth':mew}
 plt.rcParams["font.weight"] = "bold"
 plt.rcParams["axes.labelweight"] = "bold"
+plt.rcParams["font.family"] = "Arial"
+rcParams['axes.linewidth'] = 5
+
 pylab.rcParams.update(params)
 #plt.rcParams['axes.labelsize'] = 16
 #plt.rcParams['axes.labelweight'] = 'bold'
