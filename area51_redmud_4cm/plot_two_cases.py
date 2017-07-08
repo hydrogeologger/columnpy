@@ -132,8 +132,8 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['cum_evap_te'][sp_sch[sch_name].df['cum_evap_te']<0]=0
         sp_sch[sch_name].df['evap_rate_te'][sp_sch[sch_name].df['evap_rate_te']<0]=0
         sp_sch[sch_name].df['suc_commercial']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_commercial*sp_sch[sch_name].por,por=0.37)
-        sp_sch[sch_name].df['mo_8_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_8'],x_offset=399,x_scale=15.0,y_scale=-20,y_offset=17.1,lamb=0.75)
         sp_sch[sch_name].df['mo_7_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_7'],x_offset=320,x_scale=25.0,y_scale=-20,y_offset=13.8,lamb=3.0)
+        sp_sch[sch_name].df['mo_8_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_8'],x_offset=399,x_scale=15.0,y_scale=-20,y_offset=17.1,lamb=0.75)
         # getting the mo_9_wmc
         #i=25 # this is the best as tested
         #c=np.polyfit(sp_sch[sch_name].df ['mo_9'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],i)

@@ -1,7 +1,19 @@
 import operator
-import sensorfun
-import figlib
+py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/sensorfun.py')
+import sensorfun 
+reload( sensorfun)
+
+py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/figlib.py')
+import figlib 
+reload( figlib)
 sp_sch={}
+
+swcc_coef={'por':0.37,'af':2.1,'nf':1.8,'mf':0.7,'hr':1.e5 }
+mo_7_coef={'x_offset':410,'x_scale':25.0,'y_scale':-20,'y_offset':12.1,'lamb':3.0} # only x_offset and y_offset needs to be configured
+mo_8_coef={'x_offset':430,'x_scale':15.0,'y_scale':-20,'y_offset':17.1,'lamb':0.75} # only x_offset and y_offset needs to be configured
+mo_9_coef={'x_offset':336,'x_scale':5.,'y_scale':1,'y_offset':0,'lamb':1.05} # only x_offset and y_offset needs to be configured
+mo_10_coef={'x_offset':331,'x_scale':5.,'y_scale':1,'y_offset':0,'lamb':1.05} # only x_offset and y_offset needs to be configured
+
 for line in open("schedule.ipt"):
     li=line.strip()
     if not li.startswith("#"):
@@ -70,10 +82,12 @@ for line in open("schedule.ipt"):
         delta_t_2847_low_2_high=sorted(sp_sch[sch_name].df.delta_t_2847_heat, key=float)
         sp_sch[sch_name].max_delta_t_2847=np.average(delta_t_2847_low_2_high[-10:])
         sp_sch[sch_name].min_delta_t_2847=np.average(delta_t_2847_low_2_high[:10])
-        sp_sch[sch_name].df.norm_delta_t_28e5_heat = (sp_sch[sch_name].max_delta_t_28e5 -sp_sch[sch_name].df.delta_t_28e5_heat
+        sp_sch[sch_name].df['norm_delta_t_28e5_heat'] = (sp_sch[sch_name].max_delta_t_28e5 -sp_sch[sch_name].df.delta_t_28e5_heat
             )/(sp_sch[sch_name].max_delta_t_28e5-sp_sch[sch_name].min_delta_t_28e5)
-        sp_sch[sch_name].df.norm_delta_t_2847_heat= (sp_sch[sch_name].max_delta_t_2847 -sp_sch[sch_name].df.delta_t_2847_heat
+        sp_sch[sch_name].df['norm_delta_t_2847_heat']= (sp_sch[sch_name].max_delta_t_2847 -sp_sch[sch_name].df.delta_t_2847_heat
             )/(sp_sch[sch_name].max_delta_t_2847-sp_sch[sch_name].min_delta_t_2847)
+
+        # get fitting coefficient for thermo suction sensor
 
 
         sp_sch[sch_name].df['cum_evap_te']=(sp_sch[sch_name].df['te'][0]-sp_sch[sch_name].df['te']
@@ -101,17 +115,35 @@ for line in open("schedule.ipt"):
 
 
 
-        sp_sch[sch_name].df['suc_commercial']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_commercial*sp_sch[sch_name].por,por=0.39,af=2.1,nf=1.8,mf=1.4)
-        sp_sch[sch_name].df['mo_8_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_8'],x_offset=370,x_scale=15.0,y_scale=-20,y_offset=17.1,lamb=0.75)
-        sp_sch[sch_name].df['mo_7_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_7'],x_offset=300,x_scale=25.0,y_scale=-20,y_offset=13.8,lamb=3.0)
+        sp_sch[sch_name].df['suc_commercial']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_commercial*sp_sch[sch_name].por,**swcc_coef)
+        sp_sch[sch_name].df['mo_7_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_7'],**mo_7_coef)
+        sp_sch[sch_name].df['mo_8_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_8'],**mo_8_coef)
+        sp_sch[sch_name].df['mo_9_moisture']=sensorfun.dielectric_moisture_fit(x=sp_sch[sch_name].df  ['mo_9'],**mo_9_coef)
+        sp_sch[sch_name].df['mo_10_moisture']=sensorfun.dielectric_moisture_fit(x=sp_sch[sch_name].df  ['mo_10'],**mo_10_coef)
+        
+        
+        if sch_name=='coal_third':  # do only at the third
+            x_inp=np.concatenate([np.array(sp_sch['coal_third'].df['norm_delta_t_2847_heat']),np.array(sp_sch['coal_second'].df['norm_delta_t_2847_heat'])])
+            y_inp=np.log(np.concatenate([np.array(sp_sch['coal_third'].df['suc_commercial']),np.array(sp_sch['coal_second'].df['suc_commercial'])]))
+            idx = np.isfinite(x_inp) & np.isfinite(y_inp)
+            
+            c=np.polyfit(x_inp[idx],y_inp[idx],1)
+            thermal_suction_2847_norm_temp=np.arange(0,1,0.02)
+            thermal_suction_2847_suction=np.exp(c[0]*thermal_suction_2847_norm_temp+c[1])
+        c=np.array([-13.70,13.76])
+        sp_sch[sch_name].df['suht_2847_suction']=np.exp(c[0]*sp_sch[sch_name].df['norm_delta_t_2847_heat']+c[1])
+        sp_sch[sch_name].df['suht_28e5_suction']=np.exp(c[0]*sp_sch[sch_name].df['norm_delta_t_28e5_heat']+c[1])
 
 ##particular sorting for case 1
 #
 #
 sp_sch['coal_first'].df['sat_commercial']-=0.7
 
-
-
+lw=4
+ms=7
+mew=4
+grid_width=2
+y_fontsize=20
 # this script is used for calibrating load cells
 import matplotlib.pylab as pylab
 params = {'legend.fontsize': 13,
@@ -130,31 +162,42 @@ plt.rcParams["axes.labelweight"] = "bold"
 pylab.rcParams.update(params)
 
 
-plot_fredlund_calibration=False
+plot_fredlund_calibration=True
 plot_moisture_calibration=False
 plot_temphum_calibration=False
 plot_dielectric_suction_calibration=True
-plot_moisture_calibration=True
+plot_moisture_calibration_onefig=True
 plot_volumetric_content_vs_suction=True
+plot_fredlund_calibration_suction=True
 
 if plot_volumetric_content_vs_suction:
     
-    fig=figlib.single_fig_initialise() 
-    [vwc_fred_xing,suction_fred_xing_kpa]=constants.swcc_fredlund_xing_1994(plot=False,por=0.37,af=2.1,nf=1.8,mf=1.4) 
-    sch_name='coal_second'
-    plt.semilogx(suction_fred_xing_kpa, vwc_fred_xing, 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 1') 
 
-    plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 1') 
-    #plt.semilogx(sp_sch[sch_name].df  ['suc_commercial'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+    fig=figlib.single_fig_initialise() 
+    fig.subplots_adjust(left=0.2, right=0.98, top=0.99, bottom=0.17)
+
+    #[vwc_fred_xing,suction_fred_xing_kpa]=constants.swcc_fredlund_xing_1994(plot=False,por=0.37,af=2.1,nf=1.8,mf=1.4,hr=2.e6) 
+    [vwc_fred_xing,suction_fred_xing_kpa]=constants.swcc_fredlund_xing_1994(plot=False,**swcc_coef) 
+    
+
+
+    sch_name='coal_second'
+    plt.semilogx(sp_sch[sch_name].df ['suht_2847_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 1') 
+    plt.semilogx(sp_sch[sch_name].df ['suht_28e5_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, coal tail. exp. 1') 
+    plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, coal tail. exp. 1') 
+    plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, coal tail. exp. 1') 
+
     sch_name='coal_third'
-    plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 2') 
-    plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 2') 
+    plt.semilogx(sp_sch[sch_name].df ['suht_2847_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 2') 
+    plt.semilogx(sp_sch[sch_name].df ['suht_28e5_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, coal tail. exp. 2') 
+    plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, coal tail. exp. 2') 
+    plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, coal tail. exp. 2') 
+    plt.semilogx(suction_fred_xing_kpa, vwc_fred_xing, 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
 
     plt.ylabel('VOLUMETRIC WATER CONTENT\nFROM BALANCE', fontsize=y_fontsize, labelpad=10)
     plt.xlabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
 
-    plt.legend(bbox_to_anchor=(.05, 0.2), loc=2, borderaxespad=0.,fontsize=12)
+    plt.legend(bbox_to_anchor=(.4, 0.99), loc=2, borderaxespad=0.,fontsize=12)
     #plt.grid(linewidth=grid_width,color = '0.5')
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 
@@ -172,12 +215,10 @@ if plot_volumetric_content_vs_suction:
     sp_sch[sch_name].df.to_csv('plot_volumetric_content_vs_suction_'+sch_name+'.csv', columns = header)
     sch_name='coal_third'
     sp_sch[sch_name].df.to_csv('plot_volumetric_content_vs_suction_'+sch_name+'.csv', columns = header)
-if plot_moisture_calibration:
-    
-    fig=figlib.single_fig_initialise() 
-    
-    sch_name='coal_second'
 
+if plot_moisture_calibration_onefig:
+    fig=figlib.single_fig_initialise() 
+    sch_name='coal_second'
     i=25 # this is the best as tested
     c=np.polyfit(sp_sch[sch_name].df ['mo_9'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],i)
     y=0
@@ -228,23 +269,26 @@ if plot_moisture_calibration:
     #plt.plot(aa,yy, 'k-',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
     sch_name='coal_second'
 
-    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'m-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df ['mo_9'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 1') 
-    plt.plot(sp_sch[sch_name].df ['mo_10'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 1') 
+    #plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    #plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'m-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_moisture']*sp_sch[sch_name].por ,'-',color='k',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Dielectric moisture sensor A, cali. curve,\ny = ((x-336.0)/5.0)^(-1.05)') 
+    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_moisture']*sp_sch[sch_name].por ,'-',color='brown',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Dielectric moisture sensor B, cali. curve,\ny = ((x-330.0)/5.0)^(-1.05)') 
+    plt.plot(sp_sch[sch_name].df ['mo_9'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\ncoal tailings experiment 1',markevery=4) 
+    plt.plot(sp_sch[sch_name].df ['mo_10'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B,\ncoal tailings experiment 1',markevery=4) 
 
+    #plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_moisture']*sp_sch[sch_name].por ,'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='y = ((x-330.0)/5.0)^(-0.9)' ) 
     sch_name='coal_third'
-    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'r-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'b-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df  ['mo_9'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 2') 
-    plt.plot(sp_sch[sch_name].df  ['mo_10'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 2') 
+    #plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'r-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    #plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'b-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.plot(sp_sch[sch_name].df  ['mo_9'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\ncoal tailings experiment 2') 
+    plt.plot(sp_sch[sch_name].df  ['mo_10'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B,\ncoal tailings experiment 2') 
 
     
     plt.ylabel('VOLUMETRIC WATER CONTENT\nFROM BALANCE', fontsize=y_fontsize, labelpad=10)
     plt.xlabel('RAW READING FROM \n DIELECTRIC MOISTURE SENSORS ', fontsize=y_fontsize, labelpad=10)
-    plt.legend(bbox_to_anchor=(.25, 0.95), loc=2, borderaxespad=0.,fontsize=12)
+    plt.legend(bbox_to_anchor=(.3, 0.99), loc=2, borderaxespad=0.,fontsize=12)
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
-    plt.ylim([-0.05,0.58])
+    plt.ylim([-0.05,0.41])
     
     
     fig.savefig('plot_moisture_calibration.png', format='png', dpi=300)
@@ -290,15 +334,16 @@ if plot_dielectric_suction_calibration:
     #sp_sch[sch_name].df['mo_8_suction'][sp_sch[sch_name].df['mo_8_suction']<0]=0
     #sp_sch[sch_name].df['mo_8_suction'][sp_sch[sch_name].df['mo_8_suction']>sp_sch[sch_name].por]=sp_sch[sch_name].por
     fig=figlib.single_fig_initialise() 
+    fig.subplots_adjust(left=0.15, right=0.98, top=0.98, bottom=0.12)
     
     sch_name='coal_second'
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 1') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 1') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'], sp_sch[sch_name].df  ['mo_7_suction'] , 'cs',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, coal tail. exp. 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'], sp_sch[sch_name].df  ['mo_7_suction'] , 'k-',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. A, calibration curve',linewidth=lw) 
     sch_name='coal_third'
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 2') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df  ['mo_8_suction'] , 'ms',mfc='none' ,markeredgecolor='m',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. A, coal tail. exp. 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df  ['mo_8_suction'] , '-',mfc='none' ,markeredgecolor='brown',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, calibration curve',linewidth=lw) 
     
     #plt.semilogy(sp_sch[sch_name].df  ['mo_10'], np.exp(0.1*( sp_sch[sch_name].df  ['mo_10']-400 )), 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
 
@@ -306,9 +351,11 @@ if plot_dielectric_suction_calibration:
     #plt.semilogx(sp_sch[sch_name].df  ['saltrh_11_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'x' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
     plt.xlabel('RAW READING (m)', fontsize=y_fontsize, labelpad=10)
     plt.ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
-    plt.legend(bbox_to_anchor=(.1, 0.98), loc=2, borderaxespad=0.,fontsize=15)
+    plt.legend(bbox_to_anchor=(.05, 0.98), loc=2, borderaxespad=0.,fontsize=12)
     #plt.grid(linewidth=grid_width,color = '0.5')
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+    plt.axhline(y=1000,xmin=-1,xmax=2,c='0.2',linewidth=3,zorder=0)
+    plt.text(200, 2000, 'Air entry pressure\n10 bar', fontsize=15)
 
     plt.ylim([1,1e7])
     #plt.show(block=False)
@@ -358,8 +405,45 @@ if plot_temphum_calibration:
     
     fig.savefig('plot_temperature_humidity_calibration.png', format='png', dpi=500)
 
-if plot_fredlund_calibration:
+if plot_fredlund_calibration_suction:
 
+    
+    
+    
+    fig=figlib.single_fig_initialise() 
+    
+    sch_name='coal_second'
+    plt.semilogy(sp_sch[sch_name].df['norm_delta_t_2847_heat']   ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sensor A, coal tailings exp. 1') 
+    plt.semilogy(sp_sch[sch_name].df['norm_delta_t_28e5_heat'] , sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sensor B, coal tailings exp. 1') 
+
+    sch_name='coal_third'
+    plt.semilogy(sp_sch[sch_name].df.norm_delta_t_2847_heat ,sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sensor A, coal tailings exp. 2') 
+    plt.semilogy(sp_sch[sch_name].df.norm_delta_t_28e5_heat, sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sensor B, coal tailings exp. 2') 
+    
+    plt.semilogy(thermal_suction_2847_norm_temp,thermal_suction_2847_suction, 'c-',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='y = '+'%.2f' % c[0]+'x + '+'%.2f' % c[1]) 
+
+    
+    
+    plt.xlabel('NORMALIZED TEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
+    plt.ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
+    plt.legend(bbox_to_anchor=(.3, 0.98), loc=2, borderaxespad=0.,fontsize=12)
+    plt.grid(linewidth=grid_width,c = '0.5')
+    
+    plt.axhline(y=50,xmin=-1,xmax=2,c='0.2',linewidth=3,zorder=0)
+    plt.text(0.00, 70, 'Air entry pressure', fontsize=15)
+
+    
+    plt.show(block=False)
+    plt.close()
+    
+    fig.savefig('plot_fredlund_calibration_suction.png', format='png', dpi=300)
+    header = ["norm_delta_t_2847_heat", "norm_delta_t_28e5_heat", "suc_commercial"]
+    sch_name='coal_second'
+    sp_sch[sch_name].df.to_csv('plot_fredlund_calibration_suction_'+sch_name+'.csv', columns = header)
+    sch_name='coal_third'
+    sp_sch[sch_name].df.to_csv('plot_fredlund_calibration_suction_'+sch_name+'.csv', columns = header)
+
+if plot_fredlund_calibration:
 
     fig = plt.figure(figsize=(12,12))
     ax = fig.add_subplot(111)
@@ -396,6 +480,7 @@ if plot_fredlund_calibration:
     plt.ylim(-0.01,1.01)
     
     plt.show(block=False)
+    plt.close()
     
     fig.savefig('normalized_temperature.png', format='png', dpi=500)
 #    fig, ax = plt.subplots(2,sharex=True,figsize=(12,16))

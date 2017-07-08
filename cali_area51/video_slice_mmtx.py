@@ -16,8 +16,8 @@ import glob, os
 #    print(file)
 #path_im='/home/chenming/Projects/tailings/area_51_redmud_4cm_photo_1/'
 #sch_name='redmud_first'
-path_im='/home/chenming/Projects/tailings/area_51_coal_4cm_photo_3/'
-sch_name='coal_third'
+sch_name='coal_second'
+path_im='/home/chenming/Projects/tailings/area_51_coal_4cm_photo_'+sch_name+'/'
 #import os
 #for file in os.listdir("/home/chenming/Projects/tailings/area_51_redmud_4cm_photo/"):
 #    if file.endswith(".jpg"):
@@ -89,15 +89,19 @@ for ii in file_name:
     
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_commercial[:idx_im]*constants.m2mm,'o',color='brown'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown',label='load cell')
     
-    ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_commercial[:idx_im]*constants.ms2mmday,'o',color='brown'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown',label='load cell')
+    ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_commercial[:idx_im]*constants.ms2mmday,'o',color='c'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='c',label='load cell')
     
-    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.sat_commercial[:idx_im]*sp_sch[sch_name].por,'o',color='b',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Balance')
-    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_9_vwc[:idx_im] ,'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Moisture A')
-    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_10_vwc[:idx_im],'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Moisture B')
+    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.sat_commercial[:idx_im]*sp_sch[sch_name].por,'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance')
+    #ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_9_vwc[:idx_im] ,'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. Mois. A')
+    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_9_moisture[:idx_im]*sp_sch[sch_name].por ,'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. Mois. A')
+    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_10_moisture[:idx_im]*sp_sch[sch_name].por,'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Diel. Mois. B')
+    #ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_10_vwc[:idx_im],'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Diel. Mois. B')
     
-    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suc_commercial[:idx_im],'o',color='b',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Balance & SWCC')
-    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_7_suction[:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Suction A')
-    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_8_suction[:idx_im], 'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Suction B')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suc_commercial[:idx_im],'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_7_suction[:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. Suc. A')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_8_suction[:idx_im], 'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Diel. Suc. B')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suht_2847_suction[:idx_im], 'ro',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Ther. Suc. A')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suht_28e5_suction[:idx_im], 'o',color='b',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Ther. Suc. B')
     
     #ax[5].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.t_2896_begin[:idx_im], 'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Fred. Suc. A')
     #
@@ -137,7 +141,7 @@ for ii in file_name:
     #ax[6].set_ylim([-0.1,1.1])
     #ax[7].set_ylim([9,40000])
     ax[1].legend(bbox_to_anchor=(.65, 0.95), loc=2, borderaxespad=0.)
-    ax[2].legend(bbox_to_anchor=(.55, 0.38 ), loc=2, borderaxespad=0.)
+    ax[2].legend(bbox_to_anchor=(.57, 0.58), loc=2, borderaxespad=0.)
     #ax[7].legend(bbox_to_anchor=(.1, 0.55 ), loc=2, borderaxespad=0.)
     ax[0].set_title('(A)',x=0.04,y=0.85,fontweight='bold')
     ax[1].set_title('(B)',x=0.04,y=0.85,fontweight='bold')
