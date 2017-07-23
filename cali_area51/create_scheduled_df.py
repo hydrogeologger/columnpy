@@ -337,13 +337,13 @@ if plot_dielectric_suction_calibration:
     fig.subplots_adjust(left=0.15, right=0.98, top=0.98, bottom=0.12)
     
     sch_name='coal_second'
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 1') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, coal tail. exp. 1') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'], sp_sch[sch_name].df  ['mo_7_suction'] , 'k-',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. A, calibration curve',linewidth=lw) 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, coal tail. exp. 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, coal tail. exp. 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'], sp_sch[sch_name].df  ['mo_7_suction'] , 'k-',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. A, calibration curve',linewidth=lw) 
     sch_name='coal_third'
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 2') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. A, coal tail. exp. 2') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df  ['mo_8_suction'] , '-',mfc='none' ,markeredgecolor='brown',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, calibration curve',linewidth=lw) 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, coal tail. exp. 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. A, coal tail. exp. 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df  ['mo_8_suction'] , '-',mfc='none' ,markeredgecolor='brown',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, calibration curve',linewidth=lw) 
     
     #plt.semilogy(sp_sch[sch_name].df  ['mo_10'], np.exp(0.1*( sp_sch[sch_name].df  ['mo_10']-400 )), 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
 
@@ -406,9 +406,6 @@ if plot_temphum_calibration:
     fig.savefig('plot_temperature_humidity_calibration.png', format='png', dpi=500)
 
 if plot_fredlund_calibration_suction:
-
-    
-    
     
     fig=figlib.single_fig_initialise() 
     

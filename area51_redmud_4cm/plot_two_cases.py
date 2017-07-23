@@ -9,7 +9,7 @@ reload(sensorfun)
 py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/figlib.py')
 import figlib
 reload(figlib)
-lw=6
+lw=5
 ms=8
 mew=3
 grid_width=2
@@ -66,8 +66,8 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['deltat_14_heat']  =sp_sch[sch_name].df['t_14_peak']  -sp_sch[sch_name].df['t_14_begin']
         sp_sch[sch_name].df['deltat_14_cool']  =sp_sch[sch_name].df['t_14_peak']  -sp_sch[sch_name].df['t_14_end']
         deltat_2896_low_2_high=sorted(sp_sch[sch_name].df['deltat_2896_heat'], key=float)
-        sp_sch[sch_name].min_deltat_2896=np.average(deltat_2896_low_2_high[:10])
-        sp_sch[sch_name].max_deltat_2896=np.average(deltat_2896_low_2_high[-10:])
+        sp_sch[sch_name].min_deltat_2896=np.average(deltat_2896_low_2_high[:30])
+        sp_sch[sch_name].max_deltat_2896=np.average(deltat_2896_low_2_high[-30:])
 
         deltat_19_low_2_high=sorted(sp_sch[sch_name].df['deltat_19_heat'], key=float)
         sp_sch[sch_name].min_deltat_19=np.average(deltat_19_low_2_high[:10])
@@ -77,11 +77,11 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].min_deltat_14=np.average(deltat_14_low_2_high[:10])
         sp_sch[sch_name].max_deltat_14=np.average(deltat_14_low_2_high[-10:])
         
-        sp_sch[sch_name].df['norm_deltat_2896_heat']=(sp_sch[sch_name].max_deltat_2896- sp_sch[sch_name].df['deltat_2896_heat'])/(
+        sp_sch[sch_name].df['norm_delta_t_2896_heat']=(sp_sch[sch_name].max_deltat_2896- sp_sch[sch_name].df['deltat_2896_heat'])/(
             sp_sch[sch_name].max_deltat_2896-sp_sch[sch_name].min_deltat_2896)
-        sp_sch[sch_name].df['norm_deltat_19_heat']=(sp_sch[sch_name].max_deltat_19- sp_sch[sch_name].df['deltat_19_heat'])/(
+        sp_sch[sch_name].df['norm_delta_t_19_heat']=(sp_sch[sch_name].max_deltat_19- sp_sch[sch_name].df['deltat_19_heat'])/(
             sp_sch[sch_name].max_deltat_19-sp_sch[sch_name].min_deltat_19)
-        sp_sch[sch_name].df['norm_deltat_14_heat']=(sp_sch[sch_name].max_deltat_14- sp_sch[sch_name].df['deltat_14_heat'])/(
+        sp_sch[sch_name].df['norm_delta_t_14_heat']=(sp_sch[sch_name].max_deltat_14- sp_sch[sch_name].df['deltat_14_heat'])/(
             sp_sch[sch_name].max_deltat_14-sp_sch[sch_name].min_deltat_14)
 
         sp_sch[sch_name].water_level   =float(line_content[3])
@@ -134,6 +134,26 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['suc_commercial']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_commercial*sp_sch[sch_name].por,por=0.37)
         sp_sch[sch_name].df['mo_7_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_7'],x_offset=320,x_scale=25.0,y_scale=-20,y_offset=13.8,lamb=3.0)
         sp_sch[sch_name].df['mo_8_suction']=sensorfun.dielectric_suction_fit(x=sp_sch[sch_name].df  ['mo_8'],x_offset=399,x_scale=15.0,y_scale=-20,y_offset=17.1,lamb=0.75)
+
+
+
+
+        if sch_name=='redmud_second':  # do only at the third
+            #x_inp=np.concatenate([np.array(sp_sch['redmud_first'].df['norm_delta_t_2896_heat']),np.array(sp_sch['redmud_second'].df['norm_delta_t_2896_heat'])])
+            #y_inp=np.log(np.concatenate([np.array(sp_sch['redmud_first'].df['suc_commercial']),np.array(sp_sch['redmud_second'].df['suc_commercial'])]))
+            x_inp=np.array(sp_sch['redmud_first'].df['norm_delta_t_2896_heat'])
+            y_inp=np.log(np.array(sp_sch['redmud_first'].df['suc_commercial']))
+            idx = np.isfinite(x_inp) & np.isfinite(y_inp)
+            
+            c=np.polyfit(x_inp[idx],y_inp[idx],1)
+            thermal_suction_2896_norm_temp=np.arange(0,1,0.02)
+            thermal_suction_2896_suction=np.exp(c[0]*thermal_suction_2896_norm_temp+c[1])
+        c=np.array([-11.70,15.96])  # best swcc
+        #c=np.array([-11.70,13.96])
+        #c=np.array([-13.50,14.96]) # best fitting
+        thermal_suction_2896_norm_temp=np.arange(0,1,0.02)
+        thermal_suction_2896_suction=np.exp(c[0]*thermal_suction_2896_norm_temp+c[1])
+        sp_sch[sch_name].df['suht_2896_suction']=np.exp(c[0]*sp_sch[sch_name].df['norm_delta_t_2896_heat']+c[1])
         # getting the mo_9_wmc
         #i=25 # this is the best as tested
         #c=np.polyfit(sp_sch[sch_name].df ['mo_9'],sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'],i)
@@ -185,10 +205,46 @@ for line in open("schedule.ipt"):
 #plot_dielectric_suction_calibration=True
 
 plot_fredlund_calibration=False
+plot_fredlund_calibration_suction=True
 plot_moisture_calibration=True
 plot_temphum_calibration=False
 plot_dielectric_suction_calibration=True
 plot_volumetric_content_vs_suction=True
+
+
+
+if plot_fredlund_calibration_suction:
+    
+    fig=figlib.single_fig_initialise() 
+    
+    sch_name='redmud_first'
+    plt.semilogy(sp_sch[sch_name].df['norm_delta_t_2896_heat'] , sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sensor C, red mud exp. 1') 
+
+    sch_name='redmud_second'
+    plt.semilogy(sp_sch[sch_name].df.norm_delta_t_2896_heat, sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sensor C, red mud exp. 2') 
+    
+    plt.semilogy(thermal_suction_2896_norm_temp,thermal_suction_2896_suction, 'c-',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='y = '+'%.2f' % c[0]+'x + '+'%.2f' % c[1]) 
+
+    
+    
+    plt.xlabel('NORMALIZED TEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
+    plt.ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
+    plt.legend(bbox_to_anchor=(.3, 0.98), loc=2, borderaxespad=0.,fontsize=12)
+    plt.grid(linewidth=grid_width,c = '0.5')
+    
+    plt.axhline(y=50,xmin=-1,xmax=2,c='0.2',linewidth=3,zorder=0)
+    plt.text(0.00, 70, 'Air entry pressure', fontsize=15)
+
+    
+    plt.show(block=False)
+    plt.close()
+    
+    fig.savefig('plot_fredlund_calibration_suction.png', format='png', dpi=300)
+    header = ["norm_delta_t_2847_heat", "norm_delta_t_2896_heat", "suc_commercial"]
+    sch_name='redmud_first'
+    sp_sch[sch_name].df.to_csv('plot_fredlund_calibration_suction_'+sch_name+'.csv', columns = header)
+    sch_name='redmud_second'
+    sp_sch[sch_name].df.to_csv('plot_fredlund_calibration_suction_'+sch_name+'.csv', columns = header)
 
 if plot_temphum_calibration:
     fig = plt.figure(figsize=(10,10))
@@ -228,25 +284,26 @@ if plot_temphum_calibration:
 
 if plot_dielectric_suction_calibration:
     fig=figlib.single_fig_initialise() 
+
+    fig.subplots_adjust(left=0.15, right=0.98, top=0.98, bottom=0.12)
     
     sch_name='redmud_first'
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 1') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 1') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'], sp_sch[sch_name].df  ['mo_7_suction'] , 'cs',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
-    sch_name='redmud_second'
-    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 2') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
-    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df  ['mo_8_suction'] , 'ms',mfc='none' ,markeredgecolor='m',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
-    
-    #plt.semilogy(sp_sch[sch_name].df  ['mo_10'], np.exp(0.1*( sp_sch[sch_name].df  ['mo_10']-400 )), 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
 
-    #plt.semilogx(sp_sch[sch_name].df  ['saltrh_2_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'x' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Temp. Humi. A, experiment 2') 
-    #plt.semilogx(sp_sch[sch_name].df  ['saltrh_11_suction'] ,sp_sch[sch_name].df ['sat_commercial'], 'x' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Temp. Humi. B, experiment 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, red mud exp. 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, red mud exp. 1') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'], sp_sch[sch_name].df  ['mo_7_suction'] , 'k-',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. A, calibration curve',linewidth=lw) 
+    sch_name='redmud_second'
+    plt.semilogy(sp_sch[sch_name].df  ['mo_7'] ,sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, red mud exp. 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df ['suc_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. A, red mud exp. 2') 
+    plt.semilogy(sp_sch[sch_name].df  ['mo_8'], sp_sch[sch_name].df  ['mo_8_suction'] , '-',mfc='none' ,markeredgecolor='brown',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, calibration curve',linewidth=lw) 
+    
     plt.xlabel('RAW READING (m)', fontsize=y_fontsize, labelpad=10)
     plt.ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
-    plt.legend(bbox_to_anchor=(.1, 0.98), loc=2, borderaxespad=0.,fontsize=15)
+    plt.legend(bbox_to_anchor=(.01, 0.98), loc=2, borderaxespad=0.,fontsize=12)
     #plt.grid(linewidth=grid_width,color = '0.5')
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+    plt.axhline(y=1000,xmin=-1,xmax=2,c='0.2',linewidth=3,zorder=0)
+    plt.text(200, 1500, 'Air entry pressure\n10 bar', fontsize=15)
 
     plt.ylim([1,1e7])
     #plt.show(block=False)
@@ -264,23 +321,31 @@ if plot_dielectric_suction_calibration:
 if plot_volumetric_content_vs_suction:
     
     fig=figlib.single_fig_initialise() 
-    [vwc_fred_xing,suction_fred_xing_kpa]=constants.swcc_fredlund_xing_1994(plot=False,por=sp_sch['coal_second'].por)
+    [vwc_fred_xing,suction_fred_xing_kpa]=constants.swcc_fredlund_xing_1994(plot=False,por=sp_sch['redmud_second'].por)
 
     
     sch_name='redmud_first'
     plt.semilogx(suction_fred_xing_kpa, vwc_fred_xing, 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 1') 
+    #plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 1') 
 
-    plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 1') 
-    #plt.semilogx(sp_sch[sch_name].df  ['suc_commercial'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+    #plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 1') 
+    ##plt.semilogx(sp_sch[sch_name].df  ['suc_commercial'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label='expontntial') 
+
+    plt.semilogx(sp_sch[sch_name].df ['suht_2896_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. C, red mud exp. 1') 
+    plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, red mud exp. 1') 
+    plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, red mud exp. 1') 
     sch_name='redmud_second'
-    plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 2') 
-    plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 2') 
+    #plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric suction sensor A, experiment 2') 
+    #plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction sensor B, experiment 2') 
+
+    plt.semilogx(sp_sch[sch_name].df ['suht_2896_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. C, red mud exp. 2') 
+    plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, red mud exp. 2') 
+    plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, red mud exp. 2') 
 
     plt.ylabel('VOLUMETRIC WATER CONTENT\nFROM BALANCE', fontsize=y_fontsize, labelpad=10)
     plt.xlabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
 
-    plt.legend(bbox_to_anchor=(.05, 0.2), loc=2, borderaxespad=0.,fontsize=12)
+    plt.legend(bbox_to_anchor=(.01, 0.3), loc=2, borderaxespad=0.,fontsize=12)
     #plt.grid(linewidth=grid_width,color = '0.5')
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 
@@ -314,9 +379,9 @@ if plot_fredlund_calibration:
             ax.spines[axis].set_linewidth(2)
 
     sch_name='redmud_first'
-    plt.plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Red mud tailings experiment 1') 
+    plt.plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_2896_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Red mud tailings experiment 1') 
     sch_name='redmud_second'
-    plt.plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Red mud tailings experiment 2')
+    plt.plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_2896_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Red mud tailings experiment 2')
     
     plt.ylabel('NORMALISED TEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
     plt.xlabel('DEGREE OF SATURATION (-)', fontsize=y_fontsize, labelpad=10)
@@ -341,13 +406,13 @@ if plot_fredlund_calibration:
 #        i.spines[axis].set_linewidth(2)
 #    
 #    sch_name='redmud_first'
-#    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat'] ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 1') 
-#    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_19_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 1') 
-#    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_14_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 1') 
+#    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_2896_heat'] ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 1') 
+#    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_19_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 1') 
+#    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_14_heat']   ,'ro',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 1') 
 #    sch_name='redmud_second'
-#    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_2896_heat'] ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 2') 
-#    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_19_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 2') 
-#    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_deltat_14_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 2')
+#    ax[0].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_2896_heat'] ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction A, experiment 2') 
+#    ax[1].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_19_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction B, experiment 2') 
+#    ax[2].plot(sp_sch[sch_name].df ['sat_commercial'], sp_sch[sch_name].df  ['norm_delta_t_14_heat']   ,'kx',markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric suction C, experiment 2')
 #    
 #    ax[0].set_ylabel('NORMALISED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
 #    ax[1].set_ylabel('NORMALISED\nTEMPERATURE (-)', fontsize=y_fontsize, labelpad=10)
@@ -464,21 +529,30 @@ if plot_moisture_calibration:
     #plt.plot(aa,yy, 'k-',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
     sch_name='redmud_first'
 
-    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'m-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df ['mo_9'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 1') 
-    plt.plot(sp_sch[sch_name].df ['mo_10'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 1') 
+    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'-',color='k',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Dielectric moisture sensor A, cali. curve') 
+    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'-',color='brown',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Dielectric moisture sensor B, cali. curve') 
+    plt.plot(sp_sch[sch_name].df ['mo_9'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 1') 
+    plt.plot(sp_sch[sch_name].df ['mo_10'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B,\nred mud experiment 1') 
+    
+
+    #plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'k-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    #plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'m-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    #plt.plot(sp_sch[sch_name].df ['mo_9'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 1') 
+    #plt.plot(sp_sch[sch_name].df ['mo_10'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 1') 
 
     sch_name='redmud_second'
-    plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'r-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'b-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
-    plt.plot(sp_sch[sch_name].df  ['mo_9'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 2') 
-    plt.plot(sp_sch[sch_name].df  ['mo_10'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 2') 
+    plt.plot(sp_sch[sch_name].df  ['mo_9'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 2') 
+    plt.plot(sp_sch[sch_name].df  ['mo_10'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B,\nred mud experiment 2') 
+
+    #plt.plot(sp_sch[sch_name].df ['mo_9'], sp_sch[sch_name].df ['mo_9_vwc'] ,'r-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    #plt.plot(sp_sch[sch_name].df ['mo_10'], sp_sch[sch_name].df ['mo_10_vwc'] ,'b-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    #plt.plot(sp_sch[sch_name].df  ['mo_9'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A, experiment 2') 
+    #plt.plot(sp_sch[sch_name].df  ['mo_10'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Dielectric moisture sensor B, experiment 2') 
 
     
     plt.ylabel('VOLUMETRIC WATER CONTENT\nFROM BALANCE', fontsize=y_fontsize, labelpad=10)
     plt.xlabel('RAW READING FROM \n DIELECTRIC MOISTURE SENSORS ', fontsize=y_fontsize, labelpad=10)
-    plt.legend(bbox_to_anchor=(.25, 0.95), loc=2, borderaxespad=0.,fontsize=12)
+    plt.legend(bbox_to_anchor=(.33, 0.99), loc=2, borderaxespad=0.,fontsize=12)
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
     plt.ylim([-0.05,0.58])
     
