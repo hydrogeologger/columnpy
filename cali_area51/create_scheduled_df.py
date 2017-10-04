@@ -140,8 +140,8 @@ for line in open("schedule.ipt"):
 sp_sch['coal_first'].df['sat_commercial']-=0.7
 
 lw=4
-ms=7
-mew=4
+ms=8
+mew=3
 grid_width=2
 y_fontsize=20
 # this script is used for calibrating load cells
@@ -162,13 +162,13 @@ plt.rcParams["axes.labelweight"] = "bold"
 pylab.rcParams.update(params)
 
 
-plot_fredlund_calibration=True
+plot_fredlund_calibration=False
 plot_moisture_calibration=False
 plot_temphum_calibration=False
-plot_dielectric_suction_calibration=True
-plot_moisture_calibration_onefig=True
+plot_dielectric_suction_calibration=False
+plot_moisture_calibration_onefig=False
 plot_volumetric_content_vs_suction=True
-plot_fredlund_calibration_suction=True
+plot_fredlund_calibration_suction=False
 
 if plot_volumetric_content_vs_suction:
     
@@ -181,27 +181,28 @@ if plot_volumetric_content_vs_suction:
     
 
 
+    plt.semilogx(suction_fred_xing_kpa, vwc_fred_xing, 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='SWCC') 
     sch_name='coal_second'
-    plt.semilogx(sp_sch[sch_name].df ['suht_2847_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 1') 
-    plt.semilogx(sp_sch[sch_name].df ['suht_28e5_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, coal tail. exp. 1') 
-    plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, coal tail. exp. 1') 
-    plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, coal tail. exp. 1') 
+    plt.semilogx(sp_sch[sch_name].df ['mo_7_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'DS A, coal tailings Expt 1',markevery=2) 
+    plt.semilogx(sp_sch[sch_name].df ['mo_8_suction'] , sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='red',markersize=ms,markeredgewidth=mew,fillstyle='full',label='DS B, coal tailings Expt 1',markevery=3) 
+    plt.semilogx(sp_sch[sch_name].df ['suht_2847_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], '+',mfc='none' ,markeredgecolor='green',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'TS A, coal tailings Expt 1',ms=11,markevery=5) 
+    plt.semilogx(sp_sch[sch_name].df ['suht_28e5_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 's',mfc='none' ,markeredgecolor='purple',markersize=ms,markeredgewidth=mew,fillstyle='full',label='TS B, coal tailings Expt 1',markevery=7) 
 
     sch_name='coal_third'
-    plt.semilogx(sp_sch[sch_name].df ['suht_2847_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Ther. suc. sen. A, coal tail. exp. 2') 
-    plt.semilogx(sp_sch[sch_name].df ['suht_28e5_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Ther. suc. sen. B, coal tail. exp. 2') 
-    plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Diel. suc. sen. A, coal tail. exp. 2') 
-    plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label='Diel. suc. sen. B, coal tail. exp. 2') 
-    plt.semilogx(suction_fred_xing_kpa, vwc_fred_xing, 'c-',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',linewidth=lw,label='Fredlund SWCC device') 
+    plt.semilogx(sp_sch[sch_name].df   ['mo_7_suction'] ,sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'o',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'DS A, coal tailings Expt 2',markevery=3) 
+    plt.semilogx(sp_sch[sch_name].df  ['mo_8_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 'x',mfc='none' ,markeredgecolor='darkgrey',markersize=ms,markeredgewidth=mew,fillstyle='full',label='DS B, coal tailings Expt 2',markevery=4) 
+    plt.semilogx(sp_sch[sch_name].df ['suht_2847_suction'],   sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], '+',mfc='none' ,markeredgecolor='orange',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'TS A, coal tailings Expt 2',markevery=5,ms=11) 
+    plt.semilogx(sp_sch[sch_name].df ['suht_28e5_suction'], sp_sch[sch_name].por*sp_sch[sch_name].df ['sat_commercial'], 's',mfc='none' ,markeredgecolor='blue',markersize=ms,markeredgewidth=mew,fillstyle='full',label='TS B, coal tailings Expt 2',markevery=7) 
 
     plt.ylabel('VOLUMETRIC WATER CONTENT\nFROM BALANCE', fontsize=y_fontsize, labelpad=10)
     plt.xlabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
 
-    plt.legend(bbox_to_anchor=(.4, 0.99), loc=2, borderaxespad=0.,fontsize=12)
+    plt.legend(bbox_to_anchor=(.50, 0.99), loc=2, borderaxespad=0.,fontsize=12)
     #plt.grid(linewidth=grid_width,color = '0.5')
     plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 
-    plt.xlim([1e-2,1e7])
+    plt.xlim([1e-2,3e6])
+    plt.ylim([-0.01,0.38])
     #plt.show(block=False)
     
     fig.savefig('plot_volumetric_content_vs_suction.png', format='png', dpi=300)
