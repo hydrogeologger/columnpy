@@ -2,7 +2,7 @@
 ###################################################################################################
 sp=1
 del sp
-sp=pandas_scale.concat_data_roof(pd.Timestamp('2017-04-23 19:55'),  pd.Timestamp('2017-5-22 10:54:11'),dt_s)
+sp=pandas_scale.concat_data_roof(pd.Timestamp('2017-10-04 04:03:07'),  pd.Timestamp('2017-08-15 01:40:01'),dt_s)
 plot_switch=False
 sp.merge_data( df=data.df, keys=['saltrh_2_rh'] ,plot=plot_switch ,coef=5e-10)
 sp.merge_data( df=data.df, keys=['saltrh_11_rh'],plot=plot_switch ,coef=5e-10)
