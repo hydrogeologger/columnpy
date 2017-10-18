@@ -15,7 +15,7 @@ import pdb
 ################################get scale data####################################################################
 
 
-dt_s=7200
+dt_s=3600
 scale=1
 del scale
 #os.path.dirname(os.path.realpath(__file__))
@@ -80,7 +80,7 @@ data.df = data.df.reset_index(drop=True)
 
 ###   special treatment
 #data.df['mo_0'][data.df['mo_8']>570]=np.nan
-data.df['mo0'][data.df['mo0']>400]=np.nan
+#data.df['mo0'][data.df['mo0']>400]=np.nan
 data.df['mo1'][data.df['mo1']>400]=np.nan
 data.df['mo2'][data.df['mo2']>400]=np.nan
 data.df['mo3'][data.df['mo3']>400]=np.nan
@@ -89,7 +89,21 @@ data.df['mo4'][data.df['mo4']>400]=np.nan
 data.df['mo4'][data.df['mo4']<150]=np.nan
 data.df['mo4'][:5000][data.df['mo4'][:5000]<200]=np.nan
 data.df['mo5'][data.df['mo5']>400]=np.nan
+data.df['mo6'][data.df['mo5']>400]=np.nan
+data.df['mo7'][data.df['mo7']>400]=np.nan
+
+
+data.df['mo1'] = (data.df['mo1']**0.5  -180.0**0.5)/(300.0**0.5-180.0**0.5)
+data.df['mo2'] = (data.df['mo2']**0.5  -150.0**0.5)/(300.0**0.5-150.0**0.5)
+data.df['mo3'] = (data.df['mo3']**0.5  -150.0**0.5)/(300.0**0.5-150.0**0.5)
+data.df['mo4'] = (data.df['mo4']**0.5  -150.0**0.5)/(300.0**0.5-150.0**0.5)
+data.df['mo5'] = (data.df['mo5']**0.5  -150.0**0.5)/(300.0**0.5-150.0**0.5)
+data.df['mo7'] = (data.df['mo7']**0.5  -150.0**0.5)/(300.0**0.5-150.0**0.5)
+data.df['mo10'] = (data.df['mo10']**0.5-150.0**0.5)/(280.0**0.5-150.0**0.5)
+
+
 #data.df['mo_8'][data.df['mo_8']>570]=np.nan
+
 #data.df['t_19_end'][data.df['t_19_end']>32]=np.nan
 #data.df['t_19_begin'][data.df['t_19_begin']>32]=np.nan
 #data.df['t_14_begin'][data.df['t_14_begin']>32]=np.nan

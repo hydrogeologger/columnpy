@@ -26,13 +26,50 @@ for line in open("schedule.ipt"):
             pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M'),dt_s );
         sp_sch[sch_name].start_dt=pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M')
         sp_sch[sch_name].end_dt=pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M')
-        plot_interpolate=True
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-10)
+        plot_interpolate=False
+        #sp_sch[sch_name].merge_data(df=data.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-10)
         sp_sch[sch_name].merge_data(df=data.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=5e-10)
         sp_sch[sch_name].merge_data(df=data.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=5e-10)
         sp_sch[sch_name].merge_data(df=data.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=5e-10)
         sp_sch[sch_name].merge_data(df=data.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=5e-14)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-14)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-10)
+#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mo10']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['su1']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['su2']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['su3']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['su4']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tp1']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tp11']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tp2']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tp3']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tp4']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tpa3']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tpf0']   ,plot=plot_interpolate  ,coef=5e-7)
+
+        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tc']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_up']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rainmm']   ,plot=plot_interpolate  ,coef=5e-7)
+
+
+        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkph']   ,plot=plot_interpolate  ,coef=5e-7)
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-7)
+
+
+#        sp_sch[sch_name].merge_data(df=data.df, keys=['tphr45']   ,plot=plot_interpolate  ,coef=5e-7)
+#        sp_sch[sch_name].merge_data(df=data.df, keys=['tphr47']   ,plot=plot_interpolate  ,coef=5e-7)
+
+
+
+#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo11']   ,plot=plot_interpolate  ,coef=5e-10)
+#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo12']   ,plot=plot_interpolate  ,coef=5e-10)
+#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo13']   ,plot=plot_interpolate  ,coef=5e-10)
+#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo14']   ,plot=plot_interpolate  ,coef=5e-10)
 
 #        sp_sch[sch_name].merge_data( df=data.df, keys=['saltrh_11_rh'] ,plot=plot_interpolate  ,coef=5e-10)
 #        sp_sch[sch_name].merge_data( df=data.df, keys=['t_2896_begin'] ,plot=plot_interpolate  ,coef=5e-10)
