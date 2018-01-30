@@ -2,7 +2,7 @@ import matplotlib
 import matplotlib.image as image
 
 # Force matplotlib to not use any Xwindows backend.
-matplotlib.use('Agg')
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from PIL import Image
 def get_date_taken(path):
