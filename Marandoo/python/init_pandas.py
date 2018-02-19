@@ -24,7 +24,7 @@ del scale
 
 current_path=os.getcwd()
 sys.path.append   (os.environ['pyduino']+'/python/post_processing/')
-py_compile.compile(os.environ['pyduino']+'python/post_processing/pandas_scale.py')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/pandas_scale.py')
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/constants.py')
 
 import pandas_scale
@@ -40,9 +40,10 @@ sys.path.append(python_file_path)
 data_file_path=current_path+'/data/'    # warning, all the files should be .dat
 
 data_header=['deltat_c_1','deltat_c_2','deltat_c_3','ip','scale1','scale2','scale3','starttemp_c_1','starttemp_c_2','starttemp_c_3',
-    'timestamp','vw_1','vw_2','vw_3']
+    'date_time','vw_1','vw_2','vw_3']
 
-data_date_time=['timestamp']
+data_date_time=['date_time']
+# 01/02/2018 please make sure date_time is the name for making date times
 # 09/03/2017 here x[:-5] only sorts out from start to -5 position
 # one can check the correct by
 # dateparse('2017-03-09T09:02:48.588Z')
@@ -65,7 +66,7 @@ data=pandas_scale.pandas_scale(file_path=data_file_path,
     )
 
 
-data.df.sort_values('timestamp',inplace=True)
+data.df.sort_values('date_time',inplace=True)
 ## https://stackoverflow.com/questions/37787698/how-to-sort-pandas-dataframe-from-one-column
 ## reverse the dataframe by timestamp as the result is upside down
 #data.df.sort_values('timestamp',inplace=True)
@@ -76,8 +77,9 @@ data.df = data.df.reset_index(drop=True)
 #data.df['date_time']=data.df['timestamp']+pd.to_timedelta(10, unit='h')
 
 
+
 # below are the easist way to plot the result
-#data.df.plot[x='timestamp',y='deltat_c_1']
+#data.df.plot(x='timestamp',y='deltat_c_1')
 #plt.show(block=False)
 
 

@@ -1,12 +1,9 @@
 import operator
 import sensorfun
-
-py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/sensorfun.py')
-
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/sensorfun.py')
 import sensorfun
 reload(sensorfun)
-
-py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/figlib.py')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
 import figlib
 reload(figlib)
 lw=5
@@ -17,6 +14,7 @@ y_fontsize=20
 
 
 sp_sch={}
+plot_interpolate=False
 for line in open("schedule.ipt"):
     li=line.strip()
     if not li.startswith("#"):
@@ -26,75 +24,56 @@ for line in open("schedule.ipt"):
             pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M'),dt_s );
         sp_sch[sch_name].start_dt=pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M')
         sp_sch[sch_name].end_dt=pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M')
-        plot_interpolate=False
-        #sp_sch[sch_name].merge_data(df=data.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=5e-14)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mo10']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['su1']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['su2']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['su3']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['su4']   ,plot=plot_interpolate  ,coef=5e-10)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tp1']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tp11']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tp2']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tp3']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tp4']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tpa3']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tpf0']   ,plot=plot_interpolate  ,coef=5e-7)
 
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tc']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_up']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rainmm']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].water_level   =float(line_content[3])
+        sp_sch[sch_name].surface_area  =float(line_content[4])
+        sp_sch[sch_name].soil_thickness=float(line_content[5])
+        sp_sch[sch_name].time_surface_emerge = pd.datetime.strptime(line_content[10],'%Y/%b/%d %H:%M')
 
+        sp_sch[sch_name].merge_data(df=data.df, keys=['deltat_c_1']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['deltat_c_2']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['deltat_c_3']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['scale1']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['scale2']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['scale3']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['starttemp_c_1']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['starttemp_c_2']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['starttemp_c_3']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['vw_1']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['vw_2']   ,plot=plot_interpolate  ,coef=5e-10)
+        sp_sch[sch_name].merge_data(df=data.df, keys=['vw_3']   ,plot=plot_interpolate  ,coef=5e-10)
 
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-7)
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkph']   ,plot=plot_interpolate  ,coef=5e-7)
-        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-7)
+        sp_sch[sch_name].df['cum_evap_scale1']=(sp_sch[sch_name].df['scale1'][0]-sp_sch[sch_name].df['scale1']
+            )*constants.g2kg/sp_sch[sch_name].surface_area/constants.rhow_pure_water
+        sp_sch[sch_name].df['evap_rate_scale1']=np.append(np.diff(sp_sch[sch_name].df['cum_evap_scale1'] ),np.nan)/dt_s
+        
+        sp_sch[sch_name].df['cum_evap_scale2']=(sp_sch[sch_name].df['scale2'][0]-sp_sch[sch_name].df['scale2']
+            )*constants.g2kg/sp_sch[sch_name].surface_area/constants.rhow_pure_water
+        sp_sch[sch_name].df['evap_rate_scale2']=np.append(np.diff(sp_sch[sch_name].df['cum_evap_scale2'] ),np.nan)/dt_s
+        
+        sp_sch[sch_name].df['cum_evap_scale3']=(sp_sch[sch_name].df['scale3'][0]-sp_sch[sch_name].df['scale3']
+            )*constants.g2kg/sp_sch[sch_name].surface_area/constants.rhow_pure_water
+        sp_sch[sch_name].df['evap_rate_scale3']=np.append(np.diff(sp_sch[sch_name].df['cum_evap_scale3'] ),np.nan)/dt_s
 
+        sp_sch[sch_name].df['sat_scale1']=-((
+            sp_sch[sch_name].df['cum_evap_scale1']-sp_sch[sch_name].df['cum_evap_scale1'].iloc[-1])
+            )/sp_sch[sch_name].df['cum_evap_scale1'].iloc[-1]
+        sp_sch[sch_name].df['sat_scale2']=-((
+            sp_sch[sch_name].df['cum_evap_scale2']-sp_sch[sch_name].df['cum_evap_scale2'].iloc[-1])
+            )/sp_sch[sch_name].df['cum_evap_scale2'].iloc[-1]
+        sp_sch[sch_name].df['sat_scale3']=-((
+            sp_sch[sch_name].df['cum_evap_scale3']-sp_sch[sch_name].df['cum_evap_scale3'].iloc[-1])
+            )/sp_sch[sch_name].df['cum_evap_scale3'].iloc[-1]
 
-#        sp_sch[sch_name].merge_data(df=data.df, keys=['tphr45']   ,plot=plot_interpolate  ,coef=5e-7)
-#        sp_sch[sch_name].merge_data(df=data.df, keys=['tphr47']   ,plot=plot_interpolate  ,coef=5e-7)
-
-
-
-#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo11']   ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo12']   ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo13']   ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data(df=data.df, keys=['mo14']   ,plot=plot_interpolate  ,coef=5e-10)
-
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['saltrh_11_rh'] ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_2896_begin'] ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_19_begin']   ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_14_begin']   ,plot=plot_interpolate  ,coef=5e-10)
-#        
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_2896_peak']  ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_19_peak']    ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_14_peak']    ,plot=plot_interpolate  ,coef=5e-10)
-#        
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_2896_end']   ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_19_end']     ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['t_14_end']     ,plot=plot_interpolate  ,coef=5e-10)
-#        
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['saltrh_11_t']  ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['saltrh_2_t']   ,plot=plot_interpolate  ,coef=5e-10)
-#        
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['mo_7']         ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['mo_8']         ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['mo_9']         ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['mo_10']        ,plot=plot_interpolate  ,coef=5e-10)
-#        
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['te']           ,plot=plot_interpolate  ,coef=5e-13)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['tas606']       ,plot=plot_interpolate  ,coef=5e-10)
-#        sp_sch[sch_name].merge_data( df=data.df, keys=['commercial']   ,plot=plot_interpolate  ,coef=5e-10)
+#sp_sch[sch_name].df.plot(x='time_days',y='cum_evap_scale1')
+#sp_sch[sch_name].df.plot(x='time_days',y='evap_rate_scale1')
+#
+#sp_sch[sch_name].df.plot(x='time_days',y='cum_evap_scale2')
+#sp_sch[sch_name].df.plot(x='time_days',y='evap_rate_scale1')
+#
+#
+#
+#sp_sch[sch_name].df.plot(x='time_days',y='cum_evap_scale3')
 #
 #        
 #        sp_sch[sch_name].df['saltrh_2_suction']=-np.log(0.01*sp_sch[sch_name].df['saltrh_2_rh'])*constants.R*(constants.kelvin+sp_sch[sch_name].df['saltrh_2_t']
@@ -165,10 +144,6 @@ for line in open("schedule.ipt"):
 #        
 #        # calculate saturaturation based on commercial balance
 #        total_water_depth=sp_sch[sch_name].por*sp_sch[sch_name].soil_thickness
-#        sp_sch[sch_name].df['sat_commercial']=(total_water_depth-(
-#            sp_sch[sch_name].df['cum_evap_commercial']-sp_sch[sch_name].df['cum_evap_commercial'][sp_sch[sch_name].idx_surface_emerge])
-#            )/total_water_depth
-#
 #
 #        sp_sch[sch_name].df['sat_commercial'][sp_sch[sch_name].df['sat_commercial']>1]=1
 #        sp_sch[sch_name].df['cum_evap_commercial'][sp_sch[sch_name].df['cum_evap_commercial']<0]=0
