@@ -28,6 +28,10 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].water_level   =float(line_content[3])
         sp_sch[sch_name].surface_area  =float(line_content[4])
         sp_sch[sch_name].soil_thickness=float(line_content[5])
+        sp_sch[sch_name].por=float(line_content[6])
+        sp_sch[sch_name].ub=float(line_content[7])
+        sp_sch[sch_name].lb=float(line_content[8])
+
         sp_sch[sch_name].time_surface_emerge = pd.datetime.strptime(line_content[10],'%Y/%b/%d %H:%M')
 
         sp_sch[sch_name].merge_data(df=data.df, keys=['deltat_c_1']   ,plot=plot_interpolate  ,coef=5e-10)
@@ -64,6 +68,17 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['sat_scale3']=-((
             sp_sch[sch_name].df['cum_evap_scale3']-sp_sch[sch_name].df['cum_evap_scale3'].iloc[-1])
             )/sp_sch[sch_name].df['cum_evap_scale3'].iloc[-1]
+        sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.5,
+            nf=0.9311,mf=0.1229,hr=238968.16,af=2.7090,psi_0=1e-0)
+        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.5,
+            nf=0.9311,mf=0.1229,hr=238968.16,af=2.7090,psi_0=1e-0)
+        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.5,
+            nf=0.9311,mf=0.1229,hr=238968.16,af=2.7090,psi_0=1e-0)
+        sp_sch[sch_name].df['norm_t_1']= (sp_sch[sch_name].df['deltat_c_1']- sp_sch[sch_name].lb)/(sp_sch[sch_name].ub-sp_sch[sch_name].lb)
+        sp_sch[sch_name].df['norm_t_2']= (sp_sch[sch_name].df['deltat_c_2']- sp_sch[sch_name].lb)/(sp_sch[sch_name].ub-sp_sch[sch_name].lb)
+        sp_sch[sch_name].df['norm_t_3']= (sp_sch[sch_name].df['deltat_c_3']- sp_sch[sch_name].lb)/(sp_sch[sch_name].ub-sp_sch[sch_name].lb)
+        #sp_sch[sch_name].df['suc_scale1']=np.log(
+
 
 #sp_sch[sch_name].df.plot(x='time_days',y='cum_evap_scale1')
 #sp_sch[sch_name].df.plot(x='time_days',y='evap_rate_scale1')
