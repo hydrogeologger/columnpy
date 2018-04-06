@@ -1,14 +1,25 @@
 # linear fitting for moisture 
 dp=np.linspace(13,28,num=30)
 sch_name='Marandoo_first'
-sp_sch[sch_name].vw1_fit_a,sp_sch[sch_name].vw1_fit_b=np.polyfit(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],1)
-sp_sch[sch_name].vw2_fit_a,sp_sch[sch_name].vw2_fit_b=np.polyfit(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],1)
-sp_sch[sch_name].vw3_fit_a,sp_sch[sch_name].vw3_fit_b=np.polyfit(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],1)
-sch_name='Marandoo_second'
-sp_sch[sch_name].vw2_fit_a,sp_sch[sch_name].vw2_fit_b=np.polyfit(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],1)
-sp_sch[sch_name].vw3_fit_a,sp_sch[sch_name].vw3_fit_b=np.polyfit(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],1)
+sp_sch[sch_name].vw1_fit1     = np.polyfit(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],1)
+sp_sch[sch_name].vw1_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[1]  )
+
+sp_sch[sch_name].vw2_fit1     = np.polyfit(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],1)
+sp_sch[sch_name].vw2_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[1]  )
+
+sp_sch[sch_name].vw3_fit1     = np.polyfit(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],1)
+sp_sch[sch_name].vw3_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[1]  )
+
 sch_name='Marandoo_third'
-sp_sch[sch_name].vw1_fit_a,sp_sch[sch_name].vw1_fit_b=np.polyfit(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],1)
+sp_sch[sch_name].vw1_fit1     = np.polyfit(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],1)
+sp_sch[sch_name].vw1_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[1]  )
+
+sch_name='Marandoo_second'
+sp_sch[sch_name].vw2_fit1     = np.polyfit(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],1)
+sp_sch[sch_name].vw2_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[1]  )
+
+sp_sch[sch_name].vw3_fit1     = np.polyfit(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],1)
+sp_sch[sch_name].vw3_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[1]  )
 
         
 
@@ -41,20 +52,21 @@ if plot_moisture_calibration:
 
     
     sch_name='Marandoo_first'
-    ax[0][0].plot(sp_sch[sch_name].df['vw_1'], sp_sch[sch_name].df ['sat_scale1'],   'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 1',markevery=2) 
-    ax[0][0].plot(dp, sp_sch[sch_name].vw1_fit_a*dp+sp_sch[sch_name].vw1_fit_b,color='r',linewidth=lw,label='bb') 
-    ax[0][1].plot(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],    's',mfc='none' ,markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 1',markevery=2) 
-    ax[0][1].plot(dp, sp_sch[sch_name].vw2_fit_a*dp+sp_sch[sch_name].vw2_fit_b,color='g',linewidth=lw,label='bb') 
-    ax[1][0].plot(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],    'v',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 1',markevery=2) 
-    ax[1][0].plot(dp, sp_sch[sch_name].vw3_fit_a*dp+sp_sch[sch_name].vw3_fit_b,color='c',linewidth=lw,label='bb') 
+    ax[0][0].plot(sp_sch[sch_name].df['vw_1'], sp_sch[sch_name].df ['sat_scale1'],   'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment',markevery=2) 
+    ax[0][0].plot(dp, sp_sch[sch_name].vw1_fit1[0]*dp+sp_sch[sch_name].vw1_fit1[1],color='r',linewidth=lw,label=sp_sch[sch_name].vw1_fit1_str) 
+    ax[0][1].plot(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],    's',mfc='none' ,markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment',markevery=2) 
+    ax[0][1].plot(dp, sp_sch[sch_name].vw2_fit1[0]*dp+sp_sch[sch_name].vw2_fit1[1],color='g',linewidth=lw,label=sp_sch[sch_name].vw2_fit1_str) 
+    ax[1][0].plot(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],    'v',mfc='none' ,markeredgecolor='c',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment',markevery=2) 
+    ax[1][0].plot(dp, sp_sch[sch_name].vw3_fit1[0]*dp+sp_sch[sch_name].vw3_fit1[1],color='c',linewidth=lw,label=sp_sch[sch_name].vw3_fit1_str) 
     sch_name='Marandoo_third'
-    ax[1][1].plot(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],    'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 1',markevery=2) 
-    ax[1][1].plot(dp, sp_sch[sch_name].vw1_fit_a*dp+sp_sch[sch_name].vw1_fit_b,color='brown',linewidth=lw,label='bb') 
+    ax[1][1].plot(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],    'x',mfc='none' ,markeredgecolor='brown',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment',markevery=2) 
+    ax[1][1].plot(dp, sp_sch[sch_name].vw1_fit1[0]*dp+sp_sch[sch_name].vw1_fit1[1],color='brown',linewidth=lw,label=sp_sch[sch_name].vw1_fit1_str) 
     sch_name='Marandoo_second'
-    ax[2][0].plot(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],    '^',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 1',markevery=2) 
-    ax[2][0].plot(dp, sp_sch[sch_name].vw2_fit_a*dp+sp_sch[sch_name].vw2_fit_b,color='k',linewidth=lw,label='bb') 
-    ax[2][1].plot(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],    'd',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Dielectric moisture sensor A,\nred mud experiment 1',markevery=2) 
-    ax[2][1].plot(dp, sp_sch[sch_name].vw3_fit_a*dp+sp_sch[sch_name].vw3_fit_b,color='b',linewidth=lw,label='bb') 
+    ax[2][0].plot(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],    '^',mfc='none' ,markeredgecolor='k',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment',markevery=2) 
+    ax[2][0].plot(dp, sp_sch[sch_name].vw2_fit1[0]*dp+sp_sch[sch_name].vw2_fit1[1],color='k',linewidth=lw,label=sp_sch[sch_name].vw2_fit1_str) 
+
+    ax[2][1].plot(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],    'd',mfc='none' ,markeredgecolor='b',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment',markevery=2) 
+    ax[2][1].plot(dp, sp_sch[sch_name].vw3_fit1[0]*dp+sp_sch[sch_name].vw3_fit1[1],color='b',linewidth=lw,label=sp_sch[sch_name].vw3_fit1_str) 
 
 
     ax[0][0].set_title('(A) Moisture sensor 1',x=0.02,y=0.9,fontweight='bold',horizontalalignment='left')
@@ -87,6 +99,14 @@ if plot_moisture_calibration:
     ax[2][0].set_xlabel('DIELECTRIC PERMITIVITY', fontsize=y_fontsize, labelpad=20)
     ax[2][1].set_xlabel('DIELECTRIC PERMITIVITY', fontsize=y_fontsize, labelpad=20)
 
+    
+    ax[0][0].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[0][1].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[1][0].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[1][1].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[2][0].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[2][1].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    
     
     plt.show(block=False)
     
