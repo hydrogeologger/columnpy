@@ -2,24 +2,24 @@
 dp=np.linspace(13,28,num=30)
 sch_name='Marandoo_first'
 sp_sch[sch_name].vw1_fit1     = np.polyfit(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],1)
-sp_sch[sch_name].vw1_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[1]  )
+sp_sch[sch_name].vw1_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].vw1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[1]  )
 
 sp_sch[sch_name].vw2_fit1     = np.polyfit(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],1)
-sp_sch[sch_name].vw2_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[1]  )
+sp_sch[sch_name].vw2_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].vw2_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[1]  )
 
 sp_sch[sch_name].vw3_fit1     = np.polyfit(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],1)
-sp_sch[sch_name].vw3_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[1]  )
+sp_sch[sch_name].vw3_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].vw3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[1]  )
 
 sch_name='Marandoo_third'
 sp_sch[sch_name].vw1_fit1     = np.polyfit(sp_sch[sch_name].df['vw_1'],sp_sch[sch_name].df ['sat_scale1'],1)
-sp_sch[sch_name].vw1_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[1]  )
+sp_sch[sch_name].vw1_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].vw1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw1_fit1[1]  )
 
 sch_name='Marandoo_second'
 sp_sch[sch_name].vw2_fit1     = np.polyfit(sp_sch[sch_name].df['vw_2'],sp_sch[sch_name].df ['sat_scale2'],1)
-sp_sch[sch_name].vw2_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[1]  )
+sp_sch[sch_name].vw2_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].vw2_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw2_fit1[1]  )
 
 sp_sch[sch_name].vw3_fit1     = np.polyfit(sp_sch[sch_name].df['vw_3'],sp_sch[sch_name].df ['sat_scale3'],1)
-sp_sch[sch_name].vw3_fit1_str = 'y = '+"{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[1]  )
+sp_sch[sch_name].vw3_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].vw3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].vw3_fit1[1]  )
 
         
 
@@ -100,12 +100,12 @@ if plot_moisture_calibration:
     ax[2][1].set_xlabel('DIELECTRIC PERMITIVITY', fontsize=y_fontsize, labelpad=20)
 
     
-    ax[0][0].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
-    ax[0][1].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
-    ax[1][0].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
-    ax[1][1].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
-    ax[2][0].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
-    ax[2][1].legend(bbox_to_anchor=(.5  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[0][0].legend(bbox_to_anchor=(.4  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[0][1].legend(bbox_to_anchor=(.4  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[1][0].legend(bbox_to_anchor=(.4  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[1][1].legend(bbox_to_anchor=(.4  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[2][0].legend(bbox_to_anchor=(.4  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
+    ax[2][1].legend(bbox_to_anchor=(.4  , 0.2 ), loc=2, borderaxespad=0.,fontsize=18,handletextpad=0.73,labelspacing=0.35)
     
     
     plt.show(block=False)
