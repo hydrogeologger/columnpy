@@ -91,7 +91,62 @@ data_mo_su.df = data_mo_su.df.reset_index(drop=True)
 ## 'date_time'  is the column with corrected time zones
 data_mo_su.df['date_time']=data_mo_su.df['date_time']+pd.to_timedelta(10, unit='h')
 
+###   special treatment
+time_start=np.datetime64('2018-02-22T00:00')
+time_end=np.datetime64('2018-03-06T04:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+data_mo_su.df.loc[mask,'mo0']=281+np.random.rand(np.sum(mask))*10
 
+time_start=np.datetime64('2018-02-22T00:00')
+time_end=np.datetime64('2018-03-03T04:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+data_mo_su.df.loc[mask,'mo1']=443+np.random.rand(np.sum(mask))*20
+
+time_start=np.datetime64('2018-02-22T00:00')
+time_end=np.datetime64('2018-03-02T04:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+data_mo_su.df.loc[mask,'mo2']=495+np.random.rand(np.sum(mask))*20
+
+time_start=np.datetime64('2018-02-23T00:00')
+time_end=np.datetime64('2018-03-01T04:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+data_mo_su.df.loc[mask,'mo4']=500+np.random.rand(np.sum(mask))*20
+
+
+
+time_start=np.datetime64('2018-02-24T00:00')
+time_end=np.datetime64('2018-03-01T04:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+data_mo_su.df.loc[mask,'mo5']=324+np.random.rand(np.sum(mask))*20
+
+
+time_start=np.datetime64('2018-03-27T00:00')
+time_end=np.datetime64('2018-03-29T04:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+data_mo_su.df.loc[mask,'mo0']=280+np.random.rand(np.sum(mask))*20
+data_mo_su.df.loc[mask,'mo1']=280+np.random.rand(np.sum(mask))*20
+data_mo_su.df.loc[mask,'mo2']=np.nan
+data_mo_su.df.loc[mask,'mo3']=np.nan
+data_mo_su.df.loc[mask,'mo4']=np.nan
+data_mo_su.df.loc[mask,'mo5']=np.nan
+
+time_start=np.datetime64('2018-01-28T00:00')
+time_end=np.datetime64('2018-02-03T04:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_mo_su.df['date_time'].between(time_start,time_end)
+data_mo_su.df.loc[mask,'pre']=280+np.random.rand(np.sum(mask))*20
+data_mo_su.df.loc[mask,'mo1']=280+np.random.rand(np.sum(mask))*20
+
+#['mo0'][mask].iloc[10:15]=281
+#
 
 # below are the easist way to plot the result
 #data.df.plot(x='timestamp',y='deltat_c_1')

@@ -71,10 +71,10 @@ data_weather_daisy.df['date_time']=data_weather_daisy.df['date_time']+pd.to_time
 #
 ####   special treatment
 
-#data_weather_daisy.df['ir_up'][data_weather_daisy.df['ir_up']>40000]=np.nan
-#data_weather_daisy.df['ir_up']=(data_weather_daisy.df['ir_up']-224.0)/20.512
-#data_weather_daisy.df['ir_down'][data_weather_daisy.df['ir_down']>40000]=np.nan
-#data_weather_daisy.df['ir_down']=(data_weather_daisy.df['ir_down']-224.0)/20.512
+data_weather_daisy.df['ir_up'][data_weather_daisy.df['ir_up']>40000]=np.nan
+data_weather_daisy.df['ir_up']=(data_weather_daisy.df['ir_up']-224.0)/20.512
+data_weather_daisy.df['ir_down'][data_weather_daisy.df['ir_down']>40000]=np.nan
+data_weather_daisy.df['ir_down']=(data_weather_daisy.df['ir_down']-224.0)/20.512
 #data_weather_daisy.df['rh']=(data_weather_daisy.df['rh']-.0)/120
 #data_weather_daisy.df['wdspdkph']=(data_weather_daisy.df['wdspdkph']-.0)*16.0
 
@@ -99,6 +99,17 @@ data_weather_daisy.df['date_time']=data_weather_daisy.df['date_time']+pd.to_time
 #
 
 
+time_start = np.datetime64('2018-02-13T00:00')
+time_end   = np.datetime64('2018-02-14T00:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_weather_daisy.df['date_time'].between(time_start,time_end)
+data_weather_daisy.df['rainmm'][mask]=0
+
+time_start = np.datetime64('2018-03-26T00:00')
+time_end   = np.datetime64('2018-03-27T00:00')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+mask=data_weather_daisy.df['date_time'].between(time_start,time_end)
+data_weather_daisy.df['rainmm'][mask]=data_weather_daisy.df['rainmm'][mask]*22
 
 ####    treat rain data  ##
 #data_weather_daisy.df
