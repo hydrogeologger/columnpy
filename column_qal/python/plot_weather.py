@@ -101,7 +101,7 @@ ax[4].legend(bbox_to_anchor=(.55, 0.99 ), loc=2, borderaxespad=0.,fontsize=8,han
 
 
 ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-#plt.xticks(rotation=45)
+ax[5].set_xlabel('DATE')
 plt.show(block=False)
 
 fig.savefig('figure/plot_weather.png', format='png', dpi=600)

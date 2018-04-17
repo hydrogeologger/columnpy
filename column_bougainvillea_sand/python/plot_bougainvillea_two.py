@@ -1,57 +1,124 @@
 import matplotlib
 import matplotlib.image as image
 
-lw=4
-ms=1
-mew=1.5
+#lw=4
+#ms=1
+#mew=1.5
+#grid_width=2
+#y_fontsize=12
+#fig, ax = plt.subplots(5,sharex=True,figsize=(6,8))
+#fig.subplots_adjust(hspace=.15)
+
+lw=2
+ms=0.5
+mew=3
 grid_width=2
 y_fontsize=12
-fig, ax = plt.subplots(5,sharex=True,figsize=(6,8))
-fig.subplots_adjust(hspace=.15)
+
+params = {'legend.fontsize': 'x-large',
+          'figure.figsize': (10, 5),
+         'axes.labelsize': 11,
+         'axes.titlesize':'11',
+         'xtick.labelsize':'11',
+         'ytick.labelsize':'11',
+         'font.weight':'bold',
+         'axes.labelweight':'bold',
+         'lines.linewidth':2}#,
+#         'title.fontweight':'bold'}
+
+#         'axes.grid':'linewidth=grid_width,color = '0.5''}
+#         'linewidth':lw,'markers.size':ms,'markers.edgewidth':mew}
+pylab.rcParams.update(params)
+
+lw=2
+ms=6
+mew=2
+grid_width=2
+y_fontsize=11
+fig, ax = plt.subplots(5,sharex=True,figsize=(8,9))
+fig.subplots_adjust(hspace=.10)
+fig.subplots_adjust(left=0.18, right=0.98, top=0.97, bottom=0.08)
+
+
 
 
 for i in ax:
   for axis in ['top','bottom','left','right']:
     i.spines[axis].set_linewidth(2)
 
-ta=sp_sch['Aster_two'].df
+ta=sp_sch['Bougainvillea_two'].df
 
-ax[0].plot(ta['date_time'],ta['cum_evap_m']*constants.m2mm,'ko'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='k',label='load cell')
-ax[1].plot(ta['date_time'],ta['evap_rate']*constants.ms2mmday,'ko'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='k',label='load cell')
+ax[0].plot(ta['time_days'],ta['cum_evap_m']*constants.m2mm,'r-'       ,linewidth=lw,markersize=ms,markeredgewidth=mew, markeredgecolor='k',label='load cell')
 
-
-ax[2].plot(ta['date_time'], ta['mom_3'], 'ro',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
-ax[2].plot(ta['date_time'], ta['mom_4'], 'go',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Dielectric suction B')
-ax[2].plot(ta['date_time'], ta['mom_5'], 'bo',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Moisture A')
-ax[2].plot(ta['date_time'], ta['mom_6'], 'co',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Moisture A')
-ax[2].plot(ta['date_time'], ta['mom_7'], 'mo',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='Moisture A')
-ax[2].plot(ta['date_time'], ta['mom_8'], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Moisture A')
+ax[1].plot(ta['time_days'],ta['evap_rate']*constants.ms2mmday,'r-'       ,linewidth=lw,markersize=ms,markeredgewidth=mew, markeredgecolor='k',label='load cell')
+ax[1].set_ylim([0,5.7])
 
 
-
-ax[3].plot(ta['date_time'], ta['ssu_4'], 'ro',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
-ax[3].plot(ta['date_time'], ta['ssu_5'], 'go',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Dielectric suction B')
-ax[3].plot(ta['date_time'], ta['ssu_6'], 'bo',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Moisture A')
-ax[3].plot(ta['date_time'], ta['ssu_7'], 'co',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Moisture A')
-ax[3].plot(ta['date_time'], ta['ssu_8'], 'mo',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Moisture A')
-
-
-ax[4].plot(ta['date_time'], ta['temp_suc1'], 'ro',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
-ax[4].plot(ta['date_time'], ta['temp_suc2'], 'go',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Dielectric suction B')
-ax[4].plot(ta['date_time'], ta['temp_suc3'], 'bo',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Moisture A')
-ax[4].plot(ta['date_time'], ta['temp_suc4'], 'co',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Moisture A')
-ax[4].plot(ta['date_time'], ta['temp_suc5'], 'mo',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='Moisture A')
-ax[4].plot(ta['date_time'], ta['temp_suc6'], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Moisture A')
-ax[4].plot(ta['date_time'], ta['temp_suc7'], 'o' ,markerfacecolor='brown' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Moisture A')
-ax[4].plot(ta['date_time'], ta['temp_suc8'], 'o' ,markerfacecolor='yellow' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='yellow',label='Moisture A')
+ax[2].plot(ta['time_days'], ta['mmo3'], 'r-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='3 cm')
+ax[2].plot(ta['time_days'], ta['mmo5'], 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='10cm')
+ax[2].plot(ta['time_days'], ta['mmo4'], 'b-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='20cm')
+ax[2].plot(ta['time_days'], ta['mmo8'], 'c-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='30cm')
+ax[2].plot(ta['time_days'], ta['mmo6'], 'm-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='50cm')
+ax[2].plot(ta['time_days'], ta['mmo7'], 'k-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='70cm')
+ax[2].set_ylim([0,1.1])
 
 
-plt.xticks(rotation=45)
+
+ax[3].semilogy(ta['time_days'], ta['su_4_kpa'], 'r-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='3 cm')
+ax[3].semilogy(ta['time_days'], ta['su_5_kpa'], 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='10cm')
+ax[3].semilogy(ta['time_days'], ta['su_6_kpa'], 'b-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='20cm')
+ax[3].semilogy(ta['time_days'], ta['su_7_kpa'], 'c-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='30cm')
+ax[3].semilogy(ta['time_days'], ta['su_8_kpa'], 'm-',linewidth=lw,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='100cm')
+ax[3].set_ylim([1,5.e8])
+
+#ax[3].plot(ta['time_days'], ta['su_4_kpa'], 'r-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
+#ax[3].plot(ta['time_days'], ta['ssu_5'], 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Dielectric suction B')
+#ax[3].plot(ta['time_days'], ta['ssu_6'], 'b-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Moisture A')
+#ax[3].plot(ta['time_days'], ta['ssu_7'], 'c-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Moisture A')
+#ax[3].plot(ta['time_days'], ta['ssu_8'], 'm-',linewidth=lw,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Moisture A')
+
+
+ax[4].plot(ta['time_days'], ta['temp_suc4'], 'r-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='3 cm')
+ax[4].plot(ta['time_days'], ta['temp_suc5'], 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='10cm')
+ax[4].plot(ta['time_days'], ta['temp_suc6'], 'b-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='20cm')
+ax[4].plot(ta['time_days'], ta['temp_suc7'], 'c-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='30cm')
+ax[4].plot(ta['time_days'], ta['temp_suc8'], 'm-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='50cm')
+ax[4].plot(ta['time_days'], ta['temp_suc3'], 'k-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Above surface')
+#ax[4].plot(ta['time_days'], ta['temp_suc7'], 'o' ,markerfacecolor='brown' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Moisture A')
+#ax[4].plot(ta['time_days'], ta['temp_suc8'], 'o' ,markerfacecolor='yellow' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='yellow',label='Moisture A')
+
+ax[0].set_axisbelow(True)
+ax[1].set_axisbelow(True)
+ax[2].set_axisbelow(True)
+ax[3].set_axisbelow(True)
+ax[4].set_axisbelow(True)
+ax[0].set_title('(A)',x=0.02,y=0.82,fontweight='bold')
+ax[1].set_title('(B)',x=0.02,y=0.82,fontweight='bold')
+ax[2].set_title('(C)',x=0.02,y=0.82,fontweight='bold')
+ax[3].set_title('(D)',x=0.02,y=0.82,fontweight='bold')
+ax[4].set_title('(E)',x=0.02,y=0.82,fontweight='bold')
+ax[0].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+ax[1].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+ax[2].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+ax[3].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+ax[4].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+ax[0].set_xlim([-5,130])
+ax[0].set_ylabel('CUMULATIVE\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=10)
+ax[1].set_ylabel('EVAPORATION\nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=25)
+ax[2].set_ylabel('DEGREE OF\nSATURATION\nBELOW TAILINGS\nSURFACE', fontsize=y_fontsize, labelpad=12)
+ax[3].set_ylabel('SUCTION\nBELOW TAILINGS\n SURFACE (kPa)', fontsize=y_fontsize, labelpad=12)
+ax[4].set_ylabel('TEMPERATURE\nBELOW TAILINGS\nSURFACE\n($^\circ$C)', fontsize=y_fontsize, labelpad=19)
+ax[2].legend(bbox_to_anchor=(.99, 0.95), loc=1, borderaxespad=0.,fontsize=8,handletextpad=0.13,labelspacing=0.05,ncol=6)
+ax[3].legend(bbox_to_anchor=(.1, 0.95 ), loc=2, borderaxespad=0.,fontsize=8,handletextpad=0.03,labelspacing=0.02,ncol=5,columnspacing=0.4)
+ax[4].legend(bbox_to_anchor=(.1, 0.95), loc=2, borderaxespad=0.,fontsize=8,handletextpad=0.03,labelspacing=0.02,ncol=6,columnspacing=0.4)#title='CM below surface')
+
+#plt.xticks(rotation=45)
 plt.show(block=False)
+ax[4].set_xlabel('TIME (Days)')
 
 
-
-fig.savefig('figure/plot_aster_two.png', format='png', dpi=600)
+fig.savefig('figure/plot_bougainvillea_two.png', format='png', dpi=600)
+ta.to_csv('output_data/data_bougainvillea_two.csv')
 # Force matplotlib to not use any Xwindows backend.
 #matplotlib.use('Agg')
 #import matplotlib.pyplot as plt

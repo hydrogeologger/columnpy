@@ -29,51 +29,46 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].surface_area  =float(line_content[4])
 
         # the new method has already considered the boundary effect
-        sp_sch[sch_name].merge_data(df=data.df, keys=['ssu_4']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['ssu_5']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['ssu_6']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['ssu_7']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['ssu_8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-
-
-        #yy=(sp_sch[sch_name].df['ssu_4']-0.73)/(3.28-0.73)
-        sp_sch[sch_name].df['trise_4_norm']=(3.28-sp_sch[sch_name].df['ssu_4'])/(3.28-0.73)
-        sp_sch[sch_name].df['trise_5_norm']=(3.28-sp_sch[sch_name].df['ssu_5'])/(3.28-0.73)
-        sp_sch[sch_name].df['trise_6_norm']=(3.28-sp_sch[sch_name].df['ssu_6'])/(3.28-0.73)
-        sp_sch[sch_name].df['trise_7_norm']=(3.28-sp_sch[sch_name].df['ssu_7'])/(3.28-0.73)
-        sp_sch[sch_name].df['trise_8_norm']=(3.28-sp_sch[sch_name].df['ssu_8'])/(3.28-0.73)
-        #temp=-0.0133*yy**5.+0.0559*yy**4+0.0747*yy**3+0.0203*yy**2+0.011*yy+0.0013
-        
-        sp_sch[sch_name].df['su_4_kpa']=1000* sp_sch[sch_name].df['trise_4_norm'] **(-1.0/0.301)/159.83
-        sp_sch[sch_name].df['su_5_kpa']=1000* sp_sch[sch_name].df['trise_5_norm'] **(-1.0/0.301)/159.83
-        sp_sch[sch_name].df['su_6_kpa']=1000* sp_sch[sch_name].df['trise_6_norm'] **(-1.0/0.301)/159.83
-        sp_sch[sch_name].df['su_7_kpa']=1000* sp_sch[sch_name].df['trise_7_norm'] **(-1.0/0.301)/159.83
-        sp_sch[sch_name].df['su_8_kpa']=1000* sp_sch[sch_name].df['trise_8_norm'] **(-1.0/0.301)/159.83
-
-
-        sp_sch[sch_name].df['su_5_norm']=(sp_sch[sch_name].df['ssu_5']-0.73)/(3.28-0.73)
-        sp_sch[sch_name].df['su_6_norm']=(sp_sch[sch_name].df['ssu_6']-0.73)/(3.28-0.73)
-        sp_sch[sch_name].df['su_7_norm']=(sp_sch[sch_name].df['ssu_7']-0.73)/(3.28-0.73)
-        sp_sch[sch_name].df['su_8_norm']=(sp_sch[sch_name].df['ssu_8']-0.73)/(3.28-0.73)
-
-        sp_sch[sch_name].merge_data(df=data.df, keys=['su4']   ,plot=plot_interpolate  ,coef=5e-15)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['su5']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['su6']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['su7']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['su8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
+        sp_sch[sch_name].df['trise_5_norm']=(3.28-sp_sch[sch_name].df['su5'])/(3.28-0.73)
+        sp_sch[sch_name].df['trise_6_norm']=(3.28-sp_sch[sch_name].df['su6'])/(3.28-0.73)
+        sp_sch[sch_name].df['trise_7_norm']=(3.28-sp_sch[sch_name].df['su7'])/(3.28-0.73)
+        sp_sch[sch_name].df['trise_8_norm']=(3.28-sp_sch[sch_name].df['su8'])/(3.28-0.73)
+
+        sp_sch[sch_name].df['su_5_kpa']=1000* sp_sch[sch_name].df['trise_5_norm'] **(-1.0/0.301)/159.83
+        sp_sch[sch_name].df['su_6_kpa']=1000* sp_sch[sch_name].df['trise_6_norm'] **(-1.0/0.301)/159.83
+        sp_sch[sch_name].df['su_7_kpa']=1000* sp_sch[sch_name].df['trise_7_norm'] **(-1.0/0.301)/159.83
+        sp_sch[sch_name].df['su_8_kpa']=1000* sp_sch[sch_name].df['trise_8_norm'] **(-1.0/0.301)/159.83
+
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_23']   ,plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_24']   ,plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_25']   ,plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_26']   ,plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_27']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].df['mom_27'][2000:]=np.nan
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_28']   ,plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_30']   ,plot=plot_interpolate  ,coef=5e-12)  # done
+
+        sp_sch[sch_name].df['mom_23']=(540.0-sp_sch[sch_name].df['mom_23'])/(540.-330)
+        sp_sch[sch_name].df['mom_24']=(540.0-sp_sch[sch_name].df['mom_24'])/(540.-330)
+        sp_sch[sch_name].df['mom_25']=(540.0-sp_sch[sch_name].df['mom_25'])/(540.-310)
+        sp_sch[sch_name].df['mom_26']=(540.0-sp_sch[sch_name].df['mom_26'])/(540.-330)
+        sp_sch[sch_name].df['mom_27']=(520.0-sp_sch[sch_name].df['mom_27'])/(520.-350)
+        sp_sch[sch_name].df['mom_28']=(540.0-sp_sch[sch_name].df['mom_28'])/(540.-340)
+        sp_sch[sch_name].df['mom_30']=(540.0-sp_sch[sch_name].df['mom_30'])/(540.-330)
+
+
+        mask=data.df['date_time'].between(data.df['date_time'].iloc[0],sp_sch[sch_name].start_dt)
+        data.df['balance_bottom'][mask]=np.nan
+        mask=data.df['date_time'].between(sp_sch[sch_name].end_dt,data.df['date_time'].iloc[-1])
+        data.df['balance_bottom'][mask]=np.nan
+
         
-
-
-
-
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_3']   ,plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_4']   ,plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_5']   ,plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_6']   ,plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_7']   ,plot=plot_interpolate  ,coef=5e-14)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['mom_8']   ,plot=plot_interpolate  ,coef=5e-14)  # done
-        sp_sch[sch_name].df['mom_7']=sp_sch[sch_name].df['mom_7']-35
+        sp_sch[sch_name].merge_data(df=data.df, keys=['balance_bottom']   ,plot=plot_interpolate  ,coef=5e-18)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc1']   ,plot=plot_interpolate  ,coef=5e-12)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc2']   ,plot=plot_interpolate  ,coef=5e-12)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc3']   ,plot=plot_interpolate  ,coef=5e-12)  # done
@@ -81,37 +76,11 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc5']   ,plot=plot_interpolate  ,coef=5e-12)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc6']   ,plot=plot_interpolate  ,coef=5e-12)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc7']   ,plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc8']   ,plot=plot_interpolate  ,coef=5e-12)  # done
+        #sp_sch[sch_name].merge_data(df=data.df, keys=['temp_suc8']   ,plot=plot_interpolate  ,coef=5e-12)  # done
 
 
 
-        time_start=np.datetime64('2017-10-05T13:00')
-        time_end=np.datetime64('2017-10-07T17:00')
-        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df.loc[mask,'temp_suc1']=np.nan
-        sp_sch[sch_name].df.loc[mask,'temp_suc2']=np.nan
-        sp_sch[sch_name].df.loc[mask,'temp_suc3']=np.nan
-        sp_sch[sch_name].df.loc[mask,'temp_suc4']=np.nan
-        sp_sch[sch_name].df.loc[mask,'temp_suc5']=np.nan
-        sp_sch[sch_name].df.loc[mask,'temp_suc6']=np.nan
-        sp_sch[sch_name].df.loc[mask,'temp_suc7']=np.nan
-        sp_sch[sch_name].df.loc[mask,'temp_suc8']=np.nan
-
-        sp_sch[sch_name].df['mmo3']=(530.0-sp_sch[sch_name].df['mom_3'])/(530.-310)
-        sp_sch[sch_name].df['mmo4']=(470.0-sp_sch[sch_name].df['mom_4'])/(470.-310)
-        sp_sch[sch_name].df['mmo5']=(470.0-sp_sch[sch_name].df['mom_5'])/(470.-300)
-        sp_sch[sch_name].df['mmo6']=(470.0-sp_sch[sch_name].df['mom_6'])/(470.-300)
-        sp_sch[sch_name].df['mmo7']=(470.0-sp_sch[sch_name].df['mom_7'])/(470.-300)
-        sp_sch[sch_name].df['mmo8']=(470.0-sp_sch[sch_name].df['mom_8'])/(470.-320)
-
-
-        mask=data.df['date_time'].between(data.df['date_time'].iloc[0],sp_sch[sch_name].start_dt)
-        data.df['balance_bottom'][mask]=np.nan
-        mask=data.df['date_time'].between(sp_sch[sch_name].end_dt,data.df['date_time'].iloc[-1])
-        data.df['balance_bottom'][mask]=np.nan
-        sp_sch[sch_name].merge_data(df=data.df, keys=['balance_bottom']   ,plot=plot_interpolate  ,coef=5e-21)  # done
-
-        sp_sch[sch_name].df['cum_evap_m']=(sp_sch[sch_name].df['balance_bottom'][0]-sp_sch[sch_name].df['balance_bottom'])/sp_sch[sch_name].surface_area/constants.rhow_pure_water*5.0/(346.0-330.0)  # 5.2 343.012-357.757   5.0/(352.-343.)   5.2/(357-343)
+        sp_sch[sch_name].df['cum_evap_m']=(sp_sch[sch_name].df['balance_bottom'][0]-sp_sch[sch_name].df['balance_bottom'])/sp_sch[sch_name].surface_area/constants.rhow_pure_water*10.85/(420.774-379.882)
         
 
 
