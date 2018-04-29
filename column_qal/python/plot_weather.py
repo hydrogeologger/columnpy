@@ -21,31 +21,31 @@ for i in ax:
 
 ta=sp_sch['qal'].df
 
-ax[0].plot(ta['date_time'], ta['rainmm'], 'r-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
+ax[0].plot(ta['date_time'], ta['rainmm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 ax[1].set_ylim([-5,100])
 
-ax[1].plot(ta['date_time'], ta['ir_up'], 'r-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Incoming')
+ax[1].plot(ta['date_time'], ta['ir_up'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Incoming')
 ax[1].plot(ta['date_time'], ta['ir_down'], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Reflected')
 ax[1].set_ylim([-50,1200])
 
 
-ax[2].plot(ta['date_time'], ta['wdspdkphavg2m'], 'r-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Average at 2m above ground')
+ax[2].plot(ta['date_time'], ta['wdspdkphavg2m'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Average at 2m above ground')
 ax[2].plot(ta['date_time'], ta['wdgstkph10m']/2.0, 'go',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Gust at 2m above ground',markevery=5)
 #ax[4].plot(ta['date_time'], ta['ec1'], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 ax[2].set_ylim([-1,15])
 
 ax[3].plot(ta['date_time'][::mkevy].values, ta['tp_box_7'][::mkevy].values, 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Electrical Enclosure',markevery=mkevy)
-ax[3].plot(ta['date_time'][::mkevy].values, ta['tc'][::mkevy].values, 'r-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Radiation Shield',markevery=mkevy)
+ax[3].plot(ta['date_time'][::mkevy].values, ta['tc'][::mkevy].values, '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Radiation Shield',markevery=mkevy)
 ax[3].set_ylim([17,42])
 
 mkevy=12
 ax[4].plot(ta['date_time'][::mkevy], ta['rh_box_7'][::mkevy], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Electrical Enclosure',markevery=mkevy)
 mkevy=6
-ax[4].plot(ta['date_time'][::mkevy], ta['rh'][::mkevy], 'r-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Radiation Shield',markevery=mkevy)
+ax[4].plot(ta['date_time'][::mkevy], ta['rh'][::mkevy], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Radiation Shield',markevery=mkevy)
 ax[4].set_ylim([0,100])
 
 
-ax[5].plot(ta['date_time'], ta['p']/1000, 'r-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
+ax[5].plot(ta['date_time'], ta['p']/1000, '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 #ax[5].set_ylim([980,1020])
 
 
