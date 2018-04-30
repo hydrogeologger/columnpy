@@ -25,6 +25,14 @@ sys.path.append   (os.environ['pyduino']+'/python/post_processing/')
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/pandas_scale.py')
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/constants.py')
 
+
+
+if not os.path.exists('figure'):
+        os.makedirs('figure')
+if not os.path.exists('output_data'):
+        os.makedirs('output_data')
+
+
 import pandas_scale
 import constants
 reload(pandas_scale)
