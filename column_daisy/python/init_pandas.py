@@ -21,14 +21,19 @@ del scale
 #os.path.dirname(os.path.realpath(__file__))
 
 current_path=os.getcwd()
-sys.path.append('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/')
-py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/pandas_scale.py')
-py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/constants.py')
+sys.path.append   (os.environ['pyduino']+'/python/post_processing/')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/pandas_scale.py')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/constants.py')
 
 import pandas_scale
 import constants
 reload(pandas_scale)
 reload(constants)
+
+if not os.path.exists('figure'):
+        os.makedirs('figure')
+if not os.path.exists('output_data'):
+        os.makedirs('output_data')
 
 
 python_file_path=current_path+'/python/'

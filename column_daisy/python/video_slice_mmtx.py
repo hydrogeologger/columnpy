@@ -16,7 +16,11 @@ import glob, os
 #    print(file)
 sch_name='column_daisy'
 #path_im='/home/chenming/Projects/tailings/area_51_redmud_4cm_photo_'+sch_name+'/'
-path_im='/home/chenming/Projects/tailings/column_daisy/15/'
+import json
+inp_js = json.load(open('input/input.json'))
+
+#path_im='/home/chenming/Projects/tailings/column_daisy/15/'
+path_im=str(inp_js['photo_path'])
 #import os
 #for file in os.listdir("/home/chenming/Projects/tailings/area_51_redmud_4cm_photo/"):
 #    if file.endswith(".jpg"):

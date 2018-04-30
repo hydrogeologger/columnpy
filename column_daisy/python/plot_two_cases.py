@@ -1,12 +1,12 @@
 import operator
 import sensorfun
 
-py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/sensorfun.py')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/sensorfun.py')
 
 import sensorfun
 reload(sensorfun)
 
-py_compile.compile('/home/chenming/Dropbox/scripts/github/pyduino/python/post_processing/figlib.py')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
 import figlib
 reload(figlib)
 lw=5

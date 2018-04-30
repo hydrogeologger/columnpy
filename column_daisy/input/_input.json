@@ -1,0 +1,22 @@
+
+{
+    "photo_path": "/home/chenming/project/column_daisy_photo_example",
+    "_comment": "put your photo paths into photo_path folder,change the name into input.json",
+    "maps": [
+        {
+            "id": "blabla",
+            "iscategorical": "0"
+        },
+        {
+            "id": "blabla",
+            "iscategorical": "0"
+        }
+    ],
+    "masks": {
+        "id": "valore"
+    },
+    "om_points": "value",
+    "parameters": {
+        "id": "valore"
+    }
+}
