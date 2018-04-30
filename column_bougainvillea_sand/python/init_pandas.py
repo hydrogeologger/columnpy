@@ -32,6 +32,11 @@ import constants
 reload(pandas_scale)
 reload(constants)
 
+if not os.path.exists('figure'):
+        os.makedirs('figure')
+if not os.path.exists('output_data'):
+        os.makedirs('output_data')
+
 
 python_file_path=current_path+'/python/'
 sys.path.append(python_file_path)
