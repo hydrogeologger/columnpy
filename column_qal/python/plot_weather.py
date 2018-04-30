@@ -105,6 +105,10 @@ ax[5].set_xlabel('DATE')
 plt.show(block=False)
 
 fig.savefig('figure/plot_weather.png', format='png', dpi=600)
+sp_sch[sch_name].df.iloc[::4].to_csv('output_data/'+'column_qal'+'.csv')
+
+
+
 # Force matplotlib to not use any Xwindows backend.
 #matplotlib.use('Agg')
 #import matplotlib.pyplot as plt
