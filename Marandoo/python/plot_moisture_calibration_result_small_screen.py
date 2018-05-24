@@ -152,6 +152,7 @@ if plot_moisture_calibration:
     
     fig.savefig('figure/plot_moisture_calibration.png', format='png', dpi=300)
     fig.savefig('figure/plot_moisture_calibration_600.png', format='png', dpi=600)
+    sp_sch["Marandoo_first"].df.to_csv("output_data/Marandoo_first.csv")
     plt.close()  # it is all caused by pywafo. 
     
     
