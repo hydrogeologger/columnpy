@@ -79,7 +79,7 @@ index_col_sw=False
 data=pandas_scale.pandas_scale(file_path=data_file_path,
     source='raw',
     sep=',',
-    header=1,
+    header=2,
     names=data_header,
     parse_dates=data_date_time,
     date_parser=dateparse,
