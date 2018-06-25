@@ -38,21 +38,21 @@ def get_date_taken(path):
     from datetime import datetime
     return datetime.strptime(Image.open(path)._getexif()[36867],'%Y:%m:%d %H:%M:%S')
 
-path_im_nobact='/home/cmzhang/hdrivexm/no_bact_first/'
+path_im_nobact='/home/cmzhang/hdrivexm/no_bact_third/'
 files_nobact = filter(os.path.isfile, glob.glob(path_im_nobact + "*.jpg"))
 files_nobact.sort(key=lambda x: get_date_taken(x))
 file_name_nobact=[i.split('/')[-1] for i in files_nobact]
 photo_taken_time_nobact=[get_date_taken(i) for i in files_nobact]
 
 
-path_im_bact='/home/cmzhang/hdrivexm/bact_first/'
+path_im_bact='/home/cmzhang/hdrivexm/bact_third/'
 files_bact = filter(os.path.isfile, glob.glob(path_im_bact + "*.jpg"))
 files_bact.sort(key=lambda x: get_date_taken(x))
 file_name_bact=[i.split('/')[-1] for i in files_bact]
 photo_taken_time_bact=[get_date_taken(i) for i in files_bact]
 
-#for ii in file_name_bact[:1]:
-for ii in file_name_bact:
+for ii in file_name_bact[::20]:
+#for ii in file_name_bact:
 #for ii in file_name_bact[-3:-1]:
 
         
@@ -101,7 +101,7 @@ for ii in file_name_bact:
     ax_img_bact = plt.subplot2grid((3, 3), (0,2))
     ax_img_bact.set_position([0.53,0.39,0.45,0.58])
 
-    sch_name='bacteria_first'
+    sch_name='bacteria_third'
     ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale1[:idx_im]*constants.m2mm,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='No\nBacteria',markevery=2)
     ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale2[:idx_im]*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Bacteria',markevery=2)
     #sch_name='bacteria_second'
@@ -109,7 +109,7 @@ for ii in file_name_bact:
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale2[:idx_im]*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)
     #sch_name='bacteria_third'
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale1[:idx_im]*constants.m2mm,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
-    #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale2[:idx_im]*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2) sch_name='bacteria_first'
+    #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale2[:idx_im]*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2) sch_name='bacteria_third'
     ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale1[:idx_im]*constants.ms2mmday,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='No\nBacteria',markevery=2)
     ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale2[:idx_im]*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Bacteria',markevery=2)
     #sch_name='bacteria_second'
@@ -119,7 +119,7 @@ for ii in file_name_bact:
     #ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale1[:idx_im]*constants.ms2mmday,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
     #ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale1[:idx_im]*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)	
     
-    sch_name='bacteria_first'
+    sch_name='bacteria_third'
     #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo0[:idx_im],'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Moisture 1')
     #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo1[:idx_im],'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Moisture 2')
     #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo2[:idx_im],'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Moisture 3')
@@ -145,7 +145,7 @@ for ii in file_name_bact:
     #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo4[:idx_im],'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black')
     #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo5[:idx_im],'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue')
 
-    sch_name='bacteria_first'
+    sch_name='bacteria_third'
     ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suc_scale1[:idx_im],'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='No\nBacteria',markevery=2)
     ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suc_scale2[:idx_im],'o',color='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='Bacteria',markevery=2)
     #sch_name='bacteria_second'
@@ -275,7 +275,7 @@ for ii in file_name_bact:
     #ax[3].plot(ta['date_time'], ta['temp_suc6'], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Moisture A')
     #ax[3].plot(ta['date_time'], ta['temp_suc7'], 'o' ,markerfacecolor='brown' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Moisture A')
     ax[0].set_ylim([-2,30])
-    ax[1].set_ylim([-1,10])
+    ax[1].set_ylim([-0.1,1.8])
     ax[2].set_ylim([-0.1,1.1])
     ax[3].set_ylim([1,1.2e6])
 

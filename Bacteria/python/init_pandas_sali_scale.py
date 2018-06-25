@@ -126,6 +126,18 @@ data.df['tmp10'].loc[data.df['tmp10']<1]=np.nan;
 
 
 
+time_start=np.datetime64('2018-03-06T08:00')
+time_end=np.datetime64('2018-03-06T12:30')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-pyt
+mask=data.df['date_time'].between(time_start,time_end)
+data.df.loc[mask,'scale1']=np.nan;
+
+
+time_start=np.datetime64('2018-04-02T16:00')
+time_end=np.datetime64('2018-04-04T08:30')
+#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-pyt
+mask=data.df['date_time'].between(time_start,time_end)
+data.df.loc[mask,'scale1']=np.nan;
 #data.df['mo_0'][data.df['mo_8']>570]=np.nan
 #data.df['mo0'][data.df['mo0']>400]=np.nan
 #data.df['mo1'][data.df['mo1']>400]=np.nan
@@ -156,11 +168,4 @@ data.df['tmp10'].loc[data.df['tmp10']<1]=np.nan;
 #data.df['t_14_begin'][data.df['t_14_begin']>32]=np.nan
 #data.df['t_19_end'][data.df['t_19_end']>32]=np.nan
 ##data.df['t_14_end'][data.df['t_14_end']>32]=np.nan
-time_start=np.datetime64('2018-03-06T08:00')
-time_end=np.datetime64('2018-03-06T12:30')
-#https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-pyt
-mask=data_mo_su.df['date_time'].between(time_start,time_end)
-data_mo_su.df.loc[mask,'scale1']=np.nan;
-
-
 
