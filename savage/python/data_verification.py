@@ -59,6 +59,12 @@ prof['grange_3_luo2_dry']['data'].df['dluo0'].loc[ prof['grange_3_luo2_dry']['da
 prof['grange_3_luo2_dry']['data'].df['dluo0'].loc[ prof['grange_3_luo2_dry']['data'].df['dluo0']<=0 ] =np.nan
 
 prof['grange_3_mo_su']['data'].df['dluo7'].loc[prof['grange_3_mo_su']['data'].df['dluo7']<=0.0] =np.nan
+prof['grange_3_mo_su']['data'].df['tmp7'].loc[prof['grange_3_mo_su']['data'].df['tmp7']<=0.0] =np.nan
+prof['grange_4_mo_su']['data'].df['tmp7'].loc[prof['grange_4_mo_su']['data'].df['tmp7']<=0.0] =np.nan
+prof['grange_5_mo_su']['data'].df['tmp7'].loc[prof['grange_5_mo_su']['data'].df['tmp7']<=0.0] =np.nan
+
+
+prof['grange_d_electrochem_o2']['data'].df['dtp4'].loc[ prof['grange_d_electrochem_o2']['data'].df['dtp4'] <=0 ] =np.nan
 
 
 prof['grange_5_luo2_dry']['data'].df['dluo0'].loc[ prof['grange_5_luo2_dry']['data'].df['dluo0']<=0 ] =np.nan
