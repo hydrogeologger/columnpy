@@ -49,9 +49,12 @@ for i in ax:
   for axis in ['top','bottom','left','right']:
     i.spines[axis].set_linewidth(2)
 
-sp=prof['grange_a_electrochem_o2']['data'].df#[::24]
-sp_lo=prof['grange_a_luo2']['data'].df#[::24]
 
+sp=prof['grange_a_electrochem_o2']['data'].df#[::48]
+sp_lo=prof['grange_a_luo2']['data'].df#[::48]
+
+#ax[0].plot(sp_sch[sch_name].df.time_days, sp_sch[sch_name].df.ir_up/100.0,'-',color='r'       ,markersize=ms-7,markeredgewidth=mew, markeredgecolor='brown',label='up',markevery=1)
+#ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.ir_down[:idx_im],'o',color='k'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='k',label='down',markevery=3)
 mark_every=128
 iv=1
 ax[0].plot(   sp.index[::iv],      sp.dtp6[::iv],'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
@@ -61,7 +64,6 @@ ax[0].plot(   sp.index[::iv],      sp.dtp3[::iv],'-',color='olive'    ,markersiz
 ax[0].plot(   sp.index[::iv],      sp.dtp2[::iv],'-',color='gold'     ,markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='2.5m',markevery=mark_every,ms=12)
 ax[0].plot(   sp.index[::iv],      sp.dtp1[::iv],'-',color='peru'     ,markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.0m',ms=12,markevery=mark_every)
 ax[0].plot(   sp.index[::iv],      sp.dtp0[::iv],'-',color='maroon'   ,markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='3.5m',markevery=mark_every)
-
 
 sp=prof['grange_b_electrochem_o2']['data'].df
 sp_lo=prof['grange_b_luo2']['data'].df
