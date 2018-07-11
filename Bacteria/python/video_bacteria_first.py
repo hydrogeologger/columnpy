@@ -52,7 +52,8 @@ file_name_bact=[i.split('/')[-1] for i in files_bact]
 photo_taken_time_bact=[get_date_taken(i) for i in files_bact]
 
 #for ii in file_name_bact[:1]:
-for ii in file_name_bact:
+#for ii in file_name_bact:
+for ii in file_name_bact[::30]:
 #for ii in file_name_bact[-3:-1]:
 
         

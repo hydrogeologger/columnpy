@@ -1,7 +1,10 @@
 
 
-#data_weather_camellia_path=current_path+'/data_weather_camellia/'    # warning, all the files should be .dat
+data_weather_camellia_path=current_path+'/data_weather_camellia/'    # warning, all the files should be .dat
 
+#data_weather_camellia_header=['aet','batt','dlyrainmm','ip','ir_down','ir_up','lt','mo_soil','p','pet','rainmm','rh','rh_box_6','rh_box_7','tc',
+#'temp_soil','timestamp','tp_box_6',' tp_box_7','uv_down','uv_up','vis_down','vis_up','wddir','wddiravg2m','wdgstdir',
+#'wdgstdir10m','wdgstkph','wdgstkph10m','wdspdkph','wdspdkphavg2m']
 
 data_weather_camellia_header=['et','batt','dlyrainmm','ip','ir_down','ir_up','lt','mo_soil','p','pet','rainmm','rh','rh_box_6','rh_box_7','tc',
     'temp_soil','date_time','tp_box_6','tp_box_7','uv_down','uv_up','vis_down','vis_up','wddir','wddiravg2m','wdgstdir','wdgstdir10m','wdgstkph',
@@ -11,13 +14,15 @@ data_date_time=['date_time']
 # 09/03/2017 here x[:-5] only sorts out from start to -5 position
 # one can check the correct by
 # dateparse('2017-03-09T09:02:48.588Z')
+# and see if the parsing is successful
+#dateparse =  lambda x: pd.datetime.strptime(x[:-5], '%Y-%m-%dT%H:%M:%S')  # sparkfun output
 # this new function is better as it provides miniseconds parsing as well. 
 dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # sparkfun output
 
 # 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
 #index_col_sw=False
-#index_col_sw=False
-index_col_sw='date_time'
+index_col_sw=False
+
 #data_weather_camellia=pandas_scale.pandas_scale(file_path=data_weather_camellia_path,
 data_weather_camellia=pandas_scale.pandas_scale(file_path=camellia_weather.file_dir,
     source='raw',
@@ -31,8 +36,6 @@ data_weather_camellia=pandas_scale.pandas_scale(file_path=camellia_weather.file_
 
 
 
-data_weather_camellia.df.sort_index(ascending=True,inplace=True)
-data_weather_camellia.df['date_time']=data.df['date_time']+pd.to_timedelta(10, unit='h')
 
 data_weather_daisy_header=['aet','batt','dlyrainmm','ip','ir_down','ir_up','lt','mo_soil','p','pet','rainmm','rh','rh_box_6','rh_box_7','tc',
     'temp_soil','date_time','tp_box_6','tp_box_7','uv_down','uv_up','vis_down','vis_up','wddir','wddiravg2m','wdgstdir','wdgstdir10m','wdgstkph',
@@ -51,35 +54,15 @@ data_weather_daisy=pandas_scale.pandas_scale(file_path=daisy_weather.file_dir,
     index_col=index_col_sw
     )
 
-
-data_weather_daisy.df.sort_index(ascending=True,inplace=True)
-#data_weather_daisy.df.sort_values('date_time',inplace=True)
+#data.df.sort_values('date_time',inplace=True)
 ### https://stackoverflow.com/questions/37787698/how-to-sort-pandas-dataframe-from-one-column
 ### reverse the dataframe by timestamp as the result is upside down
 ##data.df.sort_values('timestamp',inplace=True)
 ##
-#data_weather_daisy.df = data.df.reset_index(drop=True)
+#data.df = data.df.reset_index(drop=True)
 ##
 ### 'date_time'  is the column with corrected time zones
-# put this to 11 hours as rain resets around 00:30
-#data_weather_daisy.df['date_time']=data.df['date_time']+pd.to_timedelta(10, unit='h')
-data_weather_daisy.df.index=data_weather_daisy.df.index+pd.to_timedelta(10, unit='h')
-
-
-data_weather_daisy_daily=data_weather_daisy.df.between_time('22:30','22:59')
-data_weather_daisy_daily.index=data_weather_daisy_daily.index.date
-
-#data_weather_daisy_daily.plot.bar(y='dlyrainmm')
-ax1=plt.figure()
-plt.bar(data_weather_daisy_daily.index,data_weather_daisy_daily['dlyrainmm'])
-
-
-data_weather_camellia_daily=data_weather_camellia.df.between_time('22:30','22:59')
-data_weather_camellia_daily.index=data_weather_camellia_daily.index.date
-
-#data_weather_daisy_daily.plot.bar(y='dlyrainmm')
-ax2=plt.figure()
-plt.bar(data_weather_camellia_daily.index,data_weather_camellia_daily['dlyrainmm'])
+##data.df['date_time']=data.df['timestamp']+pd.to_timedelta(10, unit='h')
 #
 #
 ##data.save_as_csv (fn='data_merged.csv')
@@ -93,7 +76,23 @@ data_weather_daisy.df['ir_down'][data_weather_daisy.df['ir_down']>40000]=np.nan
 data_weather_daisy.df['ir_down']=(data_weather_daisy.df['ir_down']-224.0)/20.512
 data_weather_daisy.df['rh']=(data_weather_daisy.df['rh']-.0)/120
 data_weather_daisy.df['wdspdkph']=(data_weather_daisy.df['wdspdkph']-.0)*16.0
-
-
-
-
+##data.df['mo_0'][data.df['mo_8']>570]=np.nan
+##data.df['mo0'][data.df['mo0']>400]=np.nan
+#data.df['mo1'][data.df['mo1']>400]=np.nan
+#data.df['mo2'][data.df['mo2']>400]=np.nan
+#data.df['mo3'][data.df['mo3']>400]=np.nan
+#data.df['mo4'][data.df['mo4']>400]=np.nan
+#data.df['mo4'][data.df['mo4']>400]=np.nan
+#data.df['mo4'][data.df['mo4']<150]=np.nan
+#data.df['mo4'][:5000][data.df['mo4'][:5000]<200]=np.nan
+#data.df['mo5'][data.df['mo5']>400]=np.nan
+#data.df['mo6'][data.df['mo5']>400]=np.nan
+#data.df['mo7'][data.df['mo7']>400]=np.nan
+##data.df['mo_8'][data.df['mo_8']>570]=np.nan
+##data.df['t_19_end'][data.df['t_19_end']>32]=np.nan
+##data.df['t_19_begin'][data.df['t_19_begin']>32]=np.nan
+##data.df['t_14_begin'][data.df['t_14_begin']>32]=np.nan
+##data.df['t_19_end'][data.df['t_19_end']>32]=np.nan
+##data.df['t_14_end'][data.df['t_14_end']>32]=np.nan
+#
+#
