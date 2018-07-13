@@ -71,6 +71,8 @@ dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # s
 
 # 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
 index_col_sw=False
+#index_col_sw=True
+#index_col_sw='date_time'
 
 data=pandas_scale.pandas_scale(file_path=data_file_path,
     source='raw',
@@ -84,6 +86,8 @@ data=pandas_scale.pandas_scale(file_path=data_file_path,
 
 
 data.df.sort_values('date_time',inplace=True)
+#data.df.sort_index(ascending=True,inplace=True)
+
 ## https://stackoverflow.com/questions/37787698/how-to-sort-pandas-dataframe-from-one-column
 ## reverse the dataframe by timestamp as the result is upside down
 #data.df.sort_values('timestamp',inplace=True)
@@ -92,6 +96,7 @@ data.df = data.df.reset_index(drop=True)
 #
 ### 'date_time'  is the column with corrected time zones
 data.df['date_time']=data.df['date_time']+pd.to_timedelta(10, unit='h')
+#data.df.index=data.df.index+pd.to_timedelta(10, unit='h')
 ##
 
 
