@@ -13,7 +13,8 @@ import urllib2
 from time import sleep
 
 
-sw_download=False
+#sw_download=False
+sw_download=True
 
 
 current_path=os.getcwd()

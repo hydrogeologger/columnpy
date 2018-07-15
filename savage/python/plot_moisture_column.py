@@ -53,39 +53,46 @@ sp=prof['grange_a_moisture_suction']['data'].df#[::24]
 
 mark_every=128
 iv=1
-ax[0].plot(   sp.index[::iv],      sp.mo6[::iv],'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
-ax[0].plot(   sp.index[::iv],      sp.mo6[::iv],'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.0m',markevery=mark_every,ms=12)
-ax[0].plot(   sp.index[::iv],      sp.mo5[::iv],'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='1.5m',markevery=mark_every,ms=12)
-ax[0].plot(   sp.index[::iv],      sp.mo3[::iv],'-',color='olive'    ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.0m',markevery=mark_every,ms=12)
-ax[0].plot(   sp.index[::iv],      sp.mo2[::iv],'-',color='gold'     ,markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='2.5m',markevery=mark_every,ms=12)
-ax[0].plot(   sp.index[::iv],      sp.mo1[::iv],'-',color='peru'     ,markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.0m',ms=12,markevery=mark_every)
-ax[0].plot(   sp.index[::iv],      sp.mo0[::iv],'-',color='maroon'   ,markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='3.5m',markevery=mark_every)
+ax[0].plot(sp.index, sp.mo7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+ax[0].plot(sp.index, sp.mo6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+ax[0].plot(sp.index, sp.mo5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+ax[0].plot(sp.index, sp.mo4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+ax[0].plot(sp.index, sp.mo3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+ax[0].plot(sp.index, sp.mo2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+ax[0].plot(sp.index, sp.mo1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+ax[0].plot(sp.index, sp.mo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
-sp=prof['grange_b_electrochem_o2']['data'].df
-sp_lo=prof['grange_b_luo2']['data'].df
+sp=prof['grange_b_moisture_suction']['data'].df#[::24]
 mark_every=24
-ax[1].plot(sp.index, sp.dtp7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
-ax[1].plot(sp.index, sp.dtp6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
-ax[1].plot(sp.index, sp.dtp5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
-ax[1].plot(sp_lo.index, sp_lo.dlut4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
-ax[1].plot(sp.index, sp.dtp3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
-ax[1].plot(sp_lo.index, sp_lo.dlut2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
-ax[1].plot(sp.index, sp.dtp1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
-ax[1].plot(sp.index, sp.dtp0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+ax[1].plot(sp.index, sp.mo7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+ax[1].plot(sp.index, sp.mo6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+ax[1].plot(sp.index, sp.mo5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+ax[1].plot(sp.index, sp.mo4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+ax[1].plot(sp.index, sp.mo3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+ax[1].plot(sp.index, sp.mo2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+ax[1].plot(sp.index, sp.mo1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+ax[1].plot(sp.index, sp.mo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
-sp=prof['grange_d_electrochem_o2']['data'].df
-sp_lo=prof['grange_d_luo2']['data'].df
+sp=prof['grange_d_type_moisture_suction']['data'].df#[::24]
 mark_every=48
-ax[2].plot(sp_lo.index, sp_lo.dlut7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
-ax[2].plot(sp.index, sp.dtp6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
-ax[2].plot(sp_lo.index, sp_lo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
-ax[2].plot(sp.index, sp.dtp4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
-ax[2].plot(sp.index, sp.dtp3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
-ax[2].plot(sp.index, sp.dtp2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
-ax[2].plot(sp.index, sp.dtp1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
-ax[2].plot(sp.index, sp.dtp0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+#ax[2].plot(sp_lo.index, sp_lo.dlut7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+#ax[2].plot(sp.index, sp.dtp6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+#ax[2].plot(sp_lo.index, sp_lo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+#ax[2].plot(sp.index, sp.dtp4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+#ax[2].plot(sp.index, sp.dtp3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+#ax[2].plot(sp.index, sp.dtp2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+#ax[2].plot(sp.index, sp.dtp1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+#ax[2].plot(sp.index, sp.dtp0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+ax[2].plot(sp.index, sp.mo7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+ax[2].plot(sp.index, sp.mo6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+ax[2].plot(sp.index, sp.mo5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+ax[2].plot(sp.index, sp.mo4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+ax[2].plot(sp.index, sp.mo3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+ax[2].plot(sp.index, sp.mo2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+ax[2].plot(sp.index, sp.mo1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+ax[2].plot(sp.index, sp.mo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
 
@@ -132,47 +139,65 @@ ax[2].plot(sp.index, sp.dtp0,'-',color='maroon',markersize=ms-3,markeredgewidth=
 #ax[5].plot(sp_wlo.index, sp_wlo.wluo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
-sp_wlo=prof['grange_5_luo2_wet']['data'].df
-sp_dlo=prof['grange_5_luo2_dry']['data'].df
-sp_moi=prof['grange_5_mo_su']['data'].df
+sp=prof['grange_5_mo_su']['data'].df
 mark_every=24
-ax[3].plot(sp_moi.index, sp_moi.tmp7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
-ax[3].plot(sp_dlo.index, sp_dlo.dlut6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
-ax[3].plot(sp_dlo.index, sp_dlo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
-ax[3].plot(sp_dlo.index, sp_dlo.dlut4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
-ax[3].plot(sp_dlo.index, sp_dlo.dlut3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
-ax[3].plot(sp_dlo.index, sp_dlo.dlut2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
-ax[3].plot(sp_dlo.index, sp_dlo.dlut1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
-ax[3].plot(sp_dlo.index, sp_dlo.dlut0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+#ax[3].plot(sp_moi.index, sp_moi.tmp7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+#ax[3].plot(sp_dlo.index, sp_dlo.dlut6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+#ax[3].plot(sp_dlo.index, sp_dlo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+#ax[3].plot(sp_dlo.index, sp_dlo.dlut4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+#ax[3].plot(sp_dlo.index, sp_dlo.dlut3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+#ax[3].plot(sp_dlo.index, sp_dlo.dlut2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+#ax[3].plot(sp_dlo.index, sp_dlo.dlut1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+#ax[3].plot(sp_dlo.index, sp_dlo.dlut0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+ax[3].plot(sp.index, sp.mo7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+ax[3].plot(sp.index, sp.mo6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+ax[3].plot(sp.index, sp.mo5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+ax[3].plot(sp.index, sp.mo4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+ax[3].plot(sp.index, sp.mo3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+ax[3].plot(sp.index, sp.mo2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+ax[3].plot(sp.index, sp.mo1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+ax[3].plot(sp.index, sp.mo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
 
-sp_wlo=prof['grange_3_luo2_wet']['data'].df
-sp_dlo=prof['grange_3_luo2_dry']['data'].df
-sp_moi=prof['grange_3_mo_su']['data'].df
+sp=prof['grange_3_mo_su']['data'].df
 mark_every=24
-ax[4].plot(sp_moi.index, sp_moi.tmp7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
-ax[4].plot(sp_dlo.index, sp_dlo.dlut6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
-ax[4].plot(sp_dlo.index, sp_dlo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
-ax[4].plot(sp_dlo.index, sp_dlo.dlut4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
-ax[4].plot(sp_dlo.index, sp_dlo.dlut3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
-ax[4].plot(sp_dlo.index, sp_dlo.dlut2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
-ax[4].plot(sp_dlo.index, sp_dlo.dlut1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
-ax[4].plot(sp_dlo.index, sp_dlo.dlut0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+#ax[4].plot(sp_moi.index, sp_moi.tmp7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+#ax[4].plot(sp_dlo.index, sp_dlo.dlut6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+#ax[4].plot(sp_dlo.index, sp_dlo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+#ax[4].plot(sp_dlo.index, sp_dlo.dlut4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+#ax[4].plot(sp_dlo.index, sp_dlo.dlut3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+#ax[4].plot(sp_dlo.index, sp_dlo.dlut2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+#ax[4].plot(sp_dlo.index, sp_dlo.dlut1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+#ax[4].plot(sp_dlo.index, sp_dlo.dlut0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+ax[4].plot(sp.index, sp.mo7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+ax[4].plot(sp.index, sp.mo6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+ax[4].plot(sp.index, sp.mo5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+ax[4].plot(sp.index, sp.mo4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+ax[4].plot(sp.index, sp.mo3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+ax[4].plot(sp.index, sp.mo2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+ax[4].plot(sp.index, sp.mo1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+ax[4].plot(sp.index, sp.mo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
-sp_wlo=prof['grange_4_luo2_wet']['data'].df
-sp_dlo=prof['grange_4_luo2_dry']['data'].df
-sp_moi=prof['grange_4_mo_su']['data'].df
+sp=prof['grange_4_mo_su']['data'].df
 mark_every=24
-ax[5].plot(sp_moi.index, sp_moi.tmp7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
-ax[5].plot(sp_dlo.index, sp_dlo.dlut6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
-ax[5].plot(sp_dlo.index, sp_dlo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
-ax[5].plot(sp_dlo.index, sp_dlo.dlut4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
-ax[5].plot(sp_dlo.index, sp_dlo.dlut3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
-ax[5].plot(sp_dlo.index, sp_dlo.dlut2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
-ax[5].plot(sp_dlo.index, sp_dlo.dlut1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
-ax[5].plot(sp_dlo.index, sp_dlo.dlut0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+#ax[5].plot(sp_moi.index, sp_moi.tmp7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+#ax[5].plot(sp_dlo.index, sp_dlo.dlut6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+#ax[5].plot(sp_dlo.index, sp_dlo.dlut5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+#ax[5].plot(sp_dlo.index, sp_dlo.dlut4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+#ax[5].plot(sp_dlo.index, sp_dlo.dlut3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+#ax[5].plot(sp_dlo.index, sp_dlo.dlut2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+#ax[5].plot(sp_dlo.index, sp_dlo.dlut1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+#ax[5].plot(sp_dlo.index, sp_dlo.dlut0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
+ax[5].plot(sp.index, sp.mo7,'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
+ax[5].plot(sp.index, sp.mo6,'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
+ax[5].plot(sp.index, sp.mo5,'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
+ax[5].plot(sp.index, sp.mo4,'-',color='limegreen',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='2.0m',markevery=mark_every,ms=12)
+ax[5].plot(sp.index, sp.mo3,'-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.5m',markevery=mark_every,ms=12)
+ax[5].plot(sp.index, sp.mo2,'-',color='gold',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='3.0m',markevery=mark_every,ms=12)
+ax[5].plot(sp.index, sp.mo1,'-',color='peru',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.5m',ms=12,markevery=mark_every)
+ax[5].plot(sp.index, sp.mo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
 
@@ -189,12 +214,12 @@ ax[5].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 #ax[7].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 #
 #ax[0].set_ylabel('CUMULATIVE\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=20)
-ax[0].set_ylabel('TEMPERATURE\nCOLUMN 1\n A TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-ax[1].set_ylabel('TEMPERATURE\nCOLUMN 2\n B TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-ax[2].set_ylabel('TEMPERATURE\nCOLUMN 3\n D TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-ax[3].set_ylabel('TEMPERATURE\nCOLUMN 4\n D + A TYPE\nCOMPACTED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-ax[4].set_ylabel('TEMPERATURE\nCOLUMN 5\n D + B TYPE\nCOMPACTED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-ax[5].set_ylabel('TEMPERATURE\nCOLUMN 6\n A + B + D\nMIXED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+ax[0].set_ylabel('DEG. OF SAT.\nCOLUMN 1\n A TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+ax[1].set_ylabel('DEG. OF SAT.\nCOLUMN 2\n B TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+ax[2].set_ylabel('DEG. OF SAT.\nCOLUMN 3\n D TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+ax[3].set_ylabel('DEG. OF SAT.\nCOLUMN 4\n D + A TYPE\nCOMPACTED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+ax[4].set_ylabel('DEG. OF SAT.\nCOLUMN 5\n D + B TYPE\nCOMPACTED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+ax[5].set_ylabel('DEG. OF SAT.\nCOLUMN 6\n A + B + D\nMIXED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
 
 ##ax[2].set_ylabel('DEGREE OF SAT.\nBY DIELECTRIC\nMOISTURE\nSENSOR', fontsize=y_fontsize, labelpad=10)
 #ax[2].set_ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
@@ -204,12 +229,12 @@ ax[5].set_ylabel('TEMPERATURE\nCOLUMN 6\n A + B + D\nMIXED ($^\circ$C)', fontsiz
 ##ax[7].set_ylabel('SUCTION BY\nTEMPERATURE\nHUMIDITY\n SENSOR (m)', fontsize=y_fontsize, labelpad=10)
 
 ax[5].set_xlabel('DATE', fontsize=x_fontsize,labelpad=3)
-ax[0].set_ylim([-2,31])
-ax[1].set_ylim([-2,31])
-ax[2].set_ylim([-2,31])
-ax[3].set_ylim([-2,31])
-ax[4].set_ylim([-2,31])
-ax[5].set_ylim([-2,31])
+#ax[0].set_ylim([-2,31])
+#ax[1].set_ylim([-2,31])
+#ax[2].set_ylim([-2,31])
+#ax[3].set_ylim([-2,31])
+#ax[4].set_ylim([-2,31])
+#ax[5].set_ylim([-2,31])
 #ax[6].set_ylim([-0.1,22])
 #ax[7].set_ylim([-0.1,22])
 #ax[7].legend(bbox_to_anchor=(.1, 0.55 ), loc=2, borderaxespad=0.)
