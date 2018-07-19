@@ -34,7 +34,7 @@ python_file_path=current_path+'/python/'
 sys.path.append(python_file_path)
 # change the date time header as datetime to make life easier
 #data_list_data_roof=os.listdir(current_path+'/data/data_roof/')
-data_file_path=current_path+'/data/qal_moisture_suction/'    # warning, all the files should be .dat DO NOT FORGET THE LAST SLASH
+data_file_path=current_path+'/data/public_qal_moisture_suction/'    # warning, all the files should be .dat DO NOT FORGET THE LAST SLASH
 
 #data_header=['deltat_c_1','deltat_c_2','deltat_c_3','ip','scale1','scale2','scale3','starttemp_c_1','starttemp_c_2','starttemp_c_3',
 #    'date_time','vw_1','vw_2','vw_3']
@@ -165,7 +165,25 @@ data_mo_su.df.loc[mask,'pre']=280+np.random.rand(np.sum(mask))*20
 #data.save_as_csv (fn='data_merged.csv')
 #data.save_as_hdf5(fn='data_merged.hd5')
 
+data_mo_su.df['tmp0'].loc[data_mo_su.df['tmp0']>50]=np.nan
+data_mo_su.df['tmp1'].loc[data_mo_su.df['tmp1']>50]=np.nan
+data_mo_su.df['tmp2'].loc[data_mo_su.df['tmp2']>50]=np.nan
+data_mo_su.df['tmp3'].loc[data_mo_su.df['tmp3']>50]=np.nan
+data_mo_su.df['tmp4'].loc[data_mo_su.df['tmp4']>50]=np.nan
+data_mo_su.df['tmp5'].loc[data_mo_su.df['tmp5']>50]=np.nan
+data_mo_su.df['tmp6'].loc[data_mo_su.df['tmp5']>50]=np.nan
+data_mo_su.df['tmp7'].loc[data_mo_su.df['tmp7']>50]=np.nan
+data_mo_su.df['tmp8'].loc[data_mo_su.df['tmp8']>50]=np.nan
 
+data_mo_su.df['tmp0'].loc[data_mo_su.df['tmp0']<3]=np.nan
+data_mo_su.df['tmp1'].loc[data_mo_su.df['tmp1']<3]=np.nan
+data_mo_su.df['tmp2'].loc[data_mo_su.df['tmp2']<3]=np.nan
+data_mo_su.df['tmp3'].loc[data_mo_su.df['tmp3']<3]=np.nan
+data_mo_su.df['tmp4'].loc[data_mo_su.df['tmp4']<3]=np.nan
+data_mo_su.df['tmp5'].loc[data_mo_su.df['tmp5']<3]=np.nan
+data_mo_su.df['tmp6'].loc[data_mo_su.df['tmp5']<3]=np.nan
+data_mo_su.df['tmp7'].loc[data_mo_su.df['tmp7']<3]=np.nan
+data_mo_su.df['tmp8'].loc[data_mo_su.df['tmp8']<3]=np.nan
 ###   special treatment
 #data.df['mo_0'][data.df['mo_8']>570]=np.nan
 #data.df['mo0'][data.df['mo0']>400]=np.nan

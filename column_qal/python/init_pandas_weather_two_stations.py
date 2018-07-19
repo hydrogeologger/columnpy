@@ -1,6 +1,6 @@
 
 
-data_weather_camellia_path=current_path+'/data/weather_camellia_on_the_roof/'    # warning, all the files should be .dat
+data_weather_camellia_path=current_path+'/data/public_weather_camellia/'    # warning, all the files should be .dat
 
 
 data_weather_camellia_header=['et','batt','dlyrainmm','ip','ir_down','ir_up','lt','mo_soil','p','pet','rainmm','rh','rh_box_6','rh_box_7','tc',
@@ -48,7 +48,7 @@ data_weather_daisy_header=['aet','batt','dlyrainmm','ip','ir_down','ir_up','lt',
     'wdgstkph10m','wdspdkph','wdspdkphavg2m']
 
 
-data_weather_daisy_path=current_path+'/data/daisy_weather_nectar/'    # warning, all the files should be .dat
+data_weather_daisy_path=current_path+'/data/public_daisy_weather/'    # warning, all the files should be .dat
 data_weather_daisy=pandas_scale.pandas_scale(file_path=data_weather_daisy_path,
     source='raw',
     sep=',',

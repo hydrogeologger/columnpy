@@ -59,27 +59,50 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
         #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
-        sp_sch[sch_name].df['mmo0']=(550.0-sp_sch[sch_name].df['mo0'])/(550.-270)
-        sp_sch[sch_name].df['mmo1']=(550.0-sp_sch[sch_name].df['mo1'])/(550.-270)
-        sp_sch[sch_name].df['mmo2']=(550.0-sp_sch[sch_name].df['mo2'])/(550.-270)
-        sp_sch[sch_name].df['mmo3']=(550.0-sp_sch[sch_name].df['mo3'])/(550.-270)
-        sp_sch[sch_name].df['mmo4']=(550.0-sp_sch[sch_name].df['mo4'])/(550.-270)
-        sp_sch[sch_name].df['mmo5']=(550.0-sp_sch[sch_name].df['mo5'])/(550.-270)
-        sp_sch[sch_name].df['mmo6']=(550.0-sp_sch[sch_name].df['mo6'])/(550.-270)
-        sp_sch[sch_name].df['mmo7']=(550.0-sp_sch[sch_name].df['mo7'])/(550.-270)
-        sp_sch[sch_name].df['mmo8']=(550.0-sp_sch[sch_name].df['mo8'])/(550.-270)
-        sp_sch[sch_name].df['mmo9']=(550.0-sp_sch[sch_name].df['mo9'])/(550.-270)
+        if sch_name=="qal":
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
+            sp_sch[sch_name].df['mmo0']=(550.0-sp_sch[sch_name].df['mo0'])/(550.-270)
+            sp_sch[sch_name].df['mmo1']=(550.0-sp_sch[sch_name].df['mo1'])/(550.-270)
+            sp_sch[sch_name].df['mmo2']=(550.0-sp_sch[sch_name].df['mo2'])/(550.-270)
+            sp_sch[sch_name].df['mmo3']=(550.0-sp_sch[sch_name].df['mo3'])/(550.-270)
+            sp_sch[sch_name].df['mmo4']=(550.0-sp_sch[sch_name].df['mo4'])/(550.-270)
+            sp_sch[sch_name].df['mmo5']=(550.0-sp_sch[sch_name].df['mo5'])/(550.-270)
+            sp_sch[sch_name].df['mmo6']=(550.0-sp_sch[sch_name].df['mo6'])/(550.-270)
+            sp_sch[sch_name].df['mmo7']=(550.0-sp_sch[sch_name].df['mo7'])/(550.-270)
+            sp_sch[sch_name].df['mmo8']=(550.0-sp_sch[sch_name].df['mo8'])/(550.-270)
+            sp_sch[sch_name].df['mmo9']=(550.0-sp_sch[sch_name].df['mo9'])/(550.-270)
+        elif sch_name=="qal1807":
+            alpha=-7.8
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+            sp_sch[sch_name].df['mmo0']=(295.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(295.**alpha-270**alpha)   # 1 cm
+            sp_sch[sch_name].df['mmo1']=(550.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(550.**alpha-270**alpha)   # 5 cm
+            sp_sch[sch_name].df['mmo2']=(295.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(295.**alpha-270**alpha)   # 8 cm 
+            sp_sch[sch_name].df['mmo3']=(295.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(295.**alpha-270**alpha)   # 13cm
+            sp_sch[sch_name].df['mmo4']=(295.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(295.**alpha-270**alpha)   # 20cm
+            sp_sch[sch_name].df['mmo5']=(295.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(295.**alpha-275**alpha)   # 28cm
+            sp_sch[sch_name].df['mmo6']=(550.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(550.**alpha-270**alpha)   # 38cm
+            sp_sch[sch_name].df['mmo7']=(550.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(530.**alpha-270**alpha)   # 48cm
+            sp_sch[sch_name].df['mmo8']=(550.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(550.**alpha-285**alpha)   # 70cm
+            sp_sch[sch_name].df['mmo9']=(550.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(550.**alpha-275**alpha)   # 85cm 
 
         
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_up']   ,plot=plot_interpolate  ,coef=5e-4)
@@ -100,11 +123,24 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask,'tmp8']=np.nan
         sp_sch[sch_name].df.loc[mask,'tmp9']=np.nan
 
+        time_start=np.datetime64('2018-07-10T13:00')
+        time_end=np.datetime64('2018-07-12T12:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df.loc[mask,'tmp0']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp1']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp2']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp3']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp4']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp5']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp6']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp7']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp8']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp9']=np.nan
 
         time_start=np.datetime64('2018-02-23T15:00')
         time_end=np.datetime64('2018-03-02T15:00')
         mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
-        data_weather_camellia.df['rh_box_7'][mask]=np.nan
+        data_weather_camellia.df['rh_box_7'].loc[mask]=np.nan
 
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
@@ -113,43 +149,43 @@ for line in open("schedule.ipt"):
         time_end=np.datetime64('2018-01-30T10:00')
         #https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['rh'][mask]=np.nan
+        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
 
         time_start=np.datetime64('2018-02-24T15:00')
         time_end=np.datetime64('2018-03-01T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['rh'][mask]=np.nan
+        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
 
 
         #sp_sch[sch_name].df['rh_box_7'][mask]=np.nan
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         time_start=np.datetime64('2018-02-24T00:00')
-        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'][ sp_sch[sch_name].df['wdspdkphavg2m']>12  ]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'][ sp_sch[sch_name].df['wdspdkphavg2m']<0  ]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']>12  ]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']<0  ]=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdgstkph10m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         #time_start=np.datetime64('2018-02-24T00:00')
         #sp_sch[sch_name].df['wdgstkph10m'][mask]=np.nan
-        sp_sch[sch_name].df['wdgstkph10m'][ sp_sch[sch_name].df['wdgstkph10m']<0.  ]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'].loc[ sp_sch[sch_name].df['wdgstkph10m']<0.  ]=np.nan
 
 
 
         time_start=np.datetime64('2018-02-03T15:00')
         time_end=np.datetime64('2018-02-05T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['rh'][mask]=np.nan
+        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
 
 
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].df['tc'][ sp_sch[sch_name].df['tc']<9  ]=np.nan
-        sp_sch[sch_name].df['tp_box_7'][ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
+        sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<9  ]=np.nan
+        sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
 
 
 
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name].df['p'][sp_sch[sch_name].df['p'].values<88000]=np.nan
+        sp_sch[sch_name].df['p'].loc[sp_sch[sch_name].df['p'].values<88000]=np.nan
         #sp_sch[sch_name].merge_data(df=data.df, keys=['dhthum0'],plot=plot_interpolate  ,coef=5e-12)  # done
 
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
@@ -167,8 +203,8 @@ for line in open("schedule.ipt"):
         time_end=np.datetime64('2018-02-03T15:00')
         #https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['pre0'][mask]=np.nan
-        sp_sch[sch_name].df['pre1'][mask]=np.nan
+        sp_sch[sch_name].df['pre0'].loc[mask]=np.nan
+        sp_sch[sch_name].df['pre1'].loc[mask]=np.nan
 
 
 

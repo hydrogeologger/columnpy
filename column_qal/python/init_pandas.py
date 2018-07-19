@@ -43,7 +43,7 @@ python_file_path=current_path+'/python/'
 sys.path.append(python_file_path)
 # change the date time header as datetime to make life easier
 #data_list_data_roof=os.listdir(current_path+'/data/data_roof/')
-data_file_path=current_path+'/data/qal_sali_gs3_p/'    # warning, all the files should be .dat DO NOT FORGET THE LAST SLASH
+data_file_path=current_path+'/data/public_qal_sali_gs3_p/'    # warning, all the files should be .dat DO NOT FORGET THE LAST SLASH
 
 #data_header=['deltat_c_1','deltat_c_2','deltat_c_3','ip','scale1','scale2','scale3','starttemp_c_1','starttemp_c_2','starttemp_c_3',
 #    'date_time','vw_1','vw_2','vw_3']
