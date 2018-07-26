@@ -10,7 +10,6 @@ import matplotlib.dates as mdates
 
 import pandas as pd
 import pdb
-import csv_tools
 
 
 
@@ -25,6 +24,7 @@ py_compile.compile(os.environ['pyduino']+'/python/post_processing/constants.py')
 sys.path.append   (os.environ['pyduino']+'/python/')
 python_file_path=current_path+'/python/'
 sys.path.append(python_file_path)
+import csv_tools
 
 import pandas_scale
 import constants

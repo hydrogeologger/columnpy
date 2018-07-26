@@ -56,7 +56,7 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['cum_evap']=(sp_sch[sch_name].df['scale'][0]-sp_sch[sch_name].df['scale']
                             )*constants.g2kg/sp_sch[sch_name].surface_area/constants.rhow_pure_water
         sp_sch[sch_name].df['evap_rate']=np.append(np.diff(sp_sch[sch_name].df['cum_evap'] ),np.nan)/dt_s
-
+        sp_sch[sch_name].df['evap_rate'].loc[ sp_sch[sch_name].df['evap_rate']<0]=np.nan
 
         min_index, min_value = min(enumerate( abs(sp_sch[sch_name].df['date_time']- sp_sch[sch_name].time_surface_emerge
             )), key=operator.itemgetter(1))
@@ -76,8 +76,30 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['mmo9']=(wet1**alpha-sp_sch[sch_name].df['mo9']**alpha)/ (wet1**alpha-270**alpha)   # 1 cm
         sp_sch[sch_name].df['mmo10']=(wet1**alpha-sp_sch[sch_name].df['mo10']**alpha)/(wet1**alpha-280**alpha)   # 5 cm
 
+        #[vwc_fred_xing,suction_fred_xing_kpa]=constants.swcc_fredlund_xing_1994(plot=False,por=sp_sch['redmud_second'].por)
+        sp_sch[sch_name].df['suc_scale']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df['sat']*sp_sch[sch_name].por,por=0.5)
 
+        delta_t_su1_low_2_high=sorted(sp_sch[sch_name].df['2896_deltat_heat'], key=float)
+        sp_sch[sch_name].df.delta_t_su1 =sp_sch[sch_name].df['2896_deltat_heat']
+        sp_sch[sch_name].max_delta_t_su1=6.02
+        sp_sch[sch_name].min_delta_t_su1=4.07
+        sp_sch[sch_name].df['norm_delta_t_2896'] =- (sp_sch[sch_name].min_delta_t_su1 -sp_sch[sch_name].df.delta_t_su1
+            )/(sp_sch[sch_name].max_delta_t_su1-sp_sch[sch_name].min_delta_t_su1)
 
+        aa=-0.5 #coef tested best
+        bb=9.5 #coef tested best 
+        sp_sch[sch_name].df['su_2896']=np.exp(-1.5*(sp_sch[sch_name].df['norm_delta_t_2896']**aa-bb))
+
+        delta_t_su1_low_2_high=sorted(sp_sch[sch_name].df['2870_deltat_heat'], key=float)
+        sp_sch[sch_name].df.delta_t_su1 =sp_sch[sch_name].df['2870_deltat_heat']
+        sp_sch[sch_name].max_delta_t_su1=12.36
+        sp_sch[sch_name].min_delta_t_su1=8.97
+        sp_sch[sch_name].df['norm_delta_t_2870'] =- (sp_sch[sch_name].min_delta_t_su1 -sp_sch[sch_name].df.delta_t_su1
+            )/(sp_sch[sch_name].max_delta_t_su1-sp_sch[sch_name].min_delta_t_su1)
+
+#        aa=-0.5 #coef tested best
+#        bb=10.5 #coef tested best 
+        sp_sch[sch_name].df['su_2870']=np.exp(-1.5*(sp_sch[sch_name].df['norm_delta_t_2870']**aa-bb))
 #            time_start=np.datetime64('2018-04-20T10:00')
 #            time_end=np.datetime64('2018-04-20T23:00')
 #            mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)

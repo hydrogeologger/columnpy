@@ -55,8 +55,8 @@ y_fontsize=17
 # the bad thing in using subplot is that all graph will be generated in the first place
 #fig, ax = plt.subplots(8,sharex=True,figsize=(12,18))
 #fig, ax = plt.subplots(ncols=2,nrows=8,figsize=(12,12))
-for ii in file_name[-2:]:
-#for ii in file_name[:3]:
+#for ii in file_name[-2:]:
+for ii in file_name[::3]:
 #for ii in file_name[::20]:
 #for ii in file_name:
     im=image.imread(path_im+ii)   
@@ -88,7 +88,7 @@ for ii in file_name[-2:]:
     
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_commercial[:idx_im]*constants.ms2mmday,'o',color='c'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='c',label='load cell')
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['scale'][:idx_im]*constants.m2mm,'o',color='brown'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown',label='load cell')
-    ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['evap_rate'][:idx_im]*constants.ms2mmday,'o',color='brown'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown',label='load cell')
+    ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['evap_rate'][:idx_im]*constants.ms2mmday,'o',color='c'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='c',label='load cell')
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['cum_evap'][:idx_im]*constants.m2mm,'o',color='brown'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown',label='load cell')
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_commercial[:idx_im]*constants.ms2mmday,'o',color='c'       ,markersize=ms,markeredgewidth=mew, markeredgecolor='c',label='load cell')
     
@@ -99,16 +99,16 @@ for ii in file_name[-2:]:
     ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['mmo10'][:idx_im],'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Diel. moi. B')
     
 
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['2870_deltat_heat'][:idx_im],'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['2896_deltat_heat'][:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. suc. A')
+    #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['2870_deltat_heat'][:idx_im],'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
+    #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['2896_deltat_heat'][:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. suc. A')
     #ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suc_commercial[:idx_im],'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
-    #ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_7_suction[:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. suc. A')
-    #ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mo_8_suction[:idx_im], 'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Diel. suc. B')
-    #ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suht_2896_suction[:idx_im], 'ro',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Ther. suc. C')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['suc_scale'][:idx_im], 'co',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['su_2870'][:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Ther. suc. A')
+    ax[2].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['su_2896'][:idx_im], 'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Ther. suc. B')
     
-    #ax[3].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['gs3_1_salt'][:idx_im],'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
-    #ax[3].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['gs3_2_salt'][:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. suc. A')
-    ax[3].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['humi_1'][:idx_im],'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
+    #ax[3].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['gs3_1_salt'][:idx_im]/1000.,'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
+    #ax[3].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['gs3_2_salt'][:idx_im]/1000., 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. suc. A')
+    #ax[3].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['humi_1'][:idx_im],'o',color='c',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='Balance & SWCC')
     ax[3].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df['humi_2'][:idx_im], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Diel. suc. A')
     #ax[5].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.t_2896_begin[:idx_im], 'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Fred. Suc. A')
     #
@@ -131,29 +131,30 @@ for ii in file_name[-2:]:
     #ax[2].set_ylim([6,30])
     #ax[4].set_ylim([50,105])
     #ax[0].set_ylabel('CUMULATIVE\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=20)
-    ax[0].set_ylabel('EVAPORATION RATE\n(mm/day)', fontsize=y_fontsize, labelpad=10)
-    ax[1].set_ylabel('VOLUMETRIC WATER\nCONTENT', fontsize=y_fontsize, labelpad=10)
+    ax[0].set_ylabel('EVAPORATION\nRATE\n(mm/day)', fontsize=y_fontsize, labelpad=20)
+    ax[1].set_ylabel('VOLUMETRIC\nWATER\nCONTENT', fontsize=y_fontsize, labelpad=10)
     #ax[2].set_ylabel('DEGREE OF SAT.\nBY DIELECTRIC\nMOISTURE\nSENSOR', fontsize=y_fontsize, labelpad=10)
     ax[2].set_ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
+    ax[3].set_ylabel('AIR\nHUMIDITY (%)', fontsize=y_fontsize, labelpad=15)
     #ax[5].set_ylabel('TEMPERATURE\n($^\circ$c)', fontsize=y_fontsize, labelpad=20)
     #ax[6].set_ylabel('NORMALIZED\nRISE OF\nTEMPERATURE', fontsize=y_fontsize, labelpad=10)
     #ax[7].set_ylabel('SUCTION BY\nTEMPERATURE\nHUMIDITY\n SENSOR (m)', fontsize=y_fontsize, labelpad=10)
     
-    ax[2].set_xlabel('TIME (days)', fontsize=y_fontsize,labelpad=3)
+    ax[3].set_xlabel('TIME (days)', fontsize=y_fontsize,labelpad=3)
     #ax[0].set_ylim([-0.2,35])
-    #ax[0].set_ylim([-1,13])
-    #ax[1].set_ylim([-0.1,0.64])
+    ax[0].set_ylim([-1,9.9])
+    ax[1].set_ylim([-0.1,0.6])
     ##ax[2].set_ylim([200,650])
-    #ax[2].set_ylim([1e-1,1e7])
-    #ax[5].set_ylim([8,27])
+    ax[2].set_ylim([1e1,3e6])
+    ax[3].set_ylim([70,105])
     #ax[6].set_ylim([-0.1,1.1])
     #ax[7].set_ylim([9,40000])
     ax[1].legend(bbox_to_anchor=(.65, 0.95), loc=2, borderaxespad=0.)
-    ax[2].legend(bbox_to_anchor=(.55, 0.55 ), loc=2, borderaxespad=0.)
+    ax[2].legend(bbox_to_anchor=(.65, 0.55 ), loc=2, borderaxespad=0.)
     #ax[7].legend(bbox_to_anchor=(.1, 0.55 ), loc=2, borderaxespad=0.)
-    ax[0].set_title('(A)',x=0.04,y=0.85,fontweight='bold')
-    ax[1].set_title('(B)',x=0.04,y=0.85,fontweight='bold')
-    ax[2].set_title('(C)',x=0.04,y=0.85,fontweight='bold')
+    #ax[0].set_title('(A)',x=0.04,y=0.85,fontweight='bold')
+    #ax[1].set_title('(B)',x=0.04,y=0.85,fontweight='bold')
+    #ax[2].set_title('(C)',x=0.04,y=0.85,fontweight='bold')
     #ax[3].set_title('(D)',x=0.04,y=0.75,fontweight='bold')
     #ax[4].set_title('(E)',x=0.03,y=0.75,fontweight='bold')
     #ax[5].set_title('(F)',x=0.03,y=0.75,fontweight='bold')
@@ -163,6 +164,7 @@ for ii in file_name[-2:]:
     ax[0].set_xlim(xlim)
     ax[1].set_xlim(xlim)
     ax[2].set_xlim(xlim)
+    ax[3].set_xlim(xlim)
     #ax[3].set_xlim(xlim)
     #ax[4].set_xlim(xlim)
     #ax[5].set_xlim(xlim)
@@ -170,7 +172,7 @@ for ii in file_name[-2:]:
     #ax[7].set_xlim(xlim)
     ax[0].set_xticklabels([])
     ax[1].set_xticklabels([])
-    #ax[2].set_xticklabels([])
+    ax[2].set_xticklabels([])
     #ax[3].set_xticklabels([])
     #ax[4].set_xticklabels([])
     #ax[5].set_xticklabels([])
