@@ -59,6 +59,7 @@ dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # s
 #dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%d/%b/%Y %H:%M:%S')  # 18/Jun/2017 23:29:03
 
 # 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
+#index_col_sw='date_time'
 index_col_sw=False
 
 data_mo_su=pandas_scale.pandas_scale(file_path=data_file_path,
@@ -72,6 +73,7 @@ data_mo_su=pandas_scale.pandas_scale(file_path=data_file_path,
     )
 
 
+#data_mo_su.df.sort_index(ascending=True,inplace=True)
 data_mo_su.df.sort_values('date_time',inplace=True)
 ## https://stackoverflow.com/questions/37787698/how-to-sort-pandas-dataframe-from-one-column
 ## reverse the dataframe by timestamp as the result is upside down
@@ -81,13 +83,19 @@ data_mo_su.df = data_mo_su.df.reset_index(drop=True)
 #
 ## 'date_time'  is the column with corrected time zones
 data_mo_su.df['date_time']=data_mo_su.df['date_time']+pd.to_timedelta(10, unit='h')
-
+#data_mo_su.df.index=data_mo_su.df.index+pd.to_timedelta(10, unit='h')
 
 
 
 data_mo_su.df['tmp0'].loc[data_mo_su.df['tmp0']<1]=np.nan;
 data_mo_su.df['tmp1'].loc[data_mo_su.df['tmp1']<1]=np.nan;
 data_mo_su.df['tmp2'].loc[data_mo_su.df['tmp2']<1]=np.nan;
+data_mo_su.df['su0'].loc[data_mo_su.df['su0']<15]=np.nan;
+data_mo_su.df['su1'].loc[data_mo_su.df['su1']<15]=np.nan;
+data_mo_su.df['su2'].loc[data_mo_su.df['su2']<15]=np.nan;
+data_mo_su.df['su3'].loc[data_mo_su.df['su3']<15]=np.nan;
+data_mo_su.df['su4'].loc[data_mo_su.df['su4']<15]=np.nan;
+data_mo_su.df['su5'].loc[data_mo_su.df['su5']<15]=np.nan;
 
 time_start=np.datetime64('2018-03-06T08:00')
 time_end=np.datetime64('2018-03-06T12:30')
