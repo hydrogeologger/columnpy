@@ -111,8 +111,6 @@ if plot_moisture_calibration:
     #aa=-3.0
     #nonlinear_str='y = exp(-1.5(((x-0.8)/2.6)$^{-0.5}$-10))'
     #$e^{\sin(\omega\phi)}$
-    aa=-0.71
-    bb=10.1
 
     sch_name='bacteria_first'
     ax[0][0].semilogy(sp_sch[sch_name].df['norm_delta_t_su0'], sp_sch[sch_name].df ['suc_scale1'],   'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2) 
@@ -120,7 +118,7 @@ if plot_moisture_calibration:
     #ax[0][0].plot(dp, np.exp(sp_sch[sch_name].su0_fit1[0]*dp+sp_sch[sch_name].su0_fit1[1]),color='r',linewidth=lw) 
     #ax[0][0].plot(dp_rise, np.exp(-1.5*(dp**aa-11)),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
     #ax[0][0].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
-    ax[0][0].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
+    ax[0][0].semilogy(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
 
     ax[0][1].semilogy(sp_sch[sch_name].df['norm_delta_t_su1'],sp_sch[sch_name].df ['suc_scale1'],    's',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2) 
     #ax[0][1].semilogy(sp_sch[sch_name].df['su1'],sp_sch[sch_name].df ['suc_scale1'],    's',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)
@@ -128,34 +126,34 @@ if plot_moisture_calibration:
     #ax[0][1].plot(dp_rise, np.exp((dp**aa-bb**aa)/(1.**aa-bb**aa)*13.5),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
     #ax[0][1].plot(dp_rise, np.exp(-1.5*(dp**aa-11)),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
     #ax[0][1].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
-    ax[0][1].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
+    ax[0][1].semilogy(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
 
     ax[1][0].semilogy(sp_sch[sch_name].df['norm_delta_t_su2'],sp_sch[sch_name].df ['suc_scale1'],    'v',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2) 
     #ax[1][0].semilogy(sp_sch[sch_name].df['su2'],sp_sch[sch_name].df ['suc_scale1'],    'v',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)
     #ax[1][0].plot(dp_rise, np.exp(sp_sch[sch_name].su2_fit1[0]*dp+sp_sch[sch_name].su2_fit1[1]),color='r',linewidth=lw,label=sp_sch[sch_name].su2_fit1_str) 
     #ax[1][0].plot(dp_rise, np.exp((dp**aa-bb**aa)/(1.**aa-bb**aa)*13.5),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
     #ax[1][0].plot(dp_rise, np.exp(-1.5*(dp**aa-11)),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
-    ax[1][0].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')    
+    ax[1][0].semilogy(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')    
 
     ax[1][1].semilogy(sp_sch[sch_name].df['norm_delta_t_su3'], sp_sch[sch_name].df ['suc_scale2'],   'x',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)
     #ax[1][1].semilogy(sp_sch[sch_name].df['su3'],sp_sch[sch_name].df ['suc_scale2'],   'x',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)
     #ax[1][1].plot(dp_rise, np.exp(sp_sch[sch_name].su3_fit1[0]*dp+sp_sch[sch_name].su3_fit1[1]),color='r',linewidth=lw,label=sp_sch[sch_name].su3_fit1_str) 
     #ax[1][1].plot(dp_rise, np.exp(-1.5*(dp**aa-11)),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
-    ax[1][1].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw,linestyle='--')
+    ax[1][1].semilogy(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw,linestyle='--')
 
     ax[2][0].semilogy(sp_sch[sch_name].df['norm_delta_t_su4'],sp_sch[sch_name].df ['suc_scale2'],    '^',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)       
     #ax[2][0].semilogy(sp_sch[sch_name].df['su4'],sp_sch[sch_name].df ['suc_scale2'],    '^',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)
     #ax[2][0].plot(dp_rise, np.exp(sp_sch[sch_name].su4_fit1[0]*dp+sp_sch[sch_name].su4_fit1[1]),color='r',linewidth=lw,label=sp_sch[sch_name].su4_fit1_str) 
     #ax[2][0].plot(dp_rise, np.exp((dp**aa-bb**aa)/(1.**aa-bb**aa)*13.5),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
     #ax[2][0].plot(dp_rise, np.exp(-1.5*(dp**aa-11)),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')   
-    ax[2][0].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--') 
+    ax[2][0].semilogy(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--') 
 
     ax[2][1].semilogy(sp_sch[sch_name].df['norm_delta_t_su5'],sp_sch[sch_name].df ['suc_scale2'],    'd',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)       
     #ax[2][0].semilogy(sp_sch[sch_name].df['su5'],sp_sch[sch_name].df ['suc_scale2'],    'd',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment1',markevery=2)
     #ax[2][1].plot(dp_rise, np.exp(sp_sch[sch_name].su5_fit1[0]*dp+sp_sch[sch_name].su5_fit1[1]),color='r',linewidth=lw,label=sp_sch[sch_name].su5_fit1_str) 
     #ax[2][1].plot(dp_rise, np.exp((dp**aa-bb**aa)/(1.**aa-bb**aa)*13.5),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
     #ax[2][1].plot(dp_rise, np.exp(-1.5*(dp**aa-11)),color='r',linewidth=lw,label=nonlinear_str, linestyle='--')
-    ax[2][1].plot(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
+    ax[2][1].semilogy(dp, np.exp(-1.5*(dp**aa-bb)),color='r',linewidth=lw, linestyle='--')
 
     sch_name='bacteria_second'
     ax[0][0].semilogy(sp_sch[sch_name].df['norm_delta_t_su0'],sp_sch[sch_name].df ['suc_scale1'],   'o',mfc='none' ,markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Experiment2',markevery=2)
