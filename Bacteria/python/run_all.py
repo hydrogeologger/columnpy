@@ -6,5 +6,7 @@ execfile('python/read_schedule.py')
 execfile('python/plot_bacteria.py')
 execfile('python/plot_suction_calibration_result.py')
 execfile('python/plot_moisture_calibration.py')
-	
+execfile('python/video_bacteria_first.py')
+execfile('python/video_bacteria_second_.py')
+execfile('python/video_bacteria_third_.py')	
 

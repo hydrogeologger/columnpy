@@ -89,8 +89,9 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp2']   ,plot=plot_interpolate  ,coef=5e-10)  # done 
 
-        aa=-0.5 #coef tested best
-        bb=10.5 #coef tested best       
+        aa=-1.1 #coef tested best
+        #aa=-0.91 #coef tested best
+        bb=10 #coef tested best       
         
         if sch_name=='bacteria_second':
             sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su0']   ,plot=plot_interpolate  ,coef=5e-13)  # done
@@ -208,12 +209,12 @@ for line in open("schedule.ipt"):
             sp_sch[sch_name].df['suction5']=np.exp(-1.5*(sp_sch[sch_name].df['norm_delta_t_su5']**aa-bb))
 
         if sch_name=='bacteria_third':
-            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su0']   ,plot=plot_interpolate  ,coef=5e-13)  # done
-            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su1']   ,plot=plot_interpolate  ,coef=5e-13)  # done
-            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su2']   ,plot=plot_interpolate  ,coef=5e-13)  # done
-            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su3']   ,plot=plot_interpolate  ,coef=5e-13)  # done
-            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su4']   ,plot=plot_interpolate  ,coef=5e-13)  # done
-            sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su5']   ,plot=plot_interpolate  ,coef=5e-13)  # done
+            sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['su0']   ,plot=plot_interpolate  ,coef=5e-17)  # done
+            sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['su1']   ,plot=plot_interpolate  ,coef=5e-17)  # done
+            sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['su2']   ,plot=plot_interpolate  ,coef=5e-17)  # done
+            sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['su3']   ,plot=plot_interpolate  ,coef=5e-17)  # done
+            sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['su4']   ,plot=plot_interpolate  ,coef=5e-17)  # done
+            sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['su5']   ,plot=plot_interpolate  ,coef=5e-17)  # done
      
             delta_t_su0_low_2_high=sorted(sp_sch[sch_name].df['su0'], key=float)
             sp_sch[sch_name].df.delta_t_su0 =sp_sch[sch_name].df['su0']

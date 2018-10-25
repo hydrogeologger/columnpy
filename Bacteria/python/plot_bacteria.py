@@ -32,15 +32,15 @@ grid_width=2
 y_fontsize=11
 fig, ax = plt.subplots(4,sharex=True,figsize=(9,9))
 fig.subplots_adjust(hspace=.10)
-fig.subplots_adjust(left=0.17, right=0.89, top=0.97, bottom=0.05)
+fig.subplots_adjust(left=0.15, right=0.79, top=0.97, bottom=0.05)
 
 for i in ax:
   for axis in ['top','bottom','left','right']:
     i.spines[axis].set_linewidth(2)
 
 sch_name='bacteria_first'
-ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale1*constants.m2mm,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin1',markevery=1)
-ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale2*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin2',markevery=2)
+ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale1*constants.m2mm,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin1 (nobact)',markevery=1)
+ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale2*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin2 (bact)',markevery=2)
 sch_name='bacteria_second'
 ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale1*constants.m2mm,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
 ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale2*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)
@@ -49,8 +49,8 @@ ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale1
 ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale2*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)
 
 sch_name='bacteria_first'
-ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale1*constants.ms2mmday,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin1',markevery=1)
-ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale2*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin2',markevery=2)
+ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale1*constants.ms2mmday,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin1 (nobact)',markevery=1)
+ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale2*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin2 (bact)',markevery=2)
 sch_name='bacteria_second'
 ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale1*constants.ms2mmday,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
 ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale2*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)
@@ -60,12 +60,12 @@ ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale
 
 
 sch_name='bacteria_first'
-ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo0,'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Mo1 (nobact)')
-ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo1,'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Mo2 (nobact)')
-ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo2,'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Mo3 (nobact)')
-ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo3,'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Mo4 (bact)')
-ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo4,'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Mo5 (bact)')
-ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo5,'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Mo6 (bact)')
+ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo0,'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Mo1(nobact)')
+ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo1,'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Mo2(nobact)')
+ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo2,'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Mo3(nobact)')
+ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo3,'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Mo4(bact)')
+ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo4,'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Mo5(bact)')
+ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.mmo5,'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Mo6(bact)')
 ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.sat_scale1,'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Basin1')
 ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.sat_scale2,'o',color='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='Basin2')
 sch_name='bacteria_second'
@@ -88,12 +88,12 @@ ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.sat_scale1,'o',
 ax[2].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.sat_scale2,'o',color='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange')
 
 sch_name='bacteria_first'
-ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction0,'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Suc.1 (nobact)')
-ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction1,'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Suc.2 (nobact)')
-ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction2,'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Suc.3 (nobact)')
-ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction3,'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Suc.4 (bact)')
-ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction4,'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Suc.5 (bact)')
-ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction5,'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Suc.6 (bact)')
+ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction0,'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Su1(nobact)')
+ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction1,'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Su2(nobact)')
+ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction2,'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Su3(nobact)')
+ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction3,'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Su4(bact)')
+ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction4,'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Su5(bact)')
+ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suction5,'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Su6(bact)')
 ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suc_scale1,'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Basin1')
 ax[3].semilogy(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.suc_scale2,'o',color='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='Basin2')
 sch_name='bacteria_second'

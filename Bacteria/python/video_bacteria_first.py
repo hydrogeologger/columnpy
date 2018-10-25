@@ -11,7 +11,7 @@ mew=3
 grid_width=2
 y_fontsize=15
 
-param = {'legend.fontsize': 8,
+param = {'legend.fontsize': 4,
           'figure.figsize': (10, 5),
          'axes.labelsize': 15,
          'axes.titlesize':'50',
@@ -54,11 +54,9 @@ photo_taken_time_bact=[get_date_taken(i) for i in files_bact]
 
 #for ii in file_name_bact[:1]:
 #for ii in file_name_bact:
-<<<<<<< HEAD
-for ii in file_name_bact[::15]:
-=======
-for ii in file_name_bact[::30]:
->>>>>>> bf262ad2a2116e812ad6e257b0000df23367bb4e
+
+for ii in file_name_bact[::10]:
+#for ii in file_name_bact[::30]:
 #for ii in file_name_bact[-3:-1]:
 
         
@@ -108,7 +106,7 @@ for ii in file_name_bact[::30]:
     ax_img_bact.set_position([0.53,0.39,0.45,0.58])
 
     sch_name='bacteria_first'
-    ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale1[:idx_im]*constants.m2mm,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='No\nBacteria',markevery=2)
+    ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale1[:idx_im]*constants.m2mm,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='No Bacteria',markevery=2)
     ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale2[:idx_im]*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Bacteria',markevery=2)
     #sch_name='bacteria_second'
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale1[:idx_im]*constants.m2mm,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
@@ -116,7 +114,7 @@ for ii in file_name_bact[::30]:
     #sch_name='bacteria_third'
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale1[:idx_im]*constants.m2mm,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
     #ax[0].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.cum_evap_scale2[:idx_im]*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2) sch_name='bacteria_first'
-    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale1[:idx_im]*constants.ms2mmday,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='No\nBacteria',markevery=2)
+    ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale1[:idx_im]*constants.ms2mmday,'o',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='No Bacteria',markevery=2)
     ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale2[:idx_im]*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Bacteria',markevery=2)
     #sch_name='bacteria_second'
     #ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale1[:idx_im]*constants.ms2mmday,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
@@ -126,12 +124,12 @@ for ii in file_name_bact[::30]:
     #ax[1].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.evap_rate_scale1[:idx_im]*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)	
     
     sch_name='bacteria_first'
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo0[:idx_im],'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Moisture 1')
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo1[:idx_im],'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Moisture 2')
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo2[:idx_im],'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Moisture 3')
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo3[:idx_im],'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Moisture 4')
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo4[:idx_im],'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Moisture 5')
-    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo5[:idx_im],'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Moisture 6')
+    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo0[:idx_im],'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Mo1(nobact)')
+    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo1[:idx_im],'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Mo2(nobact)')
+    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo2[:idx_im],'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Mo3(nobact)')
+    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo3[:idx_im],'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Mo4(bact)')
+    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo4[:idx_im],'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Mo5(bact)')
+    ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo5[:idx_im],'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Mo6(bact)')
     ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.sat_scale1[:idx_im],'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='No\nBacteria',markevery=2)
     ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.sat_scale2[:idx_im],'o',color='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='Bacteria',markevery=2)
     
@@ -152,12 +150,12 @@ for ii in file_name_bact[::30]:
     #ax[2].plot(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.mmo5[:idx_im],'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue')
 
     sch_name='bacteria_first'
-    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction0[:idx_im],'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Suction 1')
-    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction1[:idx_im],'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Suction 2')
-    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction2[:idx_im],'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Suction 3')
-    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction3[:idx_im],'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Suction 4')
-    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction4[:idx_im],'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Suction 5')
-    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction5[:idx_im],'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Suction 6')
+    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction0[:idx_im],'o',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='red',label='Su1(nobact)')
+    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction1[:idx_im],'o',color='green',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='green',label='Su2(nobact)')
+    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction2[:idx_im],'o',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='cyan',label='Su3(nobact)')
+    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction3[:idx_im],'o',color='gold',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='gold',label='Su4(bact)')
+    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction4[:idx_im],'o',color='black',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='black',label='Su5(bact)')
+    ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suction5[:idx_im],'o',color='blue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='blue',label='Su6(bact)')
     ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suc_scale1[:idx_im],'o',color='brown',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='No\nBacteria',markevery=2)
     ax[3].semilogy(sp_sch[sch_name].df.time_days[:idx_im], sp_sch[sch_name].df.suc_scale2[:idx_im],'o',color='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='Bacteria',markevery=2)
     #sch_name='bacteria_second'
