@@ -23,6 +23,7 @@ for line in open("schedule.ipt"):
         sch_name=line_content[2]
         sp_sch[sch_name]=pandas_scale.concat_data_roof(pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M'),
             pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M'),dt_s );
+        sp_sch[sch_name].df.index=sp_sch[sch_name].df['date_time']
 
         sp_sch[sch_name].start_dt=pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M')
         sp_sch[sch_name].end_dt=pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M')
@@ -96,9 +97,41 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['mmo9']=(570.0**coef-sp_sch[sch_name].df['mo9']**coef)/(550.**coef-285**coef)
 
         
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_up']   ,plot=plot_interpolate  ,coef=5e-4)
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-4)
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        # this was in 20180522
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        
+        # below was working in 20181023
+        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name].df['rainmm']= sp_sch[sch_name].df['dlyrainmm']
+        time_start=np.datetime64('2018-04-20T10:00')
+        time_end=np.datetime64('2018-04-20T23:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,15,np.sum(mask) )
+ 
+        # this is done because the sensors are made upside down later, also, some of the weather stations needs to make updates
+
+        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_up']   ,plot=plot_interpolate  ,coef=5e-4,new_keys=['ir_up_daisy'])
+        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-4,new_keys=['ir_down_daisy'])
+        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-4,new_keys=['ir_up_camellia'])
+
+        
+        sp_sch[sch_name].df['ir_up_daisy'].loc[sp_sch[sch_name].df['ir_up_daisy']>19512]=np.nan
+        sp_sch[sch_name].df['ir_up_daisy'].loc[sp_sch[sch_name].df['ir_up_daisy']<252]=252   # if it is given as np.nan, there will be breaking points
+        sp_sch[sch_name].df['ir_up_camellia'].loc[sp_sch[sch_name].df['ir_up_camellia']<252]=252
+        sp_sch[sch_name].df['ir_up_camellia'].loc[sp_sch[sch_name].df['ir_up_camellia']>19512]=np.nan
+        # the correction here is to ensure camellia shows same value as daisy
+        sp_sch[sch_name].df['ir_up_camellia_cor'] = (sp_sch[sch_name].df['ir_up_camellia']-252) *1.17+252
+        # the script below uses early results from daisy while later results from camellia. 
+        time_start=np.datetime64('2018-06-29T13:00')
+        time_end=np.datetime64('2018-10-21T17:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df['ir_up_concat']=sp_sch[sch_name].df['ir_up_daisy']
+        sp_sch[sch_name].df.loc[mask,'ir_up_concat']=      sp_sch[sch_name].df.loc[mask,'ir_up_camellia_cor']
+
+        #plt.figure()
+        #plt.plot(sp_sch[sch_name].df['date_time'],sp_sch[sch_name].df['ir_up_concat'])
+
+
         
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-09-14T17:00')
@@ -140,6 +173,10 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask,'pre0']=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        
+        #TO181102 daisy humidity sensor was not working.....
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+
         #sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rh_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
         #time_start=np.datetime64('2018-01-27T15:00')
         #time_end=np.datetime64('2018-01-30T10:00')
@@ -154,12 +191,28 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df['rh_box_7'][mask]=np.nan
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         time_start=np.datetime64('2018-02-24T00:00')
-        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
+        #sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
         sp_sch[sch_name].df['wdspdkphavg2m'][ sp_sch[sch_name].df['wdspdkphavg2m']>12  ]=np.nan
         sp_sch[sch_name].df['wdspdkphavg2m'][ sp_sch[sch_name].df['wdspdkphavg2m']<0  ]=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdgstkph10m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].df['wdgstkph10m'][ sp_sch[sch_name].df['wdgstkph10m']<0.  ]=np.nan
+
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)
+
+
+        #plt.figure()
+        #plt.plot(data_weather_daisy.df.index,data_weather_daisy.df['wdspdkphavg2m'] )
+
+        #plt.figure()
+        #plt.plot(data_weather_camellia.df.index,data_weather_camellia.df['wdspdkphavg2m'] )
+
+
+        #plt.figure()
+        #plt.plot(data_weather_camellia.df.index,data_weather_camellia.df['wdgstkph10m'] )
+        sp_sch[sch_name].df['rh'][ sp_sch[sch_name].df['rh']>100  ]=np.nan
+        sp_sch[sch_name].df['rh'][ sp_sch[sch_name].df['rh']<0  ]=np.nan
+
 
 
 
@@ -176,15 +229,58 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['tmp9'][mask]=np.nan
 
 
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].df['tc'][ sp_sch[sch_name].df['tc']<9  ]=np.nan
-        sp_sch[sch_name].df['tp_box_7'][ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
+        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].df['tc'][ sp_sch[sch_name].df['tc']<7  ]=np.nan
+        #sp_sch[sch_name].df['tp_box_7'][ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
+
+        #sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
+
+
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name].df['p'].iloc[sp_sch[sch_name].df['p'].values<100000]=np.nan
+        sp_sch[sch_name].df['p'].iloc[sp_sch[sch_name].df['p'].values>150000]=np.nan
+
+
+        time_start=np.datetime64('2018-04-20T00:00')
+        time_end=np.datetime64('2018-04-25T15:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df['p'][mask]=np.nan
+        sp_sch[sch_name].df['tc'][mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'][mask]=np.nan
+        sp_sch[sch_name].df['rh'][mask]=np.nan
 
 
 
-        sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name].df['p'][sp_sch[sch_name].df['p'].values<88000]=np.nan
+
+        time_start=np.datetime64('2018-05-04T00:00')
+        time_end=np.datetime64('2018-05-07T15:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df['p'][mask]=np.nan
+        sp_sch[sch_name].df['tc'][mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'][mask]=np.nan
+        sp_sch[sch_name].df['rh'][mask]=np.nan
+
+
+        time_start=np.datetime64('2018-05-29T00:00')
+        time_end=np.datetime64('2018-05-31T15:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df['p'][mask]=np.nan
+        sp_sch[sch_name].df['tc'][mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'][mask]=np.nan
+        sp_sch[sch_name].df['rh'][mask]=np.nan
+        sp_sch[sch_name].df['rainmm'][mask]=np.nan
+
+        time_start=np.datetime64('2018-05-29T00:00')
+        time_end=np.datetime64('2018-06-07T15:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df['ir_up_concat'][mask]=np.nan
+        
+        
         #sp_sch[sch_name].merge_data(df=data.df, keys=['dhthum0'],plot=plot_interpolate  ,coef=5e-12)  # done
 
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done

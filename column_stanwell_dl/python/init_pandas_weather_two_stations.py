@@ -18,7 +18,7 @@ dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # s
 
 # 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
 #index_col_sw=False
-index_col_sw=False
+index_col_sw=['date_time']
 
 data_weather_camellia=pandas_scale.pandas_scale(file_path=data_weather_camellia_path,
     source='raw',
@@ -110,6 +110,11 @@ time_end   = np.datetime64('2018-03-27T00:00')
 #https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
 mask=data_weather_daisy.df['date_time'].between(time_start,time_end)
 data_weather_daisy.df['rainmm'][mask]=data_weather_daisy.df['rainmm'][mask]*22
+
+
+
+
+
 
 ####    treat rain data  ##
 #data_weather_daisy.df
