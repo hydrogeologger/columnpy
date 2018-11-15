@@ -4,6 +4,7 @@ py_compile.compile(os.environ['pyduino']+'/python/post_processing/sensorfun.py')
 import sensorfun
 reload(sensorfun)
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
+import json
 import figlib
 reload(figlib)
 lw=5
@@ -12,6 +13,11 @@ mew=3
 grid_width=2
 y_fontsize=20
 
+with open('schedule.json') as f:
+        schedule = json.load(f) #, object_pairs_hook=OrderedDict)
+schedule['average_dry_density']=float(schedule['average_dry_density'])
+schedule['specific_gravity']=float(schedule['specific_gravity'])
+schedule['porosity']=1-schedule['average_dry_density']/schedule['specific_gravity']
 
 sp_sch={}
 plot_interpolate=False
@@ -41,6 +47,7 @@ for line in open("schedule.ipt"):
         ##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
         sp_sch[sch_name].df['tmp2'][mask]=np.random.random(len(mask))*50+710
+        #sp_sch[sch_name].df.loc[mask,'tmp2']=np.random.random(len(mask))*50+710
         sp_sch[sch_name].df['ec2']=sp_sch[sch_name].df['tmp2']
 
         #sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
@@ -85,16 +92,16 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
         coef=-3.1
-        sp_sch[sch_name].df['mmo0']=(570.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)
-        sp_sch[sch_name].df['mmo1']=(570.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-270**coef)
-        sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(550.**coef-270**coef)
-        sp_sch[sch_name].df['mmo3']=(570.0**coef-sp_sch[sch_name].df['mo3']**coef)/(550.**coef-280**coef)
-        sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-285**coef)
-        sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-270**coef)
-        sp_sch[sch_name].df['mmo6']=(570.0**coef-sp_sch[sch_name].df['mo6']**coef)/(550.**coef-280**coef)
-        sp_sch[sch_name].df['mmo7']=(570.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-275**coef)
-        sp_sch[sch_name].df['mmo8']=(570.0**coef-sp_sch[sch_name].df['mo8']**coef)/(550.**coef-285**coef)
-        sp_sch[sch_name].df['mmo9']=(570.0**coef-sp_sch[sch_name].df['mo9']**coef)/(550.**coef-285**coef)
+        sp_sch[sch_name].df['mmo0']=(570.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo1']=(570.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-270**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(550.**coef-270**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo3']=(570.0**coef-sp_sch[sch_name].df['mo3']**coef)/(550.**coef-280**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-285**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-270**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo6']=(570.0**coef-sp_sch[sch_name].df['mo6']**coef)/(550.**coef-280**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo7']=(570.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-275**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo8']=(570.0**coef-sp_sch[sch_name].df['mo8']**coef)/(550.**coef-285**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo9']=(570.0**coef-sp_sch[sch_name].df['mo9']**coef)/(550.**coef-285**coef)*schedule['porosity']
 
         
         # this was in 20180522
@@ -107,6 +114,7 @@ for line in open("schedule.ipt"):
         time_end=np.datetime64('2018-04-20T23:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
         sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,15,np.sum(mask) )
+        sp_sch[sch_name].df['rainmm'].loc[sp_sch[sch_name].df['rainmm']<0]=0
  
         # this is done because the sensors are made upside down later, also, some of the weather stations needs to make updates
 
@@ -132,6 +140,15 @@ for line in open("schedule.ipt"):
         #plt.plot(sp_sch[sch_name].df['date_time'],sp_sch[sch_name].df['ir_up_concat'])
 
 
+        #mmo0 starts to be exposed from 13 May
+        time_start=np.datetime64('2018-05-13T13:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df.loc[mask,'mmo0']=np.nan
+
+        #mmo1 starts to be exposed from 14 OCT
+        time_start=np.datetime64('2018-10-14T13:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df.loc[mask,'mmo1']=np.nan
         
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-09-14T17:00')
@@ -156,10 +173,11 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask,'mmo9']=np.nan
 
 
+
         #time_start=np.datetime64('2018-02-23T15:00')
         #time_end=np.datetime64('2018-03-02T15:00')
         #mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
-        #data_weather_camellia.df['rh_box_7'][mask]=np.nan
+        #data_weather_camellia.df['rh_box_7'].loc[mask]=np.nan
 
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-10-23T17:00')
@@ -182,21 +200,21 @@ for line in open("schedule.ipt"):
         #time_end=np.datetime64('2018-01-30T10:00')
         ##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
         #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        #sp_sch[sch_name].df['rh'][mask]=np.nan #time_start=np.datetime64('2018-02-24T15:00')
+        #sp_sch[sch_name].df['rh'].loc[mask]=np.nan #time_start=np.datetime64('2018-02-24T15:00')
         #time_end=np.datetime64('2018-03-01T15:00')
         #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        #sp_sch[sch_name].df['rh'][mask]=np.nan
+        #sp_sch[sch_name].df['rh'].loc[mask]=np.nan
 
 
-        #sp_sch[sch_name].df['rh_box_7'][mask]=np.nan
+        #sp_sch[sch_name].df['rh_box_7'].loc[mask]=np.nan
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         time_start=np.datetime64('2018-02-24T00:00')
-        #sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'][ sp_sch[sch_name].df['wdspdkphavg2m']>12  ]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'][ sp_sch[sch_name].df['wdspdkphavg2m']<0  ]=np.nan
+        #sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']>12  ]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']<0  ]=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdgstkph10m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name].df['wdgstkph10m'][ sp_sch[sch_name].df['wdgstkph10m']<0.  ]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'].loc[ sp_sch[sch_name].df['wdgstkph10m']<0.  ]=np.nan
 
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)
 
@@ -210,8 +228,8 @@ for line in open("schedule.ipt"):
 
         #plt.figure()
         #plt.plot(data_weather_camellia.df.index,data_weather_camellia.df['wdgstkph10m'] )
-        sp_sch[sch_name].df['rh'][ sp_sch[sch_name].df['rh']>100  ]=np.nan
-        sp_sch[sch_name].df['rh'][ sp_sch[sch_name].df['rh']<0  ]=np.nan
+        sp_sch[sch_name].df['rh'].loc[ sp_sch[sch_name].df['rh']>100  ]=np.nan
+        sp_sch[sch_name].df['rh'].loc[ sp_sch[sch_name].df['rh']<0  ]=np.nan
 
 
 
@@ -219,20 +237,20 @@ for line in open("schedule.ipt"):
         time_start=np.datetime64('2018-02-03T15:00')
         time_end=np.datetime64('2018-02-05T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['rh'][mask]=np.nan
+        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
 
         time_start=np.datetime64('2018-03-02T15:00')
         time_end=np.datetime64('2018-03-10T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['tmp7'][mask]=np.nan
-        sp_sch[sch_name].df['tmp6'][mask]=np.nan
-        sp_sch[sch_name].df['tmp9'][mask]=np.nan
+        sp_sch[sch_name].df['tmp7'].loc[mask]=np.nan
+        sp_sch[sch_name].df['tmp6'].loc[mask]=np.nan
+        sp_sch[sch_name].df['tmp9'].loc[mask]=np.nan
 
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].df['tc'][ sp_sch[sch_name].df['tc']<7  ]=np.nan
-        #sp_sch[sch_name].df['tp_box_7'][ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
+        sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<7  ]=np.nan
+        #sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
 
         #sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
 
@@ -246,11 +264,11 @@ for line in open("schedule.ipt"):
         time_start=np.datetime64('2018-04-20T00:00')
         time_end=np.datetime64('2018-04-25T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['p'][mask]=np.nan
-        sp_sch[sch_name].df['tc'][mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
-        sp_sch[sch_name].df['wdgstkph10m'][mask]=np.nan
-        sp_sch[sch_name].df['rh'][mask]=np.nan
+        sp_sch[sch_name].df['p'].loc[mask]=np.nan
+        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
 
 
 
@@ -258,30 +276,37 @@ for line in open("schedule.ipt"):
         time_start=np.datetime64('2018-05-04T00:00')
         time_end=np.datetime64('2018-05-07T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['p'][mask]=np.nan
-        sp_sch[sch_name].df['tc'][mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
-        sp_sch[sch_name].df['wdgstkph10m'][mask]=np.nan
-        sp_sch[sch_name].df['rh'][mask]=np.nan
+        sp_sch[sch_name].df['p'].loc[mask]=np.nan
+        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
 
 
         time_start=np.datetime64('2018-05-29T00:00')
         time_end=np.datetime64('2018-05-31T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['p'][mask]=np.nan
-        sp_sch[sch_name].df['tc'][mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'][mask]=np.nan
-        sp_sch[sch_name].df['wdgstkph10m'][mask]=np.nan
-        sp_sch[sch_name].df['rh'][mask]=np.nan
-        sp_sch[sch_name].df['rainmm'][mask]=np.nan
+        sp_sch[sch_name].df['p'].loc[mask]=np.nan
+        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+        sp_sch[sch_name].df['rainmm'].loc[mask]=np.nan
 
         time_start=np.datetime64('2018-05-29T00:00')
         time_end=np.datetime64('2018-06-07T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['ir_up_concat'][mask]=np.nan
+        sp_sch[sch_name].df['ir_up_concat'].loc[mask]=np.nan
         
         
-        #sp_sch[sch_name].merge_data(df=data.df, keys=['dhthum0'],plot=plot_interpolate  ,coef=5e-12)  # done
+# read from manual.xlsx
+#https://stackoverflow.com/questions/16888888/how-to-read-a-xlsx-file-using-the-pandas-library-in-ipython
+
+
+xl_file = pd.ExcelFile( schedule['manual_excel'])
+daily_data_manual = xl_file.parse(index_col='date_time') 
+
+      #sp_sch[sch_name].merge_data(df=data.df, keys=['dhthum0'],plot=plot_interpolate  ,coef=5e-12)  # done
 
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
 
@@ -291,8 +316,8 @@ for line in open("schedule.ipt"):
         #time_end=np.datetime64('2018-02-03T15:00')
         ##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
         #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        #sp_sch[sch_name].df['pre0'][mask]=np.nan
-        #sp_sch[sch_name].df['pre1'][mask]=np.nan
+        #sp_sch[sch_name].df['pre0'].loc[mask]=np.nan
+        #sp_sch[sch_name].df['pre1'].loc[mask]=np.nan
 
 
 

@@ -1,5 +1,6 @@
 import operator
 import sensorfun
+import json
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/sensorfun.py')
 import sensorfun
 reload(sensorfun)
@@ -13,6 +14,9 @@ grid_width=2
 y_fontsize=20
 
 
+with open('schedule.json') as f:
+    schedule = json.load(f) #, object_pairs_hook=OrderedDict)
+            
 sp_sch={}
 plot_interpolate=False
 #plot_interpolate=True
