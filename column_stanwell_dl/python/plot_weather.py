@@ -109,7 +109,7 @@ plt.show(block=False)
 
 fig.savefig('figure/plot_weather.png', format='png', dpi=600)
 sp_sch[sch_name].df.iloc[::4].to_csv('output_data/'+'column_stanwell'+'.csv')
-fig.close()
+#fig.close()
 
 
 

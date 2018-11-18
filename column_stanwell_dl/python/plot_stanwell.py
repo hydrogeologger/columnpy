@@ -91,7 +91,7 @@ ax[4].plot(ta['date_time'][::mkevy], ta['mmo6'][::mkevy], '-' ,color='lightblue'
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo7'][::mkevy], '-' ,color='cyan',linewidth=lw, markerfacecolor='yellow' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='yellow',label='48cm',markevery=mkevy)
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo8'][::mkevy], '-' ,color='royalblue',linewidth=lw,markerfacecolor='crimson' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='crimson',label='70cm',markevery=mkevy)
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo9'][::mkevy], '-' ,color='darkblue',linewidth=lw,markerfacecolor='pink' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='pink',label='85cm',markevery=mkevy)
-ax[4].set_ylim([-0.1,1.1])
+ax[4].set_ylim([-0.1,0.8])
 
 ax[5].plot(ta['date_time'], ta['ec0']/1000., '-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
 ax[5].plot(ta['date_time'], ta['ec2']/1000., '-',color='royalblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='60cm')
@@ -99,12 +99,12 @@ ax[5].set_ylim([-0.2,1.7])
 
 
 
-ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL (mm)', fontsize=y_fontsize, labelpad=10)
-ax[1].set_ylabel('POTENTIAL\nEVAPORATION\nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=25)
+ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL (mm)', fontsize=y_fontsize, labelpad=15)
+ax[1].set_ylabel('POTENTIAL\nEVAPORATION\nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=15)
 ax[2].set_ylabel('WATER\nPRESSURE\n(mm)', fontsize=y_fontsize, labelpad=5)
-ax[3].set_ylabel('TEMPERATURE\nBELOW SOIL\nSURFACE\n($^\circ$C)', fontsize=y_fontsize, labelpad=13)
-ax[4].set_ylabel('VOL. MOIS.\nCONTENT\nBELOW SOIL\nSURFACE', fontsize=y_fontsize, labelpad=7)
-ax[5].set_ylabel('ELECTRICAL\nCONDUCTIVITY\nBELOW SOIL\nSURFACE \n(dS/m)', fontsize=y_fontsize, labelpad=15)
+ax[3].set_ylabel('TEMPERATURE\nBELOW COLUMN\nSURFACE\n($^\circ$C)', fontsize=y_fontsize, labelpad=17)
+ax[4].set_ylabel('VOL. MOIS.\nCONTENT\nBELOW COLUMN\nSURFACE', fontsize=y_fontsize, labelpad=7)
+ax[5].set_ylabel('ELECTRICAL\nCONDUCTIVITY\nBELOW COLUMN\nSURFACE \n(dS/m)', fontsize=y_fontsize, labelpad=15)
 
 #ax[0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
 #ax[1].set_title('(B)',x=0.04,y=0.8,fontweight='bold')

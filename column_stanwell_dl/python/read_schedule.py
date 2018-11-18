@@ -49,12 +49,11 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['tmp2'][mask]=np.random.random(len(mask))*50+710
         #sp_sch[sch_name].df.loc[mask,'tmp2']=np.random.random(len(mask))*50+710
         sp_sch[sch_name].df['ec2']=sp_sch[sch_name].df['tmp2']
+#
+        time_start=np.datetime64('2018-08-29T13:00')
+        time_end=np.datetime64('2018-09-14T17:00')
 
-        #sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
-        #sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-16,
-        #        start_time=np.datetime64('2018-02-21T00:00'),end_time=np.datetime64('2018-03-09T00:00'))
-        #sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-19,
-        #        start_time=np.datetime64('2018-02-20T00:00'),end_time=np.datetime64('2018-03-06T00:00'))
+        
         ## the new method has already considered the boundary effect
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp0']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
@@ -91,13 +90,36 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
+
+
+        time_start=np.datetime64('2018-08-29T13:00')
+        time_end=np.datetime64('2018-09-14T17:00')
+        mask_output=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        mask_input=data_mo_su.df['date_time'].between(time_start,time_end)
+        #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7,mask=mask_input) 
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec0']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+        #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec2']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
+
+
         coef=-3.1
         sp_sch[sch_name].df['mmo0']=(570.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo1']=(570.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-270**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(550.**coef-270**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo3']=(570.0**coef-sp_sch[sch_name].df['mo3']**coef)/(550.**coef-280**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-285**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-270**coef)*schedule['porosity']
+        #sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-285**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-270**coef)*schedule['porosity']
+        #sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-285**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo6']=(570.0**coef-sp_sch[sch_name].df['mo6']**coef)/(550.**coef-280**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo7']=(570.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-275**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo8']=(570.0**coef-sp_sch[sch_name].df['mo8']**coef)/(550.**coef-285**coef)*schedule['porosity']
@@ -150,6 +172,7 @@ for line in open("schedule.ipt"):
         mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df.loc[mask,'mmo1']=np.nan
         
+        # this part was cancelled as the power is disabled. 
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-09-14T17:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
@@ -161,18 +184,6 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask,'tmp6']=np.nan
         sp_sch[sch_name].df.loc[mask,'tmp7']=np.nan
         sp_sch[sch_name].df.loc[mask,'tmp9']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo0']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo1']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo2']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo3']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo4']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo5']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo6']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo7']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo8']=np.nan
-        sp_sch[sch_name].df.loc[mask,'mmo9']=np.nan
-
-
 
         #time_start=np.datetime64('2018-02-23T15:00')
         #time_end=np.datetime64('2018-03-02T15:00')
@@ -301,7 +312,6 @@ for line in open("schedule.ipt"):
         
 # read from manual.xlsx
 #https://stackoverflow.com/questions/16888888/how-to-read-a-xlsx-file-using-the-pandas-library-in-ipython
-
 
 xl_file = pd.ExcelFile( schedule['manual_excel'])
 daily_data_manual = xl_file.parse(index_col='date_time') 
