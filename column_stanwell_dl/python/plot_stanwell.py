@@ -15,7 +15,8 @@ params = {'legend.fontsize': 4,
          'xtick.labelsize':'11',
          'ytick.labelsize':'11',
          'font.weight':'bold',
-         'font.sans-serif':'Arial',
+         #'font.sans-serif':'Arial',
+         'font.sans-serif':'TimesNewroman',
          'axes.labelweight':'bold',
          'lines.linewidth':2}#,
 #         'title.fontweight':'bold'}
@@ -29,7 +30,7 @@ ms=6
 mew=2
 grid_width=2
 y_fontsize=11
-fig, ax = plt.subplots(6,sharex=True,figsize=(9,9))
+fig, ax = plt.subplots(7,sharex=True,figsize=(9,12))
 fig.subplots_adjust(hspace=.10)
 fig.subplots_adjust(left=0.17, right=0.89, top=0.97, bottom=0.05)
 
@@ -98,6 +99,8 @@ ax[5].plot(ta['date_time'], ta['ec2']/1000., '-',color='royalblue',markersize=ms
 ax[5].set_ylim([-0.2,1.7])
 
 
+ax[6].plot(daily_data_manual.index, daily_data_manual['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
+ax[6].set_ylim([-1,101])
 
 ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL (mm)', fontsize=y_fontsize, labelpad=15)
 ax[1].set_ylabel('POTENTIAL\nEVAPORATION\nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=15)
@@ -105,13 +108,15 @@ ax[2].set_ylabel('WATER\nPRESSURE\n(mm)', fontsize=y_fontsize, labelpad=5)
 ax[3].set_ylabel('TEMPERATURE\nBELOW COLUMN\nSURFACE\n($^\circ$C)', fontsize=y_fontsize, labelpad=17)
 ax[4].set_ylabel('VOL. MOIS.\nCONTENT\nBELOW COLUMN\nSURFACE', fontsize=y_fontsize, labelpad=7)
 ax[5].set_ylabel('ELECTRICAL\nCONDUCTIVITY\nBELOW COLUMN\nSURFACE \n(dS/m)', fontsize=y_fontsize, labelpad=15)
+ax[6].set_ylabel('SURFACE \n SETTLEMENT\n(mm)', fontsize=y_fontsize, labelpad=15)
 
-#ax[0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
-#ax[1].set_title('(B)',x=0.04,y=0.8,fontweight='bold')
-#ax[2].set_title('(C)',x=0.04,y=0.8,fontweight='bold')
-#ax[3].set_title('(D)',x=0.04,y=0.8,fontweight='bold')
-#ax[4].set_title('(E)',x=0.04,y=0.8,fontweight='bold')
-#ax[5].set_title('(F)',x=0.04,y=0.8,fontweight='bold')
+ax[0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
+ax[1].set_title('(B)',x=0.04,y=0.8,fontweight='bold')
+ax[2].set_title('(C)',x=0.04,y=0.8,fontweight='bold')
+ax[3].set_title('(D)',x=0.04,y=0.8,fontweight='bold')
+ax[4].set_title('(E)',x=0.04,y=0.8,fontweight='bold')
+ax[5].set_title('(F)',x=0.04,y=0.8,fontweight='bold')
+ax[6].set_title('(G)',x=0.04,y=0.8,fontweight='bold')
 ax[0].set_axisbelow(True)
 ax[1].set_axisbelow(True)
 ax[2].set_axisbelow(True)
@@ -143,6 +148,7 @@ ax[2].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[3].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[4].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[5].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+ax[6].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 #ax[2].plot(ta['date_time'], ta['su5'], 'ro',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 #ax[2].plot(ta['date_time'], ta['su6'], 'go',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Dielectric suction B')
 #ax[2].plot(ta['date_time'], ta['su7'], 'bo',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='Moisture A')
@@ -158,7 +164,7 @@ ax[5].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 #ax[3].plot(ta['date_time'], ta['temp_suc7'], 'o' ,markerfacecolor='brown' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Moisture A')
 
 ax[5].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-ax[5].set_xlabel('DATE')
+ax[6].set_xlabel('DATE')
 #plt.xticks(rotation=45)
 plt.show(block=False)
 
@@ -369,5 +375,5 @@ fig.savefig('figure/plot_stanwell.png', format='png', dpi=600)
 #    #plt.show(block=False)
 #    
 #    
-#    fig.savefig('plot_calibrated_result'+sch_name+ii+'.png', format='png', dpi=100)
+fig.savefig('plot_stanwell.png', format='png', dpi=100)
 #    plt.close()
