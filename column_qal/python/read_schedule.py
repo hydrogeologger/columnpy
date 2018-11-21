@@ -1,5 +1,6 @@
 import operator
 import sensorfun
+import json
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/sensorfun.py')
 import sensorfun
 reload(sensorfun)
@@ -13,6 +14,9 @@ grid_width=2
 y_fontsize=20
 
 
+with open('schedule.json') as f:
+    schedule = json.load(f) #, object_pairs_hook=OrderedDict)
+            
 sp_sch={}
 plot_interpolate=False
 #plot_interpolate=True
@@ -30,11 +34,6 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].surface_area  =float(line_content[4])
 
         sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
-        #sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-16,
-        #        start_time=np.datetime64('2018-02-21T00:00'),end_time=np.datetime64('2018-03-09T00:00'))
-        #sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-19,
-        #        start_time=np.datetime64('2018-02-20T00:00'),end_time=np.datetime64('2018-03-06T00:00'))
-        ## the new method has already considered the boundary effect
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp0']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
@@ -58,7 +57,6 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
-        #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
 
         if sch_name=="qal":
             sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
@@ -117,6 +115,11 @@ for line in open("schedule.ipt"):
 
 
         
+        # below is to finding ways to exrapolate at small fractions
+
+        time_start=np.datetime64('2018-03-02T13:00')
+        time_end=np.datetime64('2018-03-03T17:00')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
         
         time_start=np.datetime64('2018-03-02T13:00')
         time_end=np.datetime64('2018-03-03T17:00')
