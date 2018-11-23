@@ -166,11 +166,13 @@ for line in open("schedule.ipt"):
         time_start=np.datetime64('2018-05-13T13:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df.loc[mask,'mmo0']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp0']=np.nan
 
         #mmo1 starts to be exposed from 14 OCT
         time_start=np.datetime64('2018-10-14T13:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df.loc[mask,'mmo1']=np.nan
+        sp_sch[sch_name].df.loc[mask,'tmp1']=np.nan
         
         # this part was cancelled as the power is disabled. 
         time_start=np.datetime64('2018-08-29T13:00')
@@ -316,18 +318,71 @@ for line in open("schedule.ipt"):
 xl_file = pd.ExcelFile( schedule['manual_excel'])
 daily_data_manual = xl_file.parse(index_col='date_time') 
 
-      #sp_sch[sch_name].merge_data(df=data.df, keys=['dhthum0'],plot=plot_interpolate  ,coef=5e-12)  # done
+df_mean = sp_sch['stanwell'].df.resample('D').mean()
+df_max = sp_sch['stanwell'].df.resample('D').max()
+df_last = sp_sch['stanwell'].df.resample('D').last()
+# the original time for mean value is at 12am, we shift it to 12pm
+#df_mean['date_time']=df_mean['date_time']+pd.to_timedelta(12, unit='h')
+#df_mean['date_time']=df_mean.index
 
-        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+df_mean.index=df_mean.index+pd.to_timedelta(12, unit='h')
+df_mean['date_time']=df_mean.index
+depth_y=np.array([1,5,8,13,20,28,38,48,70,85])
+responsible_depth_cm=np.concatenate( (np.diff(depth_y),np.array([36])) )
+
+df_mean['total_moisture']=df_mean['mmo0'].fillna(0)*responsible_depth_cm[0] \
+    +df_mean['mmo1'].fillna(0)*responsible_depth_cm[1] \
+    +df_mean['mmo2'].fillna(0)*responsible_depth_cm[2] \
+    +df_mean['mmo3'].fillna(0)*responsible_depth_cm[3] \
+    +df_mean['mmo4'].fillna(0)*responsible_depth_cm[4] \
+    +df_mean['mmo5'].fillna(0)*responsible_depth_cm[5] \
+    +df_mean['mmo6'].fillna(0)*responsible_depth_cm[6] \
+    +df_mean['mmo7'].fillna(0)*responsible_depth_cm[7] \
+    +df_mean['mmo8'].fillna(0)*responsible_depth_cm[8] \
+    +df_mean['mmo9'].fillna(0)*responsible_depth_cm[9]
+
+df_mean['evap_rate']=np.concatenate( (np.diff(df_mean['total_moisture']),np.array([np.nan])))
+
+df_mean['total_moisture_07']=df_mean['mmo0'].fillna(0)*responsible_depth_cm[0] \
+    +df_mean['mmo1'].fillna(0)*responsible_depth_cm[1] \
+    +df_mean['mmo2'].fillna(0)*responsible_depth_cm[2] \
+    +df_mean['mmo3'].fillna(0)*responsible_depth_cm[3] \
+    +df_mean['mmo4'].fillna(0)*responsible_depth_cm[4] \
+    +df_mean['mmo5'].fillna(0)*responsible_depth_cm[5] \
+    +df_mean['mmo6'].fillna(0)*responsible_depth_cm[6] \
+    +df_mean['mmo7'].fillna(0)*responsible_depth_cm[7]
+
+plt.figure()
+plt.plot(df_mean.index,df_mean['total_moisture'])
+plt.plot(df_mean.index,df_mean['total_moisture_07'])
 
 
+bb=df_mean.index-df_mean.index[0]
 
-        #time_start=np.datetime64('2018-01-24T15:00')
-        #time_end=np.datetime64('2018-02-03T15:00')
-        ##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
-        #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        #sp_sch[sch_name].df['pre0'].loc[mask]=np.nan
-        #sp_sch[sch_name].df['pre1'].loc[mask]=np.nan
+cc= bb.total_seconds()
 
+interp_method=wf.SmoothSpline(cc,df_mean['total_moisture'],p=1e-14)
+dd=interp_method(cc)
+df_mean['evap_rate_dd']=np.concatenate( (np.diff(dd),np.array([np.nan])))
 
+interp_method=wf.SmoothSpline(cc,df_mean['total_moisture'],p=5e-15)
+ee=interp_method(cc)
+df_mean['evap_rate_ee']=np.concatenate( (np.diff(ee),np.array([np.nan])))
+
+plt.figure()
+plt.plot(df_mean.index,dd)
+plt.plot(df_mean.index,ee)
+plt.plot(df_mean.index,df_mean['total_moisture'])
+
+plt.plot(df_mean.index,df_mean['total_moisture_07'])
+
+#plt.subplot()
+#plt.plot(df_mean.index,-df_mean['evap_rate_dd']*10)
+#plt.plot(df_mean.index,-df_mean['evap_rate_ee']*10)
+#plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+#
+#
+#plt.plot(df_mean.index,dd)
+#plt.figure()
+#plt.plot(df_mean.index,df_mean['total_moisture_07'])
 

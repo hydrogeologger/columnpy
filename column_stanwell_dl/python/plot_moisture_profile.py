@@ -38,13 +38,15 @@ for i in plt_profile['time']:
 fig, ax = plt.subplots(1,2,sharex=True,figsize=(9,6))
 
 fig.subplots_adjust(hspace=.10)
-fig.subplots_adjust(left=0.11, right=0.99, top=0.97, bottom=0.05)
+fig.subplots_adjust(left=0.11, right=0.99, top=0.97, bottom=0.1)
 fig.subplots_adjust(wspace=.2)
 
 ax[0].set_xlabel('VOLUMETRIC\nMOISTURE CONTENT')
-ax[0].set_ylabel('DEPTH FROM COLUMN TOP(cm)')
-ax[1].set_xlabel('TEMPERATURE ($^\circ$C)')
+ax[1].set_xlabel('VOLUMETRIC\nMOISTURE CONTENT')
+ax[0].set_ylabel('DEPTH FROM COLUMN TOP (cm)')
 ax[1].set_ylabel('DEPTH FROM COLUMN TOP (cm)')
+ax[0].set_title('(A)',x=0.06,y=0.94,fontweight='bold')
+ax[1].set_title('(B)',x=0.06,y=0.94,fontweight='bold')
 
 depth_y=np.array([1,5,8,13,20,28,38,48,70,85])
 #depth_y_temp=np.array([1,5,8,13,20,38,48,85])

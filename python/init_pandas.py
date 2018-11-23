@@ -20,6 +20,16 @@ sys.path.append(current_path+'/python')
 py_compile.compile(current_path+'/python/pandas_scale.py')
 py_compile.compile(current_path+'/python/constants.py')
 
+
+
+
+#current_path=os.getcwd()
+#sys.path.append   (os.environ['pyduino']+'/python/post_processing/')
+#py_compile.compile(os.environ['pyduino']+'/python/post_processing/pandas_scale.py')
+#py_compile.compile(os.environ['pyduino']+'/python/post_processing/constants.py')
+
+
+
 import pandas_scale
 import constants
 reload(pandas_scale)
@@ -39,8 +49,9 @@ weather_roof=pandas_scale.pandas_scale(file_path=weather_roof_file_path,
     header=4,
     names=weather_roof_header,
     parse_dates=weather_date_time,
-    date_parser=dateparse
-    )
+    date_parser=dateparse)#,
+#    index_col=weather_date_time
+#    )
 
 dateparse = lambda x: pd.datetime.strptime(x, '%d/%m/%Y %H:%M')
 
@@ -79,7 +90,9 @@ scale=pandas_scale.pandas_scale(file_path=column_roof_file_path,
     source='raw',
     sep='\s+',
     names=scale_header,
-    parse_dates=scale_date_time_merge
+    parse_dates=scale_date_time_merge#,
+#    index_col=['date']
+
     )
 ## using csv file for parsing
 #scale=pandas_scale.pandas_scale(file_path=column_roof_file_path,
@@ -107,7 +120,7 @@ self=scale
 sp=1
 del sp
 sp=pandas_scale.concat_data_roof()
-sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=5e-15)
+sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=5e-15,rm_nan=False)
 
 #sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=1e-9)
 #sp.merge_data( df=scale.df, keys=['scale'] ,plot=True ,coef=1e-14)
@@ -131,7 +144,7 @@ sp.get_derivative(key='cum_evap',deri_key='evap')
 ### basically this means the SmoothSpline does not like Nan at all, even the source nan has nothing to do with 
 ### the splined location
 sp.merge_data(df=weather_roof.df, keys=['T','hr','patm',
-        'rain1','rain2','rain3','wind2','wind5','R_up','R_down'] ,plot=False,coef=1e-9 )
+        'rain1','rain2','rain3','wind2','wind5','R_up','R_down'] ,plot=False,coef=1e-9,rm_nan=False )
 ### post processing
 # relative humidity
 sp.df['hr']=sp.df['hr']*0.01
@@ -157,7 +170,7 @@ sp.df['drhowv_sat_dt']=constants.dsvp_dtk(  sp.df['Tk']   )
 sp.df['evap_weather']=sp.df['drhowv_sat_dt']/(sp.df['drhowv_sat_dt']+constants.psych)*sp.df['Er'
     ] + constants.psych/(sp.df['drhowv_sat_dt']+constants.psych)*sp.df['Ea']
 
-fig=plt.figure(figsize=(20,25))
+fig=plt.figure(figsize=(9,9))
 plt.plot(sp.df['date_time'],sp.df['Ea']*constants.ms2mmday,'r-')
 plt.plot(sp.df['date_time'],sp.df['Er']*constants.ms2mmday,'g-')
 plt.plot(sp.df['date_time'],sp.df['evap_weather']*constants.ms2mmday,'b-')
@@ -165,13 +178,13 @@ plt.plot(sp.df['date_time'],sp.df['evap']*constants.ms2mmday,'k-')
 
 
 
-fig=plt.figure(figsize=(20,25))
+fig=plt.figure(figsize=(9,9))
 plt.plot(sp.df['date_time'],sp.df['T'],'k-')
 
-fig=plt.figure(figsize=(20,25))
+fig=plt.figure(figsize=(9,9))
 plt.plot(sp.df['date_time'],sp.df['rhowv_air'],'k-')
 plt.plot(sp.df['date_time'],sp.df['rhowv_sat'],'r-')
-fig=plt.figure(figsize=(20,25))
+fig=plt.figure(figsize=(9,9))
 plt.plot(sp.df['date_time'],sp.df['wind5'],'r-')
 #fig=plt.figure(figsize=(20,25))
 #plt.plot(sp.df['date_time'],sp.df['B']*constants.ms2mmday,'k-')
@@ -187,7 +200,7 @@ plt.plot(sp.df['date_time'],sp.df['wind5'],'r-')
 
 ####################################################################################################
 plt.plot(sp.df['date_time'],sp.df['B2']*constants.ms2mmday,'r-')
-fig=plt.figure(figsize=(20,25))
+fig=plt.figure(figsize=(9,9))
 plt.plot(sp.df['date_time'],sp.df['wind5'],'r-')
 #
 
