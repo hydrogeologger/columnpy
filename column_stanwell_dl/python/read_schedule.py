@@ -357,6 +357,9 @@ plt.plot(df_mean.index,df_mean['total_moisture'])
 plt.plot(df_mean.index,df_mean['total_moisture_07'])
 
 
+
+
+
 bb=df_mean.index-df_mean.index[0]
 
 cc= bb.total_seconds()
