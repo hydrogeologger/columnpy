@@ -6,6 +6,7 @@ reload(sensorfun)
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
 import json
 import figlib
+import wafo.interpolate as wf
 reload(figlib)
 lw=5
 ms=8
@@ -204,6 +205,7 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask,'pre0']=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name].df['rh']*=0.01
         
         #TO181102 daisy humidity sensor was not working.....
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
@@ -388,4 +390,61 @@ plt.plot(df_mean.index,df_mean['total_moisture_07'])
 #plt.plot(df_mean.index,dd)
 #plt.figure()
 #plt.plot(df_mean.index,df_mean['total_moisture_07'])
+
+# below is to calculate penman monteith potential evaporation
+# tc0_k removes all na to 25 degree as this way will fill many gaps
+sp_sch[sch_name].df['tc0_k']=sp_sch[sch_name].df['tc'].fillna(25.0) +constants.kelvin
+sp_sch[sch_name].df['wdspdkphavg2m_0']=sp_sch[sch_name].df['wdspdkphavg2m'].fillna(1.0)
+
+sp_sch[sch_name].df['drhowv_sat_dt']=constants.dsvp_dtk( sp_sch[sch_name].df['tc0_k'] )
+sp_sch[sch_name].df['latent_heat_JPkg']=constants.lhv(sp_sch[sch_name].df['tc0_k'])
+sp_sch[sch_name].df['sat_vapor_pressure_soil_pa'] = constants.svp(sp_sch[sch_name].df['tmp1']+constants.kelvin)
+sp_sch[sch_name].df['vapor_pressure_air_pa'] = constants.svp(sp_sch[sch_name].df['tc0_k'])*sp_sch[sch_name].df['rh']
+sp_sch[sch_name].df['Rn_wPm2']=    (sp_sch[sch_name].df['ir_up_concat']-252.)/20.512
+sp_sch[sch_name].df['ra_sPm']=np.log(2/0.0001) **2.0 /0.41**2.0/sp_sch[sch_name].df['wdspdkphavg2m_0'] 
+sp_sch[sch_name].df['pet_pm_denom'] = sp_sch[sch_name].df['drhowv_sat_dt'] + constants.psych* ( 1.+ 1./sp_sch[sch_name].df['ra_sPm'] )
+sp_sch[sch_name].df['pet_pm_part1']= ( sp_sch[sch_name].df['drhowv_sat_dt'] * sp_sch[sch_name].df['Rn_wPm2']  ) \
+        / sp_sch[sch_name].df['pet_pm_denom']
+sp_sch[sch_name].df['pet_pm_part2']=constants.air_density_kgPm3*constants.heat_capacity_air_JPkgPK*  \
+        ( sp_sch[sch_name].df['sat_vapor_pressure_soil_pa'] -  sp_sch[sch_name].df['vapor_pressure_air_pa']   ) \
+        /sp_sch[sch_name].df['ra_sPm'] / sp_sch[sch_name].df['pet_pm_denom']
+
+sp_sch[sch_name].df['pet_part1_mmPday']=sp_sch[sch_name].df['pet_pm_part1'] / \
+        constants.lhv(273.15)/ constants.rhow_pure_water * constants.msPmmday
+sp_sch[sch_name].df['pet_part2_mmPday']=sp_sch[sch_name].df['pet_pm_part2'] / \
+        constants.lhv(273.15)/ constants.rhow_pure_water * constants.msPmmday
+
+sp_sch[sch_name].df['pet_mmPday']=sp_sch[sch_name].df['pet_part1_mmPday'] + sp_sch[sch_name].df['pet_part2_mmPday'].fillna(0) 
+#plt.figure()
+#plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_pm'])
+
+fig, ax = plt.subplots(10,sharex=True,figsize=(9,12))
+ax[0].plot(ta['date_time'], (ta['radiation'])*0.007+0.2*ta['wdspdkphavg2m_0'].fillna(0), '-',color='maroon',\
+        markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
+
+ax[1].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_mmPday'])
+
+ax[2].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_part2_mmPday']  )
+ax[3].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_part1_mmPday']  )
+ax[4].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['Rn_wPm2'])
+ax[5].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['wdspdkphavg2m_0']     )
+ax[6].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['sat_vapor_pressure_soil_pa']     )
+ax[7].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['vapor_pressure_air_pa']  )
+#ax[8].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['tc']     )
+#ax[9].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['rh']  )
+
+#ax[2].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_pm_part1'])
+#ax[3].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_pm_part2'])
+
+ax[0].set_ylabel('evp_fitting', fontsize=y_fontsize, labelpad=15)
+ax[1].set_ylabel('pet_pm', fontsize=y_fontsize, labelpad=15)
+ax[2].set_ylabel('part2\nmm/day', fontsize=y_fontsize, labelpad=15)
+ax[3].set_ylabel('part1\nmm/day', fontsize=y_fontsize, labelpad=15)
+#ax[2].set_ylabel('pet_pm_part1', fontsize=y_fontsize, labelpad=5)
+#ax[3].set_ylabel('pet_pm_part2', fontsize=y_fontsize, labelpad=17)
+ax[4].set_ylabel('Rn_wPm2', fontsize=y_fontsize, labelpad=7)
+ax[5].set_ylabel('windspeed', fontsize=y_fontsize, labelpad=15)
+ax[6].set_ylabel('sat_vapor_p soil', fontsize=y_fontsize, labelpad=15)
+ax[7].set_ylabel('vapor_p_air', fontsize=y_fontsize, labelpad=15)
+
 

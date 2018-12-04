@@ -1,4 +1,4 @@
-#import sys
+#impor sys
 #sys.modules[__name__].__dict__.clear()
 import os
 import numpy as np
