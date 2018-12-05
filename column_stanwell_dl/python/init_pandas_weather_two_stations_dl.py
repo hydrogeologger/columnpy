@@ -122,7 +122,6 @@ data_weather_daisy.df=aa
 ##data.df['t_14_begin'][data.df['t_14_begin']>32]=np.nan
 ##data.df['t_19_end'][data.df['t_19_end']>32]=np.nan
 ##data.df['t_14_end'][data.df['t_14_end']>32]=np.nan
-#
 
 
 time_start = np.datetime64('2018-02-13T00:00')
@@ -142,7 +141,7 @@ data_weather_daisy.df['rainmm'][mask]=data_weather_daisy.df['rainmm'][mask]*22
 # data copy from uq weather station
 time_start = np.datetime64('2018-10-07T00:00')
 time_end   = np.datetime64('2018-10-07T12:00')
-time_complete= np.datetime64('2018-10-07T23:59')
+time_complete= np.datetime64('2018-10-07T23:59:59')
 mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
 data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,15,np.sum(mask) )
 mask=data_weather_camellia.df['date_time'].between(time_end,time_complete)
@@ -151,7 +150,7 @@ data_weather_camellia.df['dlyrainmm'][mask]=15
 
 time_start = np.datetime64('2018-10-12T12:34')
 time_end   = np.datetime64('2018-10-12T14:00')
-time_complete= np.datetime64('2018-10-12T23:59')
+time_complete= np.datetime64('2018-10-12T23:59:59')
 mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
 data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,7.5,np.sum(mask) )
 mask=data_weather_camellia.df['date_time'].between(time_end,time_complete)
@@ -159,39 +158,38 @@ data_weather_camellia.df['dlyrainmm'][mask]=7.5
 
 time_start = np.datetime64('2018-10-13T09:34')
 time_end   = np.datetime64('2018-10-13T12:00')
-time_complete= np.datetime64('2018-10-13T23:59')
+time_complete= np.datetime64('2018-10-13T23:59:59')
 mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
 data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,3.5,np.sum(mask) )
 mask=data_weather_camellia.df['date_time'].between(time_end,time_complete)
 data_weather_camellia.df['dlyrainmm'][mask]=3.5
 
-####    treat rain data  ##
+####    treat rain data as it was missing due to poweroutage  ##
 time_start = np.datetime64('2018-10-14T09:34')
 time_end   = np.datetime64('2018-10-14T12:00')
-time_complete= np.datetime64('2018-10-14T23:59')
+time_complete= np.datetime64('2018-10-14T23:59:59')
 mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
-data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,13,np.sum(mask) )
+data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,16,np.sum(mask) )
 mask=data_weather_camellia.df['date_time'].between(time_end,time_complete)
-data_weather_camellia.df['dlyrainmm'][mask]=13
+data_weather_camellia.df['dlyrainmm'][mask]=16
 
 
 time_start = np.datetime64('2018-10-15T03:34')
 time_end   = np.datetime64('2018-10-15T15:00')
-time_complete= np.datetime64('2018-10-15T23:59')
+time_complete= np.datetime64('2018-10-15T23:59:59')
 mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
-data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,12,np.sum(mask) )
+data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,18,np.sum(mask) )
 mask=data_weather_camellia.df['date_time'].between(time_end,time_complete)
-data_weather_camellia.df['dlyrainmm'][mask]=12
+data_weather_camellia.df['dlyrainmm'][mask]=18
 #data_weather_daisy.df
 
 time_start = np.datetime64('2018-10-17T00:34')
 time_end   = np.datetime64('2018-10-17T18:00')
-time_complete= np.datetime64('2018-10-17T23:59')
+time_complete= np.datetime64('2018-10-17T23:59:59')
 mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
-data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,4,np.sum(mask) )
+data_weather_camellia.df['dlyrainmm'][mask]=np.linspace(0,6,np.sum(mask) )
 mask=data_weather_camellia.df['date_time'].between(time_end,time_complete)
-data_weather_camellia.df['dlyrainmm'][mask]=4
-
+data_weather_camellia.df['dlyrainmm'][mask]=6
 
 
 #data_weather_daisy.df['rainmm'].values

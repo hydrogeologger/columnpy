@@ -125,7 +125,12 @@ for line in open("schedule.ipt"):
         plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['tmp_soil_surf'])
         '''
 
-        coef=-3.1
+        coef=-3.1 # been a while
+        coef=-1.8 
+        coef=-4.5 
+        coef=-5.0 
+        coef=-7.0 
+        #coef=-2.1
         sp_sch[sch_name].df['mmo0']=(570.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo1']=(570.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-270**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(550.**coef-270**coef)*schedule['porosity']
@@ -147,9 +152,9 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].df['rainmm']= sp_sch[sch_name].df['dlyrainmm']
         time_start=np.datetime64('2018-04-20T10:00')
-        time_end=np.datetime64('2018-04-20T23:00')
+        time_end=np.datetime64('2018-04-20T23:59')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,15,np.sum(mask) )
+        sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,18,np.sum(mask) )
         sp_sch[sch_name].df['rainmm'].loc[sp_sch[sch_name].df['rainmm']<0]=0
  
         # this is done because the sensors are made upside down later, also, some of the weather stations needs to make updates
