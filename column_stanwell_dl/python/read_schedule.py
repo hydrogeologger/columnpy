@@ -111,6 +111,19 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec0']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
         #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec2']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
 
+        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<7  ]=np.nan
+        #sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
+
+        # TO181205 soil sensor failed to work during 829 and 914, make evt zero. so air temperature was put in
+        sp_sch[sch_name].df['tmp_soil_surf'] =  sp_sch[sch_name].df['tmp1'] 
+        sp_sch[sch_name].df['tmp_soil_surf'].loc[mask_output]=  sp_sch[sch_name].df['tc'].loc[mask_output] 
+
+        '''
+        plt.figure()
+        plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['tmp_soil_surf'])
+        '''
 
         coef=-3.1
         sp_sch[sch_name].df['mmo0']=(570.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)*schedule['porosity']
@@ -163,17 +176,29 @@ for line in open("schedule.ipt"):
         #plt.plot(sp_sch[sch_name].df['date_time'],sp_sch[sch_name].df['ir_up_concat'])
 
 
+        #mmo_surf is the surface moisture content, which is lateron used for surface resistance
+        sp_sch[sch_name].df['mmo_surf']=sp_sch[sch_name].df['mmo0']
+
         #mmo0 starts to be exposed from 13 May
-        time_start=np.datetime64('2018-05-13T13:00')
-        mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
-        sp_sch[sch_name].df.loc[mask,'mmo0']=np.nan
-        sp_sch[sch_name].df.loc[mask,'tmp0']=np.nan
+        time_start_mmo0=np.datetime64('2018-05-13T13:00')
+        mask_mmo0=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df.loc[mask_mmo0,'mmo0']=np.nan
+        sp_sch[sch_name].df.loc[mask_mmo0,'tmp0']=np.nan
 
         #mmo1 starts to be exposed from 14 OCT
-        time_start=np.datetime64('2018-10-14T13:00')
-        mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
-        sp_sch[sch_name].df.loc[mask,'mmo1']=np.nan
-        sp_sch[sch_name].df.loc[mask,'tmp1']=np.nan
+        time_start_mmo1=np.datetime64('2018-10-14T13:00')
+        mask_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df.loc[mask_mmo1,'mmo1']=np.nan
+        sp_sch[sch_name].df.loc[mask_mmo1,'tmp1']=np.nan
+
+
+        mask_surf_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,time_start_mmo1)
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1'].loc[mask_surf_mmo1]
+
+        mask_surf_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo2]= sp_sch[sch_name].df['mmo2'].loc[mask_surf_mmo2]
+
+
         
         # this part was cancelled as the power is disabled. 
         time_start=np.datetime64('2018-08-29T13:00')
@@ -262,10 +287,6 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['tmp9'].loc[mask]=np.nan
 
 
-        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
-        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<7  ]=np.nan
-        #sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
 
         #sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
 
@@ -314,137 +335,5 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['ir_up_concat'].loc[mask]=np.nan
         
         
-# read from manual.xlsx
-#https://stackoverflow.com/questions/16888888/how-to-read-a-xlsx-file-using-the-pandas-library-in-ipython
-
-xl_file = pd.ExcelFile( schedule['manual_excel'])
-daily_data_manual = xl_file.parse(index_col='date_time') 
-
-df_mean = sp_sch['stanwell'].df.resample('D').mean()
-df_max = sp_sch['stanwell'].df.resample('D').max()
-df_last = sp_sch['stanwell'].df.resample('D').last()
-# the original time for mean value is at 12am, we shift it to 12pm
-#df_mean['date_time']=df_mean['date_time']+pd.to_timedelta(12, unit='h')
-#df_mean['date_time']=df_mean.index
-
-df_mean.index=df_mean.index+pd.to_timedelta(12, unit='h')
-df_mean['date_time']=df_mean.index
-depth_y=np.array([1,5,8,13,20,28,38,48,70,85])
-responsible_depth_cm=np.concatenate( (np.diff(depth_y),np.array([36])) )
-
-df_mean['total_moisture']=df_mean['mmo0'].fillna(0)*responsible_depth_cm[0] \
-    +df_mean['mmo1'].fillna(0)*responsible_depth_cm[1] \
-    +df_mean['mmo2'].fillna(0)*responsible_depth_cm[2] \
-    +df_mean['mmo3'].fillna(0)*responsible_depth_cm[3] \
-    +df_mean['mmo4'].fillna(0)*responsible_depth_cm[4] \
-    +df_mean['mmo5'].fillna(0)*responsible_depth_cm[5] \
-    +df_mean['mmo6'].fillna(0)*responsible_depth_cm[6] \
-    +df_mean['mmo7'].fillna(0)*responsible_depth_cm[7] \
-    +df_mean['mmo8'].fillna(0)*responsible_depth_cm[8] \
-    +df_mean['mmo9'].fillna(0)*responsible_depth_cm[9]
-
-df_mean['evap_rate']=np.concatenate( (np.diff(df_mean['total_moisture']),np.array([np.nan])))
-
-df_mean['total_moisture_07']=df_mean['mmo0'].fillna(0)*responsible_depth_cm[0] \
-    +df_mean['mmo1'].fillna(0)*responsible_depth_cm[1] \
-    +df_mean['mmo2'].fillna(0)*responsible_depth_cm[2] \
-    +df_mean['mmo3'].fillna(0)*responsible_depth_cm[3] \
-    +df_mean['mmo4'].fillna(0)*responsible_depth_cm[4] \
-    +df_mean['mmo5'].fillna(0)*responsible_depth_cm[5] \
-    +df_mean['mmo6'].fillna(0)*responsible_depth_cm[6] \
-    +df_mean['mmo7'].fillna(0)*responsible_depth_cm[7]
-
-plt.figure()
-plt.plot(df_mean.index,df_mean['total_moisture'])
-plt.plot(df_mean.index,df_mean['total_moisture_07'])
-
-
-
-
-
-bb=df_mean.index-df_mean.index[0]
-
-cc= bb.total_seconds()
-
-interp_method=wf.SmoothSpline(cc,df_mean['total_moisture'],p=1e-14)
-dd=interp_method(cc)
-df_mean['evap_rate_dd']=np.concatenate( (np.diff(dd),np.array([np.nan])))
-
-interp_method=wf.SmoothSpline(cc,df_mean['total_moisture'],p=5e-15)
-ee=interp_method(cc)
-df_mean['evap_rate_ee']=np.concatenate( (np.diff(ee),np.array([np.nan])))
-
-plt.figure()
-plt.plot(df_mean.index,dd)
-plt.plot(df_mean.index,ee)
-plt.plot(df_mean.index,df_mean['total_moisture'])
-
-plt.plot(df_mean.index,df_mean['total_moisture_07'])
-
-#plt.subplot()
-#plt.plot(df_mean.index,-df_mean['evap_rate_dd']*10)
-#plt.plot(df_mean.index,-df_mean['evap_rate_ee']*10)
-#plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
-#
-#
-#plt.plot(df_mean.index,dd)
-#plt.figure()
-#plt.plot(df_mean.index,df_mean['total_moisture_07'])
-
-# below is to calculate penman monteith potential evaporation
-# tc0_k removes all na to 25 degree as this way will fill many gaps
-sp_sch[sch_name].df['tc0_k']=sp_sch[sch_name].df['tc'].fillna(25.0) +constants.kelvin
-sp_sch[sch_name].df['wdspdkphavg2m_0']=sp_sch[sch_name].df['wdspdkphavg2m'].fillna(1.0)
-
-sp_sch[sch_name].df['drhowv_sat_dt']=constants.dsvp_dtk( sp_sch[sch_name].df['tc0_k'] )
-sp_sch[sch_name].df['latent_heat_JPkg']=constants.lhv(sp_sch[sch_name].df['tc0_k'])
-sp_sch[sch_name].df['sat_vapor_pressure_soil_pa'] = constants.svp(sp_sch[sch_name].df['tmp1']+constants.kelvin)
-sp_sch[sch_name].df['vapor_pressure_air_pa'] = constants.svp(sp_sch[sch_name].df['tc0_k'])*sp_sch[sch_name].df['rh']
-sp_sch[sch_name].df['Rn_wPm2']=    (sp_sch[sch_name].df['ir_up_concat']-252.)/20.512
-sp_sch[sch_name].df['ra_sPm']=np.log(2/0.0001) **2.0 /0.41**2.0/sp_sch[sch_name].df['wdspdkphavg2m_0'] 
-sp_sch[sch_name].df['pet_pm_denom'] = sp_sch[sch_name].df['drhowv_sat_dt'] + constants.psych* ( 1.+ 1./sp_sch[sch_name].df['ra_sPm'] )
-sp_sch[sch_name].df['pet_pm_part1']= ( sp_sch[sch_name].df['drhowv_sat_dt'] * sp_sch[sch_name].df['Rn_wPm2']  ) \
-        / sp_sch[sch_name].df['pet_pm_denom']
-sp_sch[sch_name].df['pet_pm_part2']=constants.air_density_kgPm3*constants.heat_capacity_air_JPkgPK*  \
-        ( sp_sch[sch_name].df['sat_vapor_pressure_soil_pa'] -  sp_sch[sch_name].df['vapor_pressure_air_pa']   ) \
-        /sp_sch[sch_name].df['ra_sPm'] / sp_sch[sch_name].df['pet_pm_denom']
-
-sp_sch[sch_name].df['pet_part1_mmPday']=sp_sch[sch_name].df['pet_pm_part1'] / \
-        constants.lhv(273.15)/ constants.rhow_pure_water * constants.msPmmday
-sp_sch[sch_name].df['pet_part2_mmPday']=sp_sch[sch_name].df['pet_pm_part2'] / \
-        constants.lhv(273.15)/ constants.rhow_pure_water * constants.msPmmday
-
-sp_sch[sch_name].df['pet_mmPday']=sp_sch[sch_name].df['pet_part1_mmPday'] + sp_sch[sch_name].df['pet_part2_mmPday'].fillna(0) 
-#plt.figure()
-#plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_pm'])
-
-fig, ax = plt.subplots(10,sharex=True,figsize=(9,12))
-ax[0].plot(ta['date_time'], (ta['radiation'])*0.007+0.2*ta['wdspdkphavg2m_0'].fillna(0), '-',color='maroon',\
-        markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
-
-ax[1].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_mmPday'])
-
-ax[2].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_part2_mmPday']  )
-ax[3].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_part1_mmPday']  )
-ax[4].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['Rn_wPm2'])
-ax[5].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['wdspdkphavg2m_0']     )
-ax[6].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['sat_vapor_pressure_soil_pa']     )
-ax[7].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['vapor_pressure_air_pa']  )
-#ax[8].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['tc']     )
-#ax[9].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['rh']  )
-
-#ax[2].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_pm_part1'])
-#ax[3].plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_pm_part2'])
-
-ax[0].set_ylabel('evp_fitting', fontsize=y_fontsize, labelpad=15)
-ax[1].set_ylabel('pet_pm', fontsize=y_fontsize, labelpad=15)
-ax[2].set_ylabel('part2\nmm/day', fontsize=y_fontsize, labelpad=15)
-ax[3].set_ylabel('part1\nmm/day', fontsize=y_fontsize, labelpad=15)
-#ax[2].set_ylabel('pet_pm_part1', fontsize=y_fontsize, labelpad=5)
-#ax[3].set_ylabel('pet_pm_part2', fontsize=y_fontsize, labelpad=17)
-ax[4].set_ylabel('Rn_wPm2', fontsize=y_fontsize, labelpad=7)
-ax[5].set_ylabel('windspeed', fontsize=y_fontsize, labelpad=15)
-ax[6].set_ylabel('sat_vapor_p soil', fontsize=y_fontsize, labelpad=15)
-ax[7].set_ylabel('vapor_p_air', fontsize=y_fontsize, labelpad=15)
 
 
