@@ -30,7 +30,7 @@ ms=6
 mew=2
 grid_width=2
 y_fontsize=11
-fig, ax = plt.subplots(8,sharex=True,figsize=(9,12))
+fig, ax = plt.subplots(7,sharex=True,figsize=(9,12))
 fig.subplots_adjust(hspace=.10)
 fig.subplots_adjust(left=0.17, right=0.89, top=0.97, bottom=0.05)
 
@@ -59,9 +59,12 @@ ax[0].bar(df_mean.index, df_last['rainmm'], width=1.0)
 
 #ax[1].plot(ta['date_time'], (ta['radiation'])*0.007+0.2*ta['wdspdkphavg2m'].fillna(0), '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 #ax[1].set_ylim([-0.100,9])
-temp= df_mean['radiation']*0.007+0.2*df_mean['wdspdkphavg2m'].fillna(0)
-ax[1].bar(df_mean.index, temp, width=1.0)
-ax[1].bar(df_mean.index,-df_mean['evap_rate_ee']*2, width=1.0)
+#temp= df_mean['radiation']*0.007+0.2*df_mean['wdspdkphavg2m'].fillna(0)
+#ax[1].bar(df_mean.index, temp, width=1.0)
+#ax[1].bar(df_mean.index,-df_mean['evap_rate_ee']*2, width=1.0)
+
+ax[1].bar(df_mean.index,df_mean['pet_mmPday'],width=1.0,color='brown',label='Pote.\nevap.')
+ax[1].bar(df_mean.index,df_mean['aet_mmPday'],width=1.0,color='orange',label='Actu.\nevap.')
 
 
 #ax[2].plot(ta['date_time'], -(ta['pre0']-60), 'r-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='30 cm below soil surface')
@@ -69,14 +72,18 @@ ax[1].bar(df_mean.index,-df_mean['evap_rate_ee']*2, width=1.0)
 #ax[2].set_ylim([-10-110,140-110])
 #ax[2].set_ylim([-140+110,120,])
 #ax[2].set_ylim([-140+110,120,])
-ax[7].plot(ta['date_time'], ta['pre0'], '-',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='50 cm')
-ax[7].plot(ta['date_time'], ta['pre1'], '-',color='darkblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='100 cm')
+ax[2].plot(ta['date_time'], ta['pre0'], '-',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='50 cm')
+ax[2].plot(ta['date_time'], ta['pre1'], '-',color='darkblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='100 cm')
 #ax[2].set_ylim([-10-110,140-110])
-ax[7].set_ylim([-100,1300])
+ax[2].set_ylim([-100,1300])
 
-ax[2].bar(df_mean.index,-df_mean['evap_rate_ee']*10, width=1.0)
-#ax[2].bar(df_mean.index,-df_mean['evap_rate_ee']*10)
-ax[2].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+#ax[2].bar(df_mean.index,-df_mean['evap_rate_ee']*10, width=1.0)
+##ax[2].bar(df_mean.index,-df_mean['evap_rate_ee']*10)
+#ax[2].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
+
+
+#ax[2].plot(df_mean.index,df_mean['cumsum_net_water_pos_out_m'],'-c',label='')
+#ax[2].plot(df_mean.index,(85.-df_mean['total_moisture_cm'])*0.01,'brown',label='')
 
 
 
@@ -92,7 +99,7 @@ ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp7'][::mkevy].values, '-' ,col
 ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp9'][::mkevy].values, '-' ,color='darkblue'   ,linewidth=lw,markerfacecolor='grey'  ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='grey',label='85cm',markevery=mkevy)
 ax[3].set_ylim([5,40])
 
-mkevy=12
+mkevy=24
 
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo0'][::mkevy], '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='1 cm',markevery=mkevy)
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo1'][::mkevy], '-',color='olive',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='5 cm',markevery=mkevy)
@@ -110,16 +117,12 @@ ax[5].plot(ta['date_time'], ta['ec0']/1000., '-',color='olive',markersize=ms,mar
 ax[5].plot(ta['date_time'], ta['ec2']/1000., '-',color='royalblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='60cm')
 ax[5].set_ylim([-0.2,1.7])
 
-
 ax[6].plot(daily_data_manual.index, daily_data_manual['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
 ax[6].set_ylim([-1,101])
 
 
-
-
-
 ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL (mm)', fontsize=y_fontsize, labelpad=15)
-ax[1].set_ylabel('POTENTIAL\nEVAPORATION\nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=15)
+ax[1].set_ylabel('DAILY\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=15)
 ax[2].set_ylabel('WATER\nPRESSURE\n(mm)', fontsize=y_fontsize, labelpad=5)
 ax[3].set_ylabel('TEMPERATURE\nBELOW COLUMN\nSURFACE\n($^\circ$C)', fontsize=y_fontsize, labelpad=17)
 ax[4].set_ylabel('VOL. MOIS.\nCONTENT\nBELOW COLUMN\nSURFACE', fontsize=y_fontsize, labelpad=7)
@@ -139,6 +142,7 @@ ax[2].set_axisbelow(True)
 ax[3].set_axisbelow(True)
 ax[4].set_axisbelow(True)
 ax[5].set_axisbelow(True)
+ax[1].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.83,labelspacing=1.32,ncol=1,columnspacing=0.4)
 ax[2].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 ax[3].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 ax[4].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
