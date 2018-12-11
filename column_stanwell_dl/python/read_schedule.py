@@ -6,6 +6,7 @@ reload(sensorfun)
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
 import json
 import figlib
+import wafo.interpolate as wf
 reload(figlib)
 lw=5
 ms=8
@@ -110,8 +111,26 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec0']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
         #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec2']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
 
+        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
+        sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<7  ]=np.nan
+        #sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
 
-        coef=-3.1
+        # TO181205 soil sensor failed to work during 829 and 914, make evt zero. so air temperature was put in
+        sp_sch[sch_name].df['tmp_soil_surf'] =  sp_sch[sch_name].df['tmp1'] 
+        sp_sch[sch_name].df['tmp_soil_surf'].loc[mask_output]=  sp_sch[sch_name].df['tc'].loc[mask_output] 
+
+        '''
+        plt.figure()
+        plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['tmp_soil_surf'])
+        '''
+
+        coef=-3.1 # been a while
+        coef=-1.8 
+        coef=-4.5 
+        coef=-5.0 
+        coef=-7.0 
+        #coef=-2.1
         sp_sch[sch_name].df['mmo0']=(570.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo1']=(570.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-270**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(550.**coef-270**coef)*schedule['porosity']
@@ -133,9 +152,9 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].df['rainmm']= sp_sch[sch_name].df['dlyrainmm']
         time_start=np.datetime64('2018-04-20T10:00')
-        time_end=np.datetime64('2018-04-20T23:00')
+        time_end=np.datetime64('2018-04-20T23:59')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,15,np.sum(mask) )
+        sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,18,np.sum(mask) )
         sp_sch[sch_name].df['rainmm'].loc[sp_sch[sch_name].df['rainmm']<0]=0
  
         # this is done because the sensors are made upside down later, also, some of the weather stations needs to make updates
@@ -162,15 +181,29 @@ for line in open("schedule.ipt"):
         #plt.plot(sp_sch[sch_name].df['date_time'],sp_sch[sch_name].df['ir_up_concat'])
 
 
+        #mmo_surf is the surface moisture content, which is lateron used for surface resistance
+        sp_sch[sch_name].df['mmo_surf']=sp_sch[sch_name].df['mmo0']
+
         #mmo0 starts to be exposed from 13 May
-        time_start=np.datetime64('2018-05-13T13:00')
-        mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
-        sp_sch[sch_name].df.loc[mask,'mmo0']=np.nan
+        time_start_mmo0=np.datetime64('2018-05-13T13:00')
+        mask_mmo0=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df.loc[mask_mmo0,'mmo0']=np.nan
+        sp_sch[sch_name].df.loc[mask_mmo0,'tmp0']=np.nan
 
         #mmo1 starts to be exposed from 14 OCT
-        time_start=np.datetime64('2018-10-14T13:00')
-        mask=sp_sch[sch_name].df['date_time'].between(time_start,sp_sch[sch_name].end_dt)
-        sp_sch[sch_name].df.loc[mask,'mmo1']=np.nan
+        time_start_mmo1=np.datetime64('2018-10-14T13:00')
+        mask_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df.loc[mask_mmo1,'mmo1']=np.nan
+        sp_sch[sch_name].df.loc[mask_mmo1,'tmp1']=np.nan
+
+
+        mask_surf_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,time_start_mmo1)
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1'].loc[mask_surf_mmo1]
+
+        mask_surf_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo2]= sp_sch[sch_name].df['mmo2'].loc[mask_surf_mmo2]
+
+
         
         # this part was cancelled as the power is disabled. 
         time_start=np.datetime64('2018-08-29T13:00')
@@ -202,6 +235,7 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask,'pre0']=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name].df['rh']*=0.01
         
         #TO181102 daisy humidity sensor was not working.....
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
@@ -258,10 +292,6 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['tmp9'].loc[mask]=np.nan
 
 
-        sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
-        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<7  ]=np.nan
-        #sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
 
         #sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
 
@@ -310,24 +340,5 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['ir_up_concat'].loc[mask]=np.nan
         
         
-# read from manual.xlsx
-#https://stackoverflow.com/questions/16888888/how-to-read-a-xlsx-file-using-the-pandas-library-in-ipython
-
-xl_file = pd.ExcelFile( schedule['manual_excel'])
-daily_data_manual = xl_file.parse(index_col='date_time') 
-
-      #sp_sch[sch_name].merge_data(df=data.df, keys=['dhthum0'],plot=plot_interpolate  ,coef=5e-12)  # done
-
-        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-
-
-
-        #time_start=np.datetime64('2018-01-24T15:00')
-        #time_end=np.datetime64('2018-02-03T15:00')
-        ##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
-        #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        #sp_sch[sch_name].df['pre0'].loc[mask]=np.nan
-        #sp_sch[sch_name].df['pre1'].loc[mask]=np.nan
-
 
 

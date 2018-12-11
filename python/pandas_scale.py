@@ -81,7 +81,7 @@ class pandas_scale:
             # sorting the results using 
             #pdb.set_trace()
             if i>1: 
-                self.df=pd.concat(self.df_sub,axis=0).sort(['date_time'])
+                self.df=pd.concat(self.df_sub,axis=0).sort_values(['date_time'])
                 # http://stackoverflow.com/questions/16167829/in-pandas-how-can-i-reset-index-without-adding-a-new-column
                 # to make sure that it re list the system
                 self.df=self.df.reset_index(drop=True)
@@ -132,7 +132,7 @@ class pandas_scale:
             self.df_sub[i]=pd.read_csv(fn,**kwargs ) #,names=arg['names'],parse_dates=arg['parse_dates'],header=arg['header'])
             self.df=pd.concat([self.df,self.df_sub[i]])
             i+=1
-        self.df=self.df.sort(['date_time']).reset_index(drop=True)
+        self.df=self.df.sort_values(['date_time']).reset_index(drop=True)
         
 
             
@@ -207,7 +207,7 @@ class concat_data_roof:
         source_sec=(source_df['date_time']-source_df['date_time'][0])/np.timedelta64(1,'s')
         #pdb.set_trace()
 
-        pdb.set_trace()
+        #pdb.set_trace()
         for i in source_keys:
             if arg['rm_nan']==True:
                 

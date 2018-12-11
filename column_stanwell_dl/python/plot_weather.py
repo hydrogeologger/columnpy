@@ -15,14 +15,6 @@ fig.subplots_adjust(left=0.18, right=0.87, top=0.97, bottom=0.08)
 mkevy=4
 
 
-df_mean = sp_sch['stanwell'].df.resample('D').mean()
-# the original time for mean value is at 12am, we shift it to 12pm
-#df_mean['date_time']=df_mean['date_time']+pd.to_timedelta(12, unit='h')
-#df_mean['date_time']=df_mean.index
-
-df_mean.index=df_mean.index+pd.to_timedelta(12, unit='h')
-df_mean['date_time']=df_mean.index
-
 # it is not necessary to remove the night result and folcus on only the day time results as the number of point after interpolation is the same per day. 
 #new = old.filter(['A','B','D'], axis=1)
 
@@ -61,8 +53,8 @@ ax[3].set_ylim([5,33])
 mkevy=12
 #ax[4].plot(ta['date_time'][::mkevy], ta['rh_box_7'][::mkevy], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Electrical Enclosure',markevery=mkevy)
 mkevy=6
-ax[4].plot(ta['date_time'][::mkevy], ta['rh'][::mkevy], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
-ax[4].plot(df_mean['date_time'], df_mean['rh'], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
+ax[4].plot(ta['date_time'][::mkevy], ta['rh'][::mkevy]*100., '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
+ax[4].plot(df_mean['date_time'], df_mean['rh']*100., 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
 ax[4].set_ylim([0,100])
 
 

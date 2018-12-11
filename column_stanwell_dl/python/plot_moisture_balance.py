@@ -1,5 +1,4 @@
 import glob
-import collections
 
 lw=1.5
 ms=1
@@ -49,7 +48,7 @@ ax[1].set_ylabel('DEPTH FROM COLUMN TOP (cm)')
 ax[0].set_title('(A)',x=0.06,y=0.94,fontweight='bold')
 ax[1].set_title('(B)',x=0.06,y=0.94,fontweight='bold')
 
-depth_y=np.array([1,5,8,13,20,28,38,48,70,85])
+
 #depth_y_temp=np.array([1,5,8,13,20,38,48,85])
 #mo_x=ta.iloc[idx_im][['mmo0','mmo1','mmo2','mmo3','mmo4','mmo5','mmo6','mmo7','mmo8','mmo9']].tolist()
 #temp_x=ta.iloc[idx_im][['tmp0','tmp1','tmp2','tmp3','tmp4','tmp6','tmp7','tmp9']].tolist()
