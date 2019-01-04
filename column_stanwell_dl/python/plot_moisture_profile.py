@@ -33,7 +33,7 @@ for i in plt_profile['time']:
    plt_profile['time64'][i]  =pd.to_datetime(plt_profile['time'][i])
    plt_profile['time_idx'][i], min_value = min(enumerate( abs(ta.index-   plt_profile['time64'][i] )), key=operator.itemgetter(1))
    plt_profile['moisture'][i]=ta.iloc[ plt_profile['time_idx'][i] ][['mmo0','mmo1','mmo2','mmo3','mmo4','mmo5','mmo6','mmo7','mmo8','mmo9']].tolist()
-   plt_profile['legend'][i]= plt_profile['time64'][i].strftime('%b/%d') + ' Day '+str((plt_profile['time64'][i]- plt_profile['time64'].values()[0] ).days)
+   plt_profile['legend'][i]= plt_profile['time64'][i].strftime('%b/%d') + ', Day '+str((plt_profile['time64'][i]- plt_profile['time64'].values()[0] ).days)+'/ 40 Days'
 
 
 fig, ax = plt.subplots(1,2,sharex=True,figsize=(9,6))
@@ -68,7 +68,7 @@ for i in plt_profile_2['time']:
    plt_profile_2['time64'][i]  =pd.to_datetime(plt_profile_2['time'][i])
    plt_profile_2['time_idx'][i], min_value = min(enumerate( abs(ta.index-   plt_profile_2['time64'][i] )), key=operator.itemgetter(1))
    plt_profile_2['moisture'][i]=ta.iloc[ plt_profile_2['time_idx'][i] ][['mmo0','mmo1','mmo2','mmo3','mmo4','mmo5','mmo6','mmo7','mmo8','mmo9']].tolist()
-   plt_profile_2['legend'][i]= plt_profile_2['time64'][i].strftime('%b/%d') + ' Day '+str((plt_profile_2['time64'][i]- plt_profile_2['time64'].values()[0] ).days)
+   plt_profile_2['legend'][i]= plt_profile_2['time64'][i].strftime('%b/%d') + ' Day '+str((plt_profile_2['time64'][i]- plt_profile_2['time64'].values()[0] ).days)+ '/'
 
 for i in plt_profile_2['time']:
     ax[1].plot(plt_profile_2['moisture'][i],depth_y,'-',color=plt_profile_2['color'][i],label=plt_profile_2['legend'][i] )
