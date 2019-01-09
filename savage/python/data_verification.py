@@ -1,4 +1,3 @@
-
 # applymap is the case to apply for all .
 prof['grange_d_electrochem_o2']['data'].df= prof['grange_d_electrochem_o2']['data'].df.applymap(lambda x: float(x.strip('"') ) if type(x) is str else None)
 prof['grange_d_type_moisture_suction']['data'].df=prof['grange_d_type_moisture_suction']['data'].df.drop(columns=['temp'])
@@ -6,6 +5,7 @@ prof['grange_d_type_moisture_suction']['data'].df=prof['grange_d_type_moisture_s
 prof['grange_d_type_moisture_suction']['data'].df= prof['grange_d_type_moisture_suction']['data'].df.applymap(lambda x: float(x.strip('"') ) if type(x) is str else None)
 
 
+prof['grange_a_electrochem_o2']['data'].df['dox3'].loc [   prof['grange_a_electrochem_o2']['data'].df['dox3'] <=10.0] =np.nan
 
 sp=prof['grange_a_electrochem_o2']['data'].df
 alpha_0=1.0
@@ -15,7 +15,6 @@ sp['dox2_c'] = (sp.dox2**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*2
 sp['dox3_c'] = (sp.dox3**alpha_0  -1.0**alpha_0)/(300.0**alpha_0-1.0**alpha_0)*21.
 #sp['dox4_c'] = (sp.dox4**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)
 sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
-
 
 
 prof['grange_a_moisture_suction']['data'].df['mo7'].loc [   prof['grange_a_moisture_suction']['data'].df['mo7'] <=10] =np.nan
@@ -57,6 +56,32 @@ prof['grange_5_mo_su']['data'].df['mo0'].loc [   prof['grange_5_mo_su']['data'].
 
 prof['grange_3_mo_su']['data'].df=prof['grange_3_mo_su']['data'].df[pd.Timestamp('2018-2-06 21:50:53.445'):]
 prof['grange_4_mo_su']['data'].df=prof['grange_4_mo_su']['data'].df[pd.Timestamp('2018-2-06 21:50:53.445'):]
+
+time_start=np.datetime64('2018-09-15 21:50:53.445')
+#time_end=np.datetime64('2018-08-03 21:50:53.445')
+prof['grange_3_luo2_dry']['data'].df['dlut2'].loc[time_start:] =np.nan
+
+time_start=np.datetime64('2018-12-08 21:50:53.445')
+#time_end=np.datetime64('2018-08-03 21:50:53.445')
+prof['grange_4_luo2_dry']['data'].df['dlut4'].loc[time_start:] =np.nan
+
+
+time_start=np.datetime64('2018-08-25 21:50:53.445')
+#time_end=np.datetime64('2018-08-03 21:50:53.445')
+prof['grange_4_mo_su']['data'].df['dluo7'].loc[time_start:] =np.nan
+
+prof['grange_b_electrochem_o2']['data'].df['dox0'].loc [   prof['grange_b_electrochem_o2']['data'].df['dox0'] <=10] =np.nan
+prof['grange_b_electrochem_o2']['data'].df['dox5'].loc [   prof['grange_b_electrochem_o2']['data'].df['dox5'] <=10] =np.nan
+prof['grange_b_electrochem_o2']['data'].df['dox7'].loc [   prof['grange_b_electrochem_o2']['data'].df['dox7'] <=10] =np.nan
+
+time_start=np.datetime64('2018-08-09 21:50:53.445')
+#time_end=np.datetime64('2018-09-05 21:50:53.445')
+#time_start=pd.to_datetime('2018-08-09 21:50:53.445')
+#time_end=pd.to_datetime('2018-09-05 21:50:53.445')
+#prof['grange_b_electrochem_o2']['data'].df['timestamp']=prof['grange_b_electrochem_o2']['data'].df.index
+prof['grange_b_electrochem_o2']['data'].df['dox7'].loc[time_start:] =np.nan
+#prof['grange_b_electrochem_o2']['data'].df['dox7'].loc[time_start:time_end] =np.nan
+
 sp=prof['grange_b_electrochem_o2']['data'].df
 sp['dox0_c'] = (sp.dox0**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
 sp['dox1_c'] = (sp.dox1**alpha_0  -1.0**alpha_0)/(420.0**alpha_0-1.0**alpha_0)*21.
@@ -67,6 +92,9 @@ sp['dox5_c'] = (sp.dox5**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*2
 sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
 sp['dox7_c'] = (sp.dox7**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
 
+time_start=np.datetime64('2018-07-31 21:50:53.445')
+time_end=np.datetime64('2018-08-03 21:50:53.445')
+prof['grange_d_electrochem_o2']['data'].df['dox3'].loc[time_start:time_end] =np.nan
 
 sp=prof['grange_d_electrochem_o2']['data'].df
 #  https://stackoverflow.com/questions/22847304/exception-handling-in-pandas-apply-function
@@ -99,7 +127,8 @@ prof['grange_b_luo2']['data'].df['dluo4'].loc [   prof['grange_b_luo2']['data'].
 
 
 prof['grange_3_luo2_dry']['data'].df['dluo0'].loc[ prof['grange_3_luo2_dry']['data'].df['dluo0']<=0 ] =np.nan
-prof['grange_3_luo2_dry']['data'].df['dluo0'].loc[ prof['grange_3_luo2_dry']['data'].df['dluo0']<=0 ] =np.nan
+
+prof['grange_4_luo2_dry']['data'].df['dluo4'].loc[ prof['grange_4_luo2_dry']['data'].df['dluo4']<=10 ] =np.nan
 
 prof['grange_3_mo_su']['data'].df['dluo7'].loc[prof['grange_3_mo_su']['data'].df['dluo7']<=0.0] =np.nan
 prof['grange_3_mo_su']['data'].df['tmp7'].loc[prof['grange_3_mo_su']['data'].df['tmp7']<=0.0] =np.nan
@@ -109,6 +138,9 @@ prof['grange_5_mo_su']['data'].df['tmp7'].loc[prof['grange_5_mo_su']['data'].df[
 
 prof['grange_d_electrochem_o2']['data'].df['dtp4'].loc[ prof['grange_d_electrochem_o2']['data'].df['dtp4'] <=0 ] =np.nan
 
+#time_start=np.datetime64('2018-08-01 21:50:53.445')
+#time_end=np.datetime64('2018-08-03 21:50:53.445')
+#prof['grange_d_electrochem_o2']['data'].df['dox3'].loc[time_start:time_end] =np.nan
 
 prof['grange_5_luo2_dry']['data'].df['dluo0'].loc[ prof['grange_5_luo2_dry']['data'].df['dluo0']<=0 ] =np.nan
 prof['grange_5_luo2_dry']['data'].df['dluo1'].loc[ prof['grange_5_luo2_dry']['data'].df['dluo1']<=0 ] =np.nan
@@ -118,7 +150,9 @@ prof['grange_5_luo2_dry']['data'].df['dluo4'].loc[ prof['grange_5_luo2_dry']['da
 prof['grange_5_luo2_dry']['data'].df['dluo5'].loc[ prof['grange_5_luo2_dry']['data'].df['dluo5']<=0 ] =np.nan
 prof['grange_5_luo2_dry']['data'].df['dluo6'].loc[ prof['grange_5_luo2_dry']['data'].df['dluo6']<=0 ] =np.nan
 
-prof['grange_5_mo_su']['data'].df['dluo7'].loc[prof['grange_5_mo_su']['data'].df['dluo7']<=0.0] =np.nan
+prof['grange_5_mo_su']['data'].df['dluo7'].loc[ prof['grange_5_mo_su']['data'].df['dluo7']<=10 ] =np.nan
+
+
 
 
 

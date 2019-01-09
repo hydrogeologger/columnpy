@@ -7,10 +7,47 @@ import py_compile
 import sys
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib
+import matplotlib.image as image
+import glob, os
 
 import pandas as pd
 import pdb
 
+import matplotlib.pylab as pylab
+lw=2
+ms=0.5
+mew=3
+grid_width=2
+
+params = {'legend.fontsize': 6,
+          'figure.figsize': (10, 5),
+         'axes.labelsize': 11,
+         'axes.titlesize':'11',
+         'xtick.labelsize':'11',
+         'ytick.labelsize':'11',
+         'font.weight':'bold',
+         'axes.labelweight':'bold',
+         'lines.linewidth':2}#,
+#         'title.fontweight':'bold'}
+
+#         'axes.grid':'linewidth=grid_width,color = '0.5''}
+#         'linewidth':lw,'markers.size':ms,'markers.edgewidth':mew}
+pylab.rcParams.update(params)
+
+lw=2
+ms=6
+mew=2
+grid_width=2
+y_fontsize=9
+#fig, ax = plt.subplots(6,sharex=True,figsize=(8,9))
+fig.subplots_adjust(hspace=.10)
+fig.subplots_adjust(left=0.15, right=0.98, top=0.90, bottom=0.08)
+
+
+for i in ax:
+  for axis in ['top','bottom','left','right']:
+    i.spines[axis].set_linewidth(2)
 
 
 dt_s=3600
@@ -46,7 +83,8 @@ rain[name_profile]={}
 #rain[name_profile]['public_keys']=csv_tools.get_one_line(i)
 #rain[name_profile]['web_link']=nectar_addr+"/output/"+prof[name_profile]['public_keys']
 rain[name_profile]['file_path_abs']=current_path+"/data/grange_rain/"
-rain[name_profile]['file_addr_abs']=rain[name_profile]['file_path_abs']+'IDCJAC0009_097047_2018_Data.dat'
+#rain[name_profile]['file_addr_abs']=rain[name_profile]['file_path_abs']+'IDCJAC0009_097047_2018_Data.dat'
+rain[name_profile]['file_addr_abs']=rain[name_profile]['file_path_abs']+'savage_rainfall_2018_Data.dat'
 
 #data_date_time=['date_time']
 data_date_time=['Year','Month','Day']
@@ -96,17 +134,17 @@ rain['rain']['df']['rain_cumsum']=rain['rain']['df']['Rainfall amount (millimetr
 
 fig, ax1 = plt.subplots()
 
-for axis in ['top','bottom','left','right']:
-  i.spines[axis].set_linewidth(2)
+#for axis in ['top','bottom','left','right']:
+#  i.spines[axis].set_linewidth(2)
 
-ax1.bar(rain['rain']['df'].index,rain['rain']['df']['Rainfall amount (millimetres)'],color='brown')
+ax1.bar(rain['rain']['df'].index,rain['rain']['df']['Rainfall amount (millimetres)'],color='red')
 ax1.set_xlabel('DATE')
 # Make the y-axis label, ticks and tick labels match the line color.
-ax1.set_ylabel('RAINFALL (mm)', color='brown')
-ax1.tick_params('y', colors='brown')
+ax1.set_ylabel('RAINFALL (mm)', color='red')
+ax1.tick_params('y', colors='red')
 
 ax2 = ax1.twinx()
-s2 = np.sin(2 * np.pi * t)
+#s2 = np.sin(2 * np.pi * t)
 ax2.plot(rain['rain']['df'].index,rain['rain']['df']['rain_cumsum'], 'k')
 ax2.set_ylabel('CUMULATIVE RAINFALL (mm)', color='k')
 ax2.tick_params('y', colors='k')
