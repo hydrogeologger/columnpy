@@ -10,8 +10,6 @@ import matplotlib.dates as mdates
 import matplotlib
 import matplotlib.image as image
 import glob, os
-import figlib
-reload(figlib)
 
 import pandas as pd
 import pdb
@@ -43,10 +41,10 @@ mew=2
 grid_width=2
 y_fontsize=9
 #fig, ax = plt.subplots(6,sharex=True,figsize=(8,9))
-#fig.subplots_adjust(hspace=.10)
-#fig.subplots_adjust(left=0.15, right=0.98, top=0.90, bottom=0.08)
-#
-#
+fig.subplots_adjust(hspace=.10)
+fig.subplots_adjust(left=0.15, right=0.98, top=0.90, bottom=0.08)
+
+
 #for i in ax:
 #  for axis in ['top','bottom','left','right']:
 #    i.spines[axis].set_linewidth(2)
@@ -74,19 +72,19 @@ if not os.path.exists('output_data'):
         os.makedirs('output_data')
 
 
-sch_name='grange_rain'
+title='grange_solar'
 
 
-rain={'rain':{}}
-rain
-name_profile='rain'
-rain[name_profile]={}
+solar={'solar':{}}
+solar
+name_profile='solar'
+solar[name_profile]={}
 #rain[name_profile]['credential_path']=i
 #rain[name_profile]['public_keys']=csv_tools.get_one_line(i)
 #rain[name_profile]['web_link']=nectar_addr+"/output/"+prof[name_profile]['public_keys']
-rain[name_profile]['file_path_abs']=current_path+"/data/grange_rain/"
+solar[name_profile]['file_path_abs']=current_path+"/data/grange_solar/"
 #rain[name_profile]['file_addr_abs']=rain[name_profile]['file_path_abs']+'IDCJAC0009_097047_2018_Data.dat'
-rain[name_profile]['file_addr_abs']=rain[name_profile]['file_path_abs']+'savage_rainfall_2018_Data.dat'
+solar[name_profile]['file_addr_abs']=solar[name_profile]['file_path_abs']+'savage_solar_2018_Data.dat'
 
 #data_date_time=['date_time']
 data_date_time=['Year','Month','Day']
@@ -110,13 +108,11 @@ data_date_time=['Year','Month','Day']
 
 #  self.df_sub[i]=pd.read_csv(fn,sep=arg['sep'],names=arg['names'], header=arg['header'],date_parser=arg['date_parser'],parse_dates=arg['parse_dates'],index_col=arg['index_col'])
 #  pd.read_csv(rain[name_profile]['file_addr_abs'],parse_dates=data_date_time)
-rain['rain']['df']=pd.read_csv(rain[name_profile]['file_addr_abs'])
+solar['solar']['df']=pd.read_csv(solar[name_profile]['file_addr_abs'])
 #pd.read_csv(rain[name_profile]['file_addr_abs'],parse_dates=data_date_time)
 #rain['rain']['df'].index=rain['rain']['df']
 
-rain['rain']['df'].index=pd.to_datetime(rain['rain']['df'][['Year', 'Month', 'Day']])
-
-rain['rain']['df']['rain_cumsum']=rain['rain']['df']['Rainfall amount (millimetres)'].cumsum()
+solar['solar']['df'].index=pd.to_datetime(solar['solar']['df'][['Year', 'Month', 'Day']])
 
 #ax = rain['rain']['df'].plot.bar( y='Rainfall amount (millimetres)')
 #
@@ -139,17 +135,17 @@ fig, ax1 = plt.subplots()
 #for axis in ['top','bottom','left','right']:
 #  i.spines[axis].set_linewidth(2)
 
-ax1.bar(rain['rain']['df'].index,rain['rain']['df']['Rainfall amount (millimetres)'],color='royalblue')
+ax1.bar(solar['solar']['df'].index,solar['solar']['df']['Daily global solar exposure (KWh/m*m)'],color='gold')
 ax1.set_xlabel('DATE')
 # Make the y-axis label, ticks and tick labels match the line color.
-ax1.set_ylabel('RAINFALL (mm)', color='darkblue')
-ax1.tick_params('y', colors='darkblue')
+ax1.set_ylabel('Global solar exposure (KWh/m*m)', color='k')
+ax1.tick_params('y', colors='k')
 
-ax2 = ax1.twinx()
-#s2 = np.sin(2 * np.pi * t)
-ax2.plot(rain['rain']['df'].index,rain['rain']['df']['rain_cumsum'], 'k')
-ax2.set_ylabel('CUMULATIVE RAINFALL (mm)', color='k')
-ax2.tick_params('y', colors='k')
+#ax2 = ax1.twinx()
+##s2 = np.sin(2 * np.pi * t)
+#ax2.plot(rain['rain']['df'].index,rain['rain']['df']['rain_cumsum'], 'k')
+#ax2.set_ylabel('CUMULATIVE RAINFALL (mm)', color='k')
+#ax2.tick_params('y', colors='k')
 
 fig.tight_layout()
 
