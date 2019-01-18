@@ -24,7 +24,7 @@ params = {'legend.fontsize': 6,
          'axes.labelsize': 11,
          'axes.titlesize':'11',
          'xtick.labelsize':'11',
-         'ytick.labelsize':'11',
+         'ytick.labelsize':'10',
          'font.weight':'bold',
          'axes.labelweight':'bold',
          'lines.linewidth':2}#,
@@ -38,7 +38,7 @@ lw=2
 ms=6
 mew=2
 grid_width=2
-y_fontsize=9
+y_fontsize=8
 fig, ax = plt.subplots(8,sharex=True,figsize=(10,9))
 fig.subplots_adjust(hspace=.30)
 fig.subplots_adjust(left=0.15, right=0.85, top=0.93, bottom=0.08)
@@ -213,15 +213,15 @@ ax[6].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[7].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 #
 #ax[0].set_ylabel('CUMULATIVE\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=20)
-ax[0].set_ylabel('Global\nsolar exposure\n(KWh/m*m)', fontsize=y_fontsize, labelpad=10)
+ax[0].set_ylabel('GLOBAL\nSOLAR EXPOSURE\n(KWh/m*m)', fontsize=y_fontsize, labelpad=10)
 ax[1].set_ylabel('RAINFALL\n(mm)', fontsize=y_fontsize, labelpad=10)
 ax2.set_ylabel('CUMULATIVE RAINFALL\n(mm)', fontsize=y_fontsize, labelpad=10)
-ax[2].set_ylabel('OXYGEN CONC.\nCOLUMN 1\n A TYPE (%)', fontsize=y_fontsize, labelpad=10)
-ax[3].set_ylabel('OXYGEN CONC.\nCOLUMN 2\n B TYPE (%)', fontsize=y_fontsize, labelpad=10)
-ax[4].set_ylabel('OXYGEN CONC.\nCOLUMN 3\n D TYPE (%)', fontsize=y_fontsize, labelpad=10)
-ax[5].set_ylabel('OXYGEN CONC.\nCOLUMN 4\n D + A TYPE\nCOMPACTED (%)', fontsize=y_fontsize, labelpad=10)
-ax[6].set_ylabel('OXYGEN CONC.\nCOLUMN 5\n D + B TYPE\nCOMPACTED (%)', fontsize=y_fontsize, labelpad=10)
-ax[7].set_ylabel('OXYGEN CONC.\nCOLUMN 6\n A + B + D\nMIXED (%)', fontsize=y_fontsize, labelpad=10)
+ax[2].set_ylabel('OXYGEN CONC.\nCOLUMN 1\n A TYPE\n(%)', fontsize=y_fontsize, labelpad=10)
+ax[3].set_ylabel('OXYGEN CONC.\nCOLUMN 2\n B TYPE\n(%)', fontsize=y_fontsize, labelpad=10)
+ax[4].set_ylabel('OXYGEN CONC.\nCOLUMN 3\n D TYPE\n(%)', fontsize=y_fontsize, labelpad=10)
+ax[5].set_ylabel('OXYGEN CONC.\nCOLUMN 4\n D + A TYPE\n(%)', fontsize=y_fontsize, labelpad=10)
+ax[6].set_ylabel('OXYGEN CONC.\nCOLUMN 5\n D + B TYPE\n(%)', fontsize=y_fontsize, labelpad=10)
+ax[7].set_ylabel('OXYGEN CONC.\nCOLUMN 6\n A + B + D\n(%)', fontsize=y_fontsize, labelpad=10)
 
 ##ax[2].set_ylabel('DEGREE OF SAT.\nBY DIELECTRIC\nMOISTURE\nSENSOR', fontsize=y_fontsize, labelpad=10)
 #ax[2].set_ylabel('SUCTION (kPa)', fontsize=y_fontsize, labelpad=10)
@@ -241,6 +241,14 @@ ax[5].set_ylim([0,22])
 ax[6].set_ylim([0,22])
 ax[7].set_ylim([0,22])
 #ax[7].legend(bbox_to_anchor=(.1, 0.55 ), loc=2, borderaxespad=0.)
+ax[0].set_title('(A)',x=0.02,y=0.7,fontweight='bold')
+ax[1].set_title('(B)',x=0.02,y=0.7,fontweight='bold')
+ax[2].set_title('(C)',x=0.02,y=0.5,fontweight='bold')
+ax[3].set_title('(D)',x=0.02,y=0.5,fontweight='bold')
+ax[4].set_title('(E)',x=0.02,y=0.5,fontweight='bold')
+ax[5].set_title('(F)',x=0.02,y=0.7,fontweight='bold')
+ax[6].set_title('(G)',x=0.02,y=0.7,fontweight='bold')
+ax[7].set_title('(H)',x=0.02,y=0.7,fontweight='bold')
 ax[5].legend(bbox_to_anchor=(1.10, 0.06),  loc='center' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4,title="SOIL DEPTHS\n(C,D,E,F,G,H)")
 #ax[2].legend(bbox_to_anchor=(1.09, 0.5 ), loc='center' , borderaxespad=0.,fontsize=12,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 
