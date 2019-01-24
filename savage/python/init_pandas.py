@@ -46,13 +46,14 @@ dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # s
 
 # 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
 index_col_sw=True
+#index_col_sw=False
 index_col_sw='timestamp'
 #index_col_sw=True
 
 for key,value in prof.iteritems():
     print key
     header_string=csv_tools.get_first_line(value['file_addr_abs'])
-    header=header_string.rstrip()
+    header=header_string.rstrip() 
     value['header']=header.split(',')
     value['data']=pandas_scale.pandas_scale(file_path=value['file_path_abs'],
         source='raw',
@@ -65,10 +66,12 @@ for key,value in prof.iteritems():
         )
     value['data'].df.sort_index(ascending=True,inplace=True)
     value['data'].df.index=value['data'].df.index+pd.to_timedelta(10, unit='h')
+  
+    
 
 
 
-
+   
 
 
 
