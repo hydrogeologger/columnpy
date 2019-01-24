@@ -46,8 +46,8 @@ ax[0].set_xlabel('VOLUMETRIC\nMOISTURE CONTENT')
 ax[1].set_xlabel('VOLUMETRIC\nMOISTURE CONTENT')
 ax[0].set_ylabel('DEPTH FROM COLUMN TOP (cm)')
 ax[1].set_ylabel('DEPTH FROM COLUMN TOP (cm)')
-ax[0].set_title('(A)',x=0.06,y=0.94,fontweight='bold')
-ax[1].set_title('(B)',x=0.06,y=0.94,fontweight='bold')
+ax[0].set_title('(a)',x=0.06,y=0.94,fontweight='bold')
+ax[1].set_title('(b)',x=0.06,y=0.94,fontweight='bold')
 
 depth_y=np.array([1,5,8,13,20,28,38,48,70,85])
 #depth_y_temp=np.array([1,5,8,13,20,38,48,85])
@@ -68,7 +68,7 @@ for i in plt_profile_2['time']:
    plt_profile_2['time64'][i]  =pd.to_datetime(plt_profile_2['time'][i])
    plt_profile_2['time_idx'][i], min_value = min(enumerate( abs(ta.index-   plt_profile_2['time64'][i] )), key=operator.itemgetter(1))
    plt_profile_2['moisture'][i]=ta.iloc[ plt_profile_2['time_idx'][i] ][['mmo0','mmo1','mmo2','mmo3','mmo4','mmo5','mmo6','mmo7','mmo8','mmo9']].tolist()
-   plt_profile_2['legend'][i]= plt_profile_2['time64'][i].strftime('%b/%d') + ' Day '+str((plt_profile_2['time64'][i]- plt_profile_2['time64'].values()[0] ).days)+ '/'
+   plt_profile_2['legend'][i]= plt_profile_2['time64'][i].strftime('%b/%d') + ' Day '+str((plt_profile_2['time64'][i]- plt_profile_2['time64'].values()[0] ).days)
 
 for i in plt_profile_2['time']:
     ax[1].plot(plt_profile_2['moisture'][i],depth_y,'-',color=plt_profile_2['color'][i],label=plt_profile_2['legend'][i] )

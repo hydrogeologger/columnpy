@@ -64,12 +64,12 @@ ax[5].set_ylim([100,103])
 
 
 
-ax[0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
-ax[1].set_title('(B)',x=0.04,y=0.8,fontweight='bold')
-ax[2].set_title('(C)',x=0.04,y=0.8,fontweight='bold')
-ax[3].set_title('(D)',x=0.04,y=0.8,fontweight='bold')
-ax[4].set_title('(E)',x=0.04,y=0.8,fontweight='bold')
-ax[5].set_title('(F)',x=0.04,y=0.8,fontweight='bold')
+ax[0].set_title('(a)',x=0.04,y=0.78,fontweight='bold')
+ax[1].set_title('(b)',x=0.04,y=0.78,fontweight='bold')
+ax[2].set_title('(c)',x=0.04,y=0.78,fontweight='bold')
+ax[3].set_title('(d)',x=0.04,y=0.78,fontweight='bold')
+ax[4].set_title('(e)',x=0.04,y=0.78,fontweight='bold')
+ax[5].set_title('(f)',x=0.04,y=0.78,fontweight='bold')
 ax[0].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[1].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[2].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
