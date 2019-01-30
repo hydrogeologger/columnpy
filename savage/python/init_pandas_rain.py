@@ -10,8 +10,8 @@ import matplotlib.dates as mdates
 import matplotlib
 import matplotlib.image as image
 import glob, os
-import figlib
-reload(figlib)
+
+
 
 import pandas as pd
 import pdb
