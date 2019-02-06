@@ -39,7 +39,7 @@ for i in paths_profile:
 for i in prof:
     if not os.path.exists(prof[i]['file_path_abs']):
         os.makedirs(prof[i]['file_path_abs'])
-        downloader=phant_downloader.phant_downloader(web_addr=prof[i]['web_link'],file_path_abs=prof[i]['file_addr_abs'],download=sw_download)
+    downloader=phant_downloader.phant_downloader(web_addr=prof[i]['web_link'],file_path_abs=prof[i]['file_addr_abs'],download=sw_download)
 
     sleep(1)
 

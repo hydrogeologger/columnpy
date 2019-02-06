@@ -68,7 +68,7 @@ for ii in range(len(date)):
     idx_im_a_e = prof['grange_a_electrochem_o2']['data'].df.index.get_loc(im_time, method='nearest')
     idx_im_a_lo = prof['grange_a_luo2']['data'].df.index.get_loc(im_time, method='nearest') 
     idx_im_b_e = prof['grange_b_electrochem_o2']['data'].df.index.get_loc(im_time, method='nearest')
-    idx_im_b_lo = prof['grange_a_luo2']['data'].df.index.get_loc(im_time, method='nearest') 
+    idx_im_b_lo = prof['grange_b_luo2']['data'].df.index.get_loc(im_time, method='nearest') 
     idx_im_d_e = prof['grange_d_electrochem_o2']['data'].df.index.get_loc(im_time, method='nearest')
     idx_im_d_lo = prof['grange_d_luo2']['data'].df.index.get_loc(im_time, method='nearest') 
     idx_im_3_lo = prof['grange_3_luo2_dry']['data'].df.index.get_loc(im_time, method='nearest')

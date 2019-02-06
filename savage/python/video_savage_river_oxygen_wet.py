@@ -91,7 +91,7 @@ for ii in range(len(date)):
         for j in i:
           for axis in ['top','bottom','left','right']:
             j.spines[axis].set_linewidth(2)
-
+            j.set_axisbelow(True)
     #fig, ax_mo = plt.subplots(6,2,sharex=True,figsize=(13,9))
     #fig.subplots_adjust(hspace=.10)
     #fig.subplots_adjust(left=0.10, right=0.99, top=0.97, bottom=0.05)
@@ -126,7 +126,7 @@ for ii in range(len(date)):
 
     #depth_y=np.array([8,13,20,28,38,48,70,85])
     #depth_y=np.array([0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0])
-    depth_y_a=np.array([1.0,2.0,2.5,3.0])
+    depth_y_a=np.array([2.5,3.0,3.5])
     depth_y_b=np.array([0.5,1.5,2.5,3.5])
     depth_y_d=np.array([1.5,2.5,4.0])
     depth_y=np.array([0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0])
@@ -134,20 +134,22 @@ for ii in range(len(date)):
     #depth_y_temp=np.array([0.5,2.0,2.5,3.0,3.5])
     
     ox_a_e=prof['grange_a_electrochem_o2']['data'].df.iloc[idx_im_a_e][['wox3_c','wox2_c','wox1_c']].tolist()
-    ox_a_lo=prof['grange_a_luo2']['data'].df.iloc[idx_im_a_lo][['wluo6']].tolist()
+    #ox_a_lo=prof['grange_a_luo2']['data'].df.iloc[idx_im_a_lo][['wluo6']].tolist()
     #mergedlist_a=[ox_a_e[0]]+ox_a_lo[0:]+ox_a_e[1:]
-    mergedlist_a=[ox_a_lo[0]]+ox_a_e[0:]
+    #mergedlist_a=[ox_a_lo[0]]+ox_a_e[0:]
     #ox_a_e[1:1] = ox_a_lo #insert a list at a specific point
     #mergelist_a = ox_a_e
-    ox_b_e=prof['grange_b_electrochem_o2']['data'].df.iloc[idx_im_b_e][['wox7_c','wox3_c','wox1_c']].tolist()
+    #ox_b_e=prof['grange_b_electrochem_o2']['data'].df.iloc[idx_im_b_e][['wox7_c','wox3_c','wox1_c']].tolist()
+    ox_b_e=prof['grange_b_electrochem_o2']['data'].df.iloc[idx_im_b_e][['wox7_c','wox1_c']].tolist()
     ox_b_lo=prof['grange_b_luo2']['data'].df.iloc[idx_im_b_lo][['wluo5']].tolist()
     #mergedlist_b=ox_b_e[:3]+[ox_b_lo[0]]+[ox_b_e[3]]+[ox_b_lo[1]]+ox_b_e[4:]
-    mergedlist_b=[ox_b_e[0]]+[ox_b_lo[0]]+ox_b_e[1:]
+    mergedlist_b=[ox_b_e[0]]+ox_b_lo+ox_b_e[1:]
+    
 
     ox_d_e=prof['grange_d_electrochem_o2']['data'].df.iloc[idx_im_d_e][['wox3_c','wox0_c']].tolist()
     ox_d_lo=prof['grange_d_luo2']['data'].df.iloc[idx_im_d_lo][['wluo5']].tolist()
     #mergedlist_d=[ox_d_lo[0]]+[ox_d_e[0]]+[ox_d_lo[1]]+ox_d_e[1:]
-    mergedlist_d=ox_d_e[0:]+[ox_d_lo[0]]
+    mergedlist_d=ox_d_lo+ox_d_e
 
     ox_3_mo=prof['grange_3_mo_su']['data'].df.iloc[idx_im_3_mo][['wluo7']].tolist()
     ox_3_lo=prof['grange_3_luo2_wet']['data'].df.iloc[idx_im_3_lo][['wluo6','wluo5','wluo4','wluo3','wluo2','wluo1','wluo0']].tolist()
@@ -159,7 +161,7 @@ for ii in range(len(date)):
     ox_5_lo=prof['grange_5_luo2_wet']['data'].df.iloc[idx_im_5_lo][['wluo6','wluo5','wluo4','wluo3','wluo2','wluo1','wluo0']].tolist()
     mergedlist_5=ox_5_mo+ox_5_lo
 
-    ax_ox_abd.plot(mergedlist_a,depth_y_a,'-',color='darkblue',label='Column_1')
+    ax_ox_abd.plot(ox_a_e,depth_y_a,'-',color='darkblue',label='Column_1')
     ax_ox_abd.plot(mergedlist_b,depth_y_b,'-',color='lightblue',label='Column_2')
     ax_ox_abd.plot(mergedlist_d,depth_y_d,'-',color='cyan',label='Column_3')
     ax_ox_abd.set_ylim([4.5,0])

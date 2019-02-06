@@ -24,12 +24,12 @@ sp['dox3_c'] = (sp.dox3**alpha_0  -1.0**alpha_0)/(300.0**alpha_0-1.0**alpha_0)*2
 #sp['dox4_c'] = (sp.dox4**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)
 sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
 
-sp['wox0_c'] = (sp.wox0**alpha_0  -1.0**alpha_0)/(511.0**alpha_0-1.0**alpha_0)*21.
-sp['wox1_c'] = (sp.wox1**alpha_0  -1.0**alpha_0)/(232.0**alpha_0-1.0**alpha_0)*21.
-sp['wox2_c'] = (sp.wox2**alpha_0  -1.0**alpha_0)/(200.0**alpha_0-1.0**alpha_0)*21.
-sp['wox3_c'] = (sp.wox3**alpha_0  -1.0**alpha_0)/(188.0**alpha_0-1.0**alpha_0)*21.
-sp['wox4_c'] = (sp.wox4**alpha_0  -1.0**alpha_0)/(530.0**alpha_0-1.0**alpha_0)*21.
-sp['wox7_c'] = (sp.wox7**alpha_0  -1.0**alpha_0)/(430.0**alpha_0-1.0**alpha_0)*21.
+sp['wox0_c'] = (sp.wox0**alpha_0  -1.0**alpha_0)/(511.0**alpha_0-1.0**alpha_0)*13.
+sp['wox1_c'] = (sp.wox1**alpha_0  -1.0**alpha_0)/(232.0**alpha_0-1.0**alpha_0)*13.
+sp['wox2_c'] = (sp.wox2**alpha_0  -1.0**alpha_0)/(200.0**alpha_0-1.0**alpha_0)*13.
+sp['wox3_c'] = (sp.wox3**alpha_0  -1.0**alpha_0)/(188.0**alpha_0-1.0**alpha_0)*13.
+sp['wox4_c'] = (sp.wox4**alpha_0  -1.0**alpha_0)/(530.0**alpha_0-1.0**alpha_0)*13.
+sp['wox7_c'] = (sp.wox7**alpha_0  -1.0**alpha_0)/(430.0**alpha_0-1.0**alpha_0)*13.
 
 prof['grange_a_moisture_suction']['data'].df['mo7'].loc [   prof['grange_a_moisture_suction']['data'].df['mo7'] <=10] =np.nan
 prof['grange_a_moisture_suction']['data'].df['mo6'].loc [   prof['grange_a_moisture_suction']['data'].df['mo6'] <=10] =np.nan
@@ -106,27 +106,27 @@ time_start=np.datetime64('2018-01-31 21:50:53.445')
 prof['grange_b_electrochem_o2']['data'].df['wox3'].loc[time_start:] =np.nan
 
 sp=prof['grange_b_electrochem_o2']['data'].df
-sp['dox0_c'] = (sp.dox0**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
-sp['dox1_c'] = (sp.dox1**alpha_0  -1.0**alpha_0)/(420.0**alpha_0-1.0**alpha_0)*21.
+sp['dox0_c'] = (sp.dox0**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*19.
+sp['dox1_c'] = (sp.dox1**alpha_0  -1.0**alpha_0)/(420.0**alpha_0-1.0**alpha_0)*19.
 #sp['dox2_c'] = (sp.dox2**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
-sp['dox3_c'] = (sp.dox3**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
+sp['dox3_c'] = (sp.dox3**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*19.
 #sp['dox4_c'] = (sp.dox4**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
-sp['dox5_c'] = (sp.dox5**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
-sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
-sp['dox7_c'] = (sp.dox7**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
+sp['dox5_c'] = (sp.dox5**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*19.
+sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*19.
+sp['dox7_c'] = (sp.dox7**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*19.
 
-sp['wox0_c'] = (sp.wox0**alpha_0  -1.0**alpha_0)/(485.0**alpha_0-1.0**alpha_0)*21.
-sp['wox1_c'] = (sp.wox1**alpha_0  -1.0**alpha_0)/(3.0**alpha_0-1.0**alpha_0)*21.
+sp['wox0_c'] = (sp.wox0**alpha_0  -1.0**alpha_0)/(485.0**alpha_0-1.0**alpha_0)*20.
+sp['wox1_c'] = (sp.wox1**alpha_0  -1.0**alpha_0)/(3.0**alpha_0-1.0**alpha_0)*20.
 #sp['wox2_c'] = (sp.wox2**alpha_0  -1.0**alpha_0)/(.0**alpha_0-1.0**alpha_0)*21.
-sp['wox3_c'] = (sp.wox3**alpha_0  -1.0**alpha_0)/(510.0**alpha_0-1.0**alpha_0)*21.
+sp['wox3_c'] = (sp.wox3**alpha_0  -1.0**alpha_0)/(510.0**alpha_0-1.0**alpha_0)*20.
 #sp['wox4_c'] = (sp.wox4**alpha_0  -1.0**alpha_0)/(.0**alpha_0-1.0**alpha_0)*21.
 #sp['dox5_c'] = (sp.dox5**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
 #sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
-sp['wox7_c'] = (sp.wox7**alpha_0  -1.0**alpha_0)/(470.0**alpha_0-1.0**alpha_0)*21.
+sp['wox7_c'] = (sp.wox7**alpha_0  -1.0**alpha_0)/(470.0**alpha_0-1.0**alpha_0)*20.
 
 time_start=np.datetime64('2018-07-31 21:50:53.445')
-time_end=np.datetime64('2018-08-03 21:50:53.445')
-prof['grange_d_electrochem_o2']['data'].df['dox3'].loc[time_start:time_end] =np.nan
+#time_end=np.datetime64('2018-08-03 21:50:53.445')
+prof['grange_d_electrochem_o2']['data'].df['dox3'].loc[time_start:] =np.nan
 
 sp=prof['grange_d_electrochem_o2']['data'].df
 #  https://stackoverflow.com/questions/22847304/exception-handling-in-pandas-apply-function
@@ -144,13 +144,13 @@ sp=prof['grange_d_electrochem_o2']['data'].df
 #sp.ix[sp.index.indexer_between_time(pd.timestamp('2017-12-13 14:03:00') ,pd.timestamp('2017-12-13 21:03:00')) ] ,  datetime.datetime(2017,12,13,21,30))]
 #sp.ix[ sp[:pd.Timestamp('2018-1-13 14:50:53.445')] ]
 #sp=sp[pd.Timestamp('2017-12-13 21:50:53.445'):]
-sp['dox0_c'] = (sp.dox0**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
-sp['dox1_c'] = (sp.dox1**alpha_0  -1.0**alpha_0)/(420.0**alpha_0-1.0**alpha_0)*21.
-sp['dox2_c'] = (sp.dox2**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
-sp['dox3_c'] = (sp.dox3**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
-sp['dox4_c'] = (sp.dox4**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
+sp['dox0_c'] = (sp.dox0**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*18.
+sp['dox1_c'] = (sp.dox1**alpha_0  -1.0**alpha_0)/(420.0**alpha_0-1.0**alpha_0)*18.
+sp['dox2_c'] = (sp.dox2**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*18.
+sp['dox3_c'] = (sp.dox3**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*18.
+sp['dox4_c'] = (sp.dox4**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*18.
 #sp['dox5_c'] = (sp.dox5**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
-sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*21.
+sp['dox6_c'] = (sp.dox6**alpha_0  -1.0**alpha_0)/(450.0**alpha_0-1.0**alpha_0)*18.
 #sp['dox7_c'] = (sp.dox7**alpha_0  -1.0**alpha_0)/(550.0**alpha_0-1.0**alpha_0)*21.
 
 sp['wox0_c'] = (sp.wox0**alpha_0  -1.0**alpha_0)/(4.0**alpha_0-1.0**alpha_0)*21.
@@ -185,7 +185,7 @@ prof['grange_5_mo_su']['data'].df['tmp7'].loc[prof['grange_5_mo_su']['data'].df[
 
 prof['grange_d_electrochem_o2']['data'].df['dtp4'].loc[ prof['grange_d_electrochem_o2']['data'].df['dtp4'] <=0 ] =np.nan
 
-time_start=np.datetime64('2018-12-05 21:50:53.445')
+#time_start=np.datetime64('2018-12-05 21:50:53.445')
 #time_end=np.datetime64('2018-08-03 21:50:53.445')
 #prof['grange_5_luo2_wet']['data'].df['wluo5'].loc[time_start:time_end] =np.nan
 
@@ -224,70 +224,76 @@ prof['grange_5_mo_su']['data'].df['tmp7'].loc[ prof['grange_5_mo_su']['data'].df
 prof['grange_3_mo_su']['data'].df['tmp7'].loc[ prof['grange_3_mo_su']['data'].df['tmp7']<=0.1 ] =np.nan
 prof['grange_4_mo_su']['data'].df['tmp7'].loc[ prof['grange_4_mo_su']['data'].df['tmp7']<=0.1 ] =np.nan
 
-#time_start=np.datetime64('2018-06-05 21:50:53.445')
+
+
+time_start=np.datetime64('2018-12-24 21:50:53.445')
+prof['grange_4_mo_su']['data'].df['mo7'].loc[time_start:] =np.nan
 #time_end=np.datetime64('2018-08-05 21:50:53.445')
 
-
+time_start=np.datetime64('2018-10-01 21:50:53.445')
+prof['grange_3_luo2_wet']['data'].df['wluo3'].loc[time_start:] =np.nan
 
 alpha_mo=-5.0
+porosity = 0.3
+
 sp=prof['grange_a_moisture_suction']['data'].df
-sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
+sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
 
 sp=prof['grange_b_moisture_suction']['data'].df
-sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
-sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
-sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
-sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
-sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
-sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
-sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
-sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)
+sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
+sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
+sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
+sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
+sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
+sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
+sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
+sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-330.**alpha_mo)*porosity
 
 sp=prof['grange_d_type_moisture_suction']['data'].df
-sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
-sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)
+sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
+sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-350.**alpha_mo)*porosity
 
 
 sp=prof['grange_3_mo_su']['data'].df
-sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
+sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
 
 sp=prof['grange_4_mo_su']['data'].df
-sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
+sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
 
 sp=prof['grange_5_mo_su']['data'].df
-sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
-sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)
+sp['mo0_c'] = -(sp.mo0**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo1_c'] = -(sp.mo1**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo2_c'] = -(sp.mo2**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo3_c'] = -(sp.mo3**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo4_c'] = -(sp.mo4**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo5_c'] = -(sp.mo5**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo6_c'] = -(sp.mo6**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
+sp['mo7_c'] = -(sp.mo7**alpha_mo  -550.**alpha_mo)/(550.0**alpha_mo-297.**alpha_mo)*porosity
 
