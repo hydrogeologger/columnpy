@@ -5,7 +5,7 @@ import matplotlib.image as image
 import matplotlib.pylab as pylab
 import re
 matplotlib.use('Agg')
-
+import pandas as pd
 
 #params = {'legend.fontsize': 4,
 #          'figure.figsize': (10, 5),
@@ -27,7 +27,7 @@ lw=2
 ms=2
 mew=3
 grid_width=2
-y_fontsize=9
+y_fontsize=11
 
 #from PIL import Image
 #def get_date_taken(path):
@@ -101,20 +101,22 @@ for ii in range(len(date)):
    
     
     ax_mo_abd = plt.subplot2grid((2, 5), (1,3))
-    ax_mo_abd.set_position([0.60,0.05,0.15,0.40])
+    ax_mo_abd.set_position([0.62,0.07,0.15,0.40])
     
-    ax_mo_abd.set_xlabel('VOLUMETRIC MOISTURE CONTENT')
+    ax_mo_abd.set_xlabel('VOLUMETRIC\nWATER CONTENT (-)')
     ax_mo_abd.set_ylabel('DEPTH FROM COLUMN TOP(m)')
     #ax_img.axis('off')
     ax_mo_345 = plt.subplot2grid((2, 5), (1,4))
-    ax_mo_345.set_position([0.80,0.05,0.15,0.40])
+    ax_mo_345.set_position([0.78,0.07,0.15,0.40])
  
-    ax_mo_345.set_xlabel('VOLUMETRIC MOISTURE CONTENT')
+    ax_mo_345.set_xlabel('VOLUMETRIC\nWATER CONTENT (-)')
     ax_mo_345.set_ylabel('DEPTH FROM COLUMN TOP (m)')
-
+    ax_mo_345.yaxis.tick_right()
+    ax_mo_345.yaxis.set_label_position("right")
     ax_img = plt.subplot2grid((2, 2), (0,1))
     ax_img.set_position([0.53,0.49,0.50,0.50])
-    #ax_img.set_position([0.53,0.25,0.45,0.48])
+      
+     #ax_img.set_position([0.53,0.25,0.45,0.48])
     ax_img.imshow(im)
     ax_img.axis('off')
     
@@ -137,15 +139,16 @@ for ii in range(len(date)):
     ax_mo_abd.plot(mo_x_a,depth_y,'-',color='darkblue',label='Column_1')
     ax_mo_abd.plot(mo_x_b,depth_y,'-',color='lightblue',label='Column_2')
     ax_mo_abd.plot(mo_x_d,depth_y,'-',color='cyan',label='Column_3')
-    ax_mo_abd.set_ylim([4.5,0])
-    ax_mo_abd.set_xlim([-0.05,1.05])
-   
+    ax_mo_abd.set_ylim([4.5,0.2])
+    ax_mo_abd.set_xlim([-0.03,0.36])
+    ax_mo_abd.xaxis.set_major_locator(plt.MaxNLocator(5)) 
+
     ax_mo_345.plot(mo_x_5,depth_y,'-',color='maroon',label='Column_4') 
     ax_mo_345.plot(mo_x_3,depth_y,'-',color='gold',label='Column_5')
     ax_mo_345.plot(mo_x_4,depth_y,'-',color='peru',label='Column_6')
-    ax_mo_345.set_ylim([4.5,0])
-    ax_mo_345.set_xlim([-0.05,1.05])
-
+    ax_mo_345.set_ylim([4.5,0.2])
+    ax_mo_345.set_xlim([-0.03,0.36])
+    ax_mo_345.xaxis.set_major_locator(plt.MaxNLocator(5))
     #ax_temp.plot(temp_x_a,depth_y_temp,'-',color='maroon')
     #ax_temp.set_ylim([4.8,0])
     #ax_temp.set_xlim([0,50])
@@ -287,7 +290,9 @@ for ii in range(len(date)):
     #ax[4].set_xticklabels([])
     #ax[5].set_xticklabels([])
     #xlim=[sp_sch[sch_name].df.time_days[0],sp_sch[sch_name].df.time_days[len(sp_sch[sch_name].df)-1]]
-    xlim=[prof['grange_4_mo_su']['data'].df.index[0],prof['grange_4_mo_su']['data'].df.index[-1]]
+    #xlim=[prof['grange_4_mo_su']['data'].df.index[0],prof['grange_4_mo_su']['data'].df.index[-1]]
+    dates = pd.date_range(start='2017-12-22', periods=10, freq='D')
+    
     
    # ax[0].set_xlim([sp_sch[sch_name].start_dt,sp_sch[sch_name].end_dt])
    # ax[1].set_xlim([sp_sch[sch_name].start_dt,sp_sch[sch_name].end_dt])
@@ -300,17 +305,17 @@ for ii in range(len(date)):
     #ax[2].set_xlim(xlim)
     #ax[3].set_xlim(xlim)
     #ax[4].set_xlim(xlim)
-    ax[7][0].set_xlim(xlim)
+    ax[7][0].set_xlim(pd.Timestamp('2017-12-22'), pd.Timestamp('2019-01-01'))
     
     ax[0][0].set_ylabel('GLOBAL\nSOLAR EXPOSURE\n(KWh/m*m)', fontsize=y_fontsize, labelpad=10)
     ax[1][0].set_ylabel('RAINFALL\n(mm)', fontsize=y_fontsize, labelpad=10)
     ax2.set_ylabel('CUMULATIVE RAINFALL\n(mm)', fontsize=y_fontsize, labelpad=10)
-    ax[2][0].set_ylabel('DEG. OF SAT.\nCOLUMN 1\n A TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-    ax[3][0].set_ylabel('DEG. OF SAT.\nCOLUMN 2\n B TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-    ax[4][0].set_ylabel('DEG. OF SAT.\nCOLUMN 3\n D TYPE ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-    ax[5][0].set_ylabel('DEG. OF SAT.\nCOLUMN 4\n D + A TYPE\nCOMPACTED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-    ax[6][0].set_ylabel('DEG. OF SAT.\nCOLUMN 5\n D + B TYPE\nCOMPACTED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-    ax[7][0].set_ylabel('DEG. OF SAT.\nCOLUMN 6\n A + B + D\nMIXED ($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+    ax[2][0].set_ylabel('VOL.MOIST.\nCONTENT (-)\nCOLUMN 1\nTYPE A', fontsize=y_fontsize, labelpad=10)
+    ax[3][0].set_ylabel('VOL.MOIST.\nCONTENT (-)\nCOLUMN 2\nTYPE B', fontsize=y_fontsize, labelpad=10)
+    ax[4][0].set_ylabel('VOL.MOIST.\nCONTENT (-)\nCOLUMN 3\nTYPE D', fontsize=y_fontsize, labelpad=10)
+    ax[5][0].set_ylabel('VOL.MOIST.\nCONTENT (-)\nCOLUMN 4\nTYPE A+D', fontsize=y_fontsize, labelpad=10)
+    ax[6][0].set_ylabel('VOL.MOIST.\nCONTENT (-)\nCOLUMN 5\nTYPE D+B', fontsize=y_fontsize, labelpad=10)
+    ax[7][0].set_ylabel('VOL.MOIST.\nCONTENT (-)\nCOLUMN 6\nTYPE A+B+D', fontsize=y_fontsize, labelpad=10)
     
     #ax[0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
     #ax[1].set_title('(B)',x=0.04,y=0.8,fontweight='bold')
@@ -326,9 +331,9 @@ for ii in range(len(date)):
     ax[5][0].set_axisbelow(True)
     ax[6][0].set_axisbelow(True)
     ax[7][0].set_axisbelow(True)
-    ax[5][0].legend(bbox_to_anchor=(1.07, 0.06 ), title="SOIL\nDEPTHS\n(C,D,E\nF,G,H)",loc='center', borderaxespad=0.,fontsize=10,handletextpad=0.23,labelspacing=0.22,ncol=1,columnspacing=0.4) 
-    ax_mo_abd.legend(bbox_to_anchor=(0.99, 0.009), loc='lower right' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-    ax_mo_345.legend(bbox_to_anchor=(0.99, 0.009), loc='lower right' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+    ax[5][0].legend(bbox_to_anchor=(1.07, 0.08 ), title="SOIL\nDEPTHS\n(C,D,E\nF,G,H)",loc='center', borderaxespad=0.,fontsize=10,handletextpad=0.23,labelspacing=0.22,ncol=1,columnspacing=0.4) 
+    ax_mo_abd.legend(bbox_to_anchor=(0.993, 0.005), loc='lower right' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+    ax_mo_345.legend(bbox_to_anchor=(0.993, 0.005), loc='lower right' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 
     ax[0][0].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
     ax[1][0].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
@@ -349,22 +354,33 @@ for ii in range(len(date)):
     ax[5][0].set_title('(F)',x=0.04,y=0.8,fontweight='bold')
     ax[6][0].set_title('(G)',x=0.04,y=0.8,fontweight='bold')
     ax[7][0].set_title('(H)',x=0.04,y=0.8,fontweight='bold')
-    ax_mo_abd.set_title('(I)',x=0.08,y=0.93,fontweight='bold')
-    ax_mo_345.set_title('(J)',x=0.08,y=0.93,fontweight='bold')
+    ax_mo_abd.set_title('(I)',x=0.08,y=0.94,fontweight='bold')
+    ax_mo_345.set_title('(J)',x=0.08,y=0.94,fontweight='bold')
     
  
     ax[7][0].xaxis.set_major_formatter(mdates.DateFormatter('%b')) 
     ax[7][0].set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
-    ax[0][0].set_ylim([0,10])
-    ax[1][0].set_ylim([0,60])
-    ax2.set_ylim([0,2500])
-    ax[2][0].set_ylim([0,1])
-    ax[3][0].set_ylim([0,1])
-    ax[4][0].set_ylim([0,1])
-    ax[5][0].set_ylim([0,1])
-    ax[6][0].set_ylim([0,1])
-    ax[7][0].set_ylim([0,1])  
+    ax[0][0].set_ylim([-0.5,10])
+    ax[1][0].set_ylim([-2,60])
+    ax2.set_ylim([-10,2500])
+    ax[2][0].set_ylim([-0.03,0.36])
+    ax[3][0].set_ylim([-0.03,0.36])
+    ax[4][0].set_ylim([-0.03,0.36])
+    ax[5][0].set_ylim([-0.03,0.36])
+    ax[6][0].set_ylim([-0.03,0.36])
+    ax[7][0].set_ylim([-0.03,0.36])  
 
+    ax[1][0].tick_params('y', colors='royalblue')
+    ax2.tick_params('y', colors='darkblue') 
+    ax[0][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[1][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax2.yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[2][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[3][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[4][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[5][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[6][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[7][0].yaxis.set_major_locator(plt.MaxNLocator(5))
         
 
     #ax[5].set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)

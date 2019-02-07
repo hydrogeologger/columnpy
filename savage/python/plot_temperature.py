@@ -147,7 +147,7 @@ ax[2].plot(sp.index[::iv], sp.dtp0[::iv],'-',color='maroon',markersize=ms-3,mark
 #ax[5].plot(sp_wlo.index, sp_wlo.wluo0,'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
-sp_wlo=prof['grange_5_luo2_wet']['data'].df
+#sp_wlo=prof['grange_5_luo2_wet']['data'].df
 sp_dlo=prof['grange_5_luo2_dry']['data'].df
 sp_moi=prof['grange_5_mo_su']['data'].df
 mark_every=24
@@ -163,7 +163,7 @@ ax[3].plot(sp_dlo.index[::iv], sp_dlo.dlut0[::iv],'-',color='maroon',markersize=
 
 
 
-sp_wlo=prof['grange_3_luo2_wet']['data'].df
+#sp_wlo=prof['grange_3_luo2_wet']['data'].df
 sp_dlo=prof['grange_3_luo2_dry']['data'].df
 sp_moi=prof['grange_3_mo_su']['data'].df
 mark_every=24
@@ -178,7 +178,7 @@ ax[4].plot(sp_dlo.index[::iv], sp_dlo.dlut1[::iv],'-',color='peru',markersize=ms
 ax[4].plot(sp_dlo.index[::iv], sp_dlo.dlut0[::iv],'-',color='maroon',markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='4.0m',markevery=mark_every)
 
 
-sp_wlo=prof['grange_4_luo2_wet']['data'].df
+#sp_wlo=prof['grange_4_luo2_wet']['data'].df
 sp_dlo=prof['grange_4_luo2_dry']['data'].df
 sp_moi=prof['grange_4_mo_su']['data'].df
 mark_every=24

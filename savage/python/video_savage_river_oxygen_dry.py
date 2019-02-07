@@ -27,7 +27,7 @@ lw=2
 ms=2
 mew=3
 grid_width=2
-y_fontsize=9
+y_fontsize=11
 
 #from PIL import Image
 #def get_date_taken(path):
@@ -104,16 +104,19 @@ for ii in range(len(date)):
    
     
     ax_ox_abd = plt.subplot2grid((2, 5), (1,3))
-    ax_ox_abd.set_position([0.60,0.05,0.15,0.40])
+    ax_ox_abd.set_position([0.62,0.07,0.15,0.40])
     
     ax_ox_abd.set_xlabel('OXYGEN CONCENTRATION(%)')
     ax_ox_abd.set_ylabel('DEPTH FROM COLUMN TOP(m)')
     #ax_img.axis('off')
     ax_ox_345 = plt.subplot2grid((2, 5), (1,4))
-    ax_ox_345.set_position([0.80,0.05,0.15,0.40])
+    ax_ox_345.set_position([0.78,0.07,0.15,0.40])
  
     ax_ox_345.set_xlabel('OXYGEN CONCENTRATION(%)')
     ax_ox_345.set_ylabel('DEPTH FROM COLUMN TOP (m)')
+
+    ax_ox_345.yaxis.tick_right()
+    ax_ox_345.yaxis.set_label_position("right")
 
     ax_img = plt.subplot2grid((2, 2), (0,1))
     ax_img.set_position([0.53,0.49,0.50,0.50])
@@ -126,14 +129,14 @@ for ii in range(len(date)):
 
     #depth_y=np.array([8,13,20,28,38,48,70,85])
     #depth_y=np.array([0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0])
-    depth_y_a=np.array([0.5,1.0,1.5,2.0,2.5,3.0,3.5])
+    depth_y_a=np.array([0.5,2.0,2.5,3.0,3.5])
     depth_y_b=np.array([0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0])
     #depth_y_d=np.array([0.5,1.0,1.5,2.0,2.5,3.0,3.5,4.0])
     #depth_y_temp=np.array([0.5,2.0,2.5,3.0,3.5])
     
     ox_a_e=prof['grange_a_electrochem_o2']['data'].df.iloc[idx_im_a_e][['dox6_c','dox3_c','dox2_c','dox1_c','dox0_c']].tolist()
-    ox_a_lo=prof['grange_a_luo2']['data'].df.iloc[idx_im_a_lo][['wluo6','wluo5']].tolist()
-    mergedlist_a=[ox_a_e[0]]+ox_a_lo[0:]+ox_a_e[1:]
+    #ox_a_lo=prof['grange_a_luo2']['data'].df.iloc[idx_im_a_lo][['wluo6','wluo5']].tolist()
+    #mergedlist_a=[ox_a_e[0]]+ox_a_lo[0:]+ox_a_e[1:]
     #ox_a_e[1:1] = ox_a_lo #insert a list at a specific point
     #mergelist_a = ox_a_e
     ox_b_e=prof['grange_b_electrochem_o2']['data'].df.iloc[idx_im_b_e][['dox7_c','dox6_c','dox5_c','dox3_c','dox1_c','dox0_c']].tolist()
@@ -141,7 +144,9 @@ for ii in range(len(date)):
     mergedlist_b=ox_b_e[:3]+[ox_b_lo[0]]+[ox_b_e[3]]+[ox_b_lo[1]]+ox_b_e[4:]
     ox_d_e=prof['grange_d_electrochem_o2']['data'].df.iloc[idx_im_d_e][['dox6_c','dox4_c','dox3_c','dox2_c','dox1_c','dox0_c']].tolist()
     ox_d_lo=prof['grange_d_luo2']['data'].df.iloc[idx_im_d_lo][['dluo7','dluo5']].tolist()
-    mergedlist_d=[ox_d_lo[0]]+[ox_d_e[0]]+[ox_d_lo[1]]+ox_d_e[1:]
+    mergedlist_d= np.array([ox_d_lo[0]]+[ox_d_e[0]]+[ox_d_lo[1]]+ox_d_e[1:]).astype(np.double)
+    mask_d = np.isfinite(mergedlist_d)
+
     ox_3_mo=prof['grange_3_mo_su']['data'].df.iloc[idx_im_3_mo][['dluo7']].tolist()
     ox_3_lo=prof['grange_3_luo2_dry']['data'].df.iloc[idx_im_3_lo][['dluo6','dluo5','dluo4','dluo3','dluo2','dluo1','dluo0']].tolist()
     mergedlist_3=ox_3_mo+ox_3_lo #merge two lists
@@ -152,60 +157,21 @@ for ii in range(len(date)):
     ox_5_lo=prof['grange_5_luo2_dry']['data'].df.iloc[idx_im_5_lo][['dluo6','dluo5','dluo4','dluo3','dluo2','dluo1','dluo0']].tolist()
     mergedlist_5=ox_5_mo+ox_5_lo
 
-    ax_ox_abd.plot(mergedlist_a,depth_y_a,'-',color='darkblue',label='Column_1')
+    ax_ox_abd.plot(ox_a_e,depth_y_a,'-',color='darkblue',label='Column_1')
     ax_ox_abd.plot(mergedlist_b,depth_y_b,'-',color='lightblue',label='Column_2')
-    ax_ox_abd.plot(mergedlist_d,depth_y_b,'-',color='cyan',label='Column_3')
-    ax_ox_abd.set_ylim([4.5,0])
-    ax_ox_abd.set_xlim([0,25])
-   
+    ax_ox_abd.plot(mergedlist_d[mask_d],depth_y_b[mask_d],'-',color='cyan',label='Column_3')
+    ax_ox_abd.set_ylim([4.5,0.2])
+    ax_ox_abd.set_xlim([0,23])
+    ax_ox_abd.xaxis.set_major_locator(plt.MaxNLocator(5))
+ 
     ax_ox_345.plot(mergedlist_5,depth_y_b,'-',color='maroon',label='Column_4') 
     ax_ox_345.plot(mergedlist_3,depth_y_b,'-',color='gold',label='Column_5')
     ax_ox_345.plot(mergedlist_4,depth_y_b,'-',color='peru',label='Column_6')
-    ax_ox_345.set_ylim([4.5,0])
-    ax_ox_345.set_xlim([0,25])
-
-    #ax_temp.plot(temp_x_a,depth_y_temp,'-',color='maroon')
-    #ax_temp.set_ylim([4.8,0])
-    #ax_temp.set_xlim([0,50])
-
-    #ax_mo.set_position([0.63,0.09,0.15,0.45])
-    #ax_temp.set_position([0.84,0.09,0.15,0.45])
-
-    #fig = plt.figure(figsize=(16,9))
-    #ax = [[] for i in range
-    #ax[0] = plt.subplot2grid((6, 2), (0, 0), colspan=1)
-    #ax[1] = plt.subplot2grid((6, 2), (1, 0), colspan=1)
-    #ax[2] = plt.subplot2grid((6, 2), (2, 0), colspan=1)
-    #ax[3] = plt.subplot2grid((6, 2), (3, 0), colspan=1)
-    #ax[4] = plt.subplot2grid((6, 2), (4, 0), colspan=1)
-    #ax[5] = plt.subplot2grid((6, 2), (5, 0), colspan=1)
-    #ax[6] = plt.subplot2grid((6, 2), (6, 0), colspan=1)
-    #fig.subplots_adjust(hspace=.20)
-    #fig.subplots_adjust(le
-    #ax_img.set_position([0.47,0.01,0.53,0.97])
-    
+    ax_ox_345.set_ylim([4.5,0.2])
+    ax_ox_345.set_xlim([0,23])
+    ax_ox_345.xaxis.set_major_locator(plt.MaxNLocator(5))
   
-    #fig, ax = plt.subplots(6,sharex=True,figsize=(6,8))
-    #jfig.subplots_adjust(hspace=.15)
     
-    #for axis in ['top','bottom','left','right']:
-    #    ax_mo.spines[axis].set_linewidth(2)
-    #    ax_temp.spines[axis].set_linewidth(2)
-
-    #for i in ax:
-    #    for j in i:
-    #      for axis in ['top','bottom','left','right']:
-    #        j.spines[axis].set_linewidth(2)
- 
-    #for i in ax:
-    #      for axis in ['top','bottom','left','right']:
-    #        i.spines[axis].set_linewidth(2)
-
-    #ax_img = plt.subplot2grid((1, 3), (0,2))
-    #ax_img.set_position([0.53,0.39,0.45,0.58])
-    #ax_img = [[] for i in range(6)]
-    #ax_img_nobact = plt.subplot2grid((3, 3), (0,1))
-    #ax_img_nobact.set_position([0.03,0.39,0.45,0.58])
     
     #sch_name='savage_river_oxygen'
     sp=solar['solar']['df']
@@ -216,12 +182,12 @@ for ii in range(len(date)):
     ax2.plot(sp[:idx_im_rain+1].index, sp['rain_cumsum'][:idx_im_rain+1],color='darkblue')
 
     sp=prof['grange_a_electrochem_o2']['data'].df#[::48]
-    sp_lo=prof['grange_a_luo2']['data'].df#[::48]
+    #sp_lo=prof['grange_a_luo2']['data'].df#[::48]
     mark_every=128
     iv=50
     ax[2][0].plot(   sp[:idx_im_a_e+1].index[::iv],      sp.dox6_c[:idx_im_a_e+1][::iv],'-',color='royalblue',markevery=mark_every,markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',ms=12)
-    ax[2][0].plot(sp_lo[:idx_im_a_lo+1].index[::iv],    sp_lo.wluo6[:idx_im_a_lo+1][::iv],'-',color='lightblue',markevery=mark_every,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.0m',ms=12)
-    ax[2][0].plot(sp_lo[:idx_im_a_lo+1].index[::iv],    sp_lo.wluo5[:idx_im_a_lo+1][::iv],'-',color='limegreen',markevery=mark_every,markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='1.5m',ms=12)
+    #ax[2][0].plot(sp_lo[:idx_im_a_lo+1].index[::iv],    sp_lo.wluo6[:idx_im_a_lo+1][::iv],'-',color='lightblue',markevery=mark_every,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.0m',ms=12)
+    #ax[2][0].plot(sp_lo[:idx_im_a_lo+1].index[::iv],    sp_lo.wluo5[:idx_im_a_lo+1][::iv],'-',color='limegreen',markevery=mark_every,markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='1.5m',ms=12)
     ax[2][0].plot(   sp[:idx_im_a_e+1].index[::iv],      sp.dox3_c[:idx_im_a_e+1][::iv],'-',color='olive'    ,markevery=mark_every,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='2.0m',ms=12)
     ax[2][0].plot(   sp[:idx_im_a_e+1].index[::iv],      sp.dox2_c[:idx_im_a_e+1][::iv],'-',color='gold'     ,markevery=mark_every,markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='2.5m',ms=12)
     ax[2][0].plot(   sp[:idx_im_a_e+1].index[::iv],      sp.dox1_c[:idx_im_a_e+1][::iv],'-',color='peru'     ,markevery=mark_every,markersize=ms-3,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='3.0m',ms=12)
@@ -304,8 +270,9 @@ for ii in range(len(date)):
     #ax[4].set_xticklabels([])
     #ax[5].set_xticklabels([])
     #xlim=[sp_sch[sch_name].df.time_days[0],sp_sch[sch_name].df.time_days[len(sp_sch[sch_name].df)-1]]
-    xlim=[prof['grange_4_luo2_dry']['data'].df.index[0],prof['grange_4_luo2_dry']['data'].df.index[-1]]
-    
+    #xlim=[prof['grange_4_luo2_dry']['data'].df.index[0],prof['grange_4_luo2_dry']['data'].df.index[-1]]
+    dates = pd.date_range(start='2017-12-22', periods=10, freq='D')
+
    # ax[0].set_xlim([sp_sch[sch_name].start_dt,sp_sch[sch_name].end_dt])
    # ax[1].set_xlim([sp_sch[sch_name].start_dt,sp_sch[sch_name].end_dt])
    # ax[2].set_xlim([sp_sch[sch_name].start_dt,sp_sch[sch_name].end_dt])
@@ -317,17 +284,18 @@ for ii in range(len(date)):
     #ax[2].set_xlim(xlim)
     #ax[3].set_xlim(xlim)
     #ax[4].set_xlim(xlim)
-    ax[7][0].set_xlim(xlim)
-    
+    #ax[7][0].set_xlim(xlim)
+    ax[7][0].set_xlim(pd.Timestamp('2017-12-22'), pd.Timestamp('2019-01-01'))    
+
     ax[0][0].set_ylabel('GLOBAL\nSOLAR EXPOSURE\n(KWh/m*m)', fontsize=y_fontsize, labelpad=10)
     ax[1][0].set_ylabel('RAINFALL\n(mm)', fontsize=y_fontsize, labelpad=10)
     ax2.set_ylabel('CUMULATIVE RAINFALL\n(mm)', fontsize=y_fontsize, labelpad=10)
-    ax[2][0].set_ylabel('OXYGEN CONC.\nCOLUMN 1\n A TYPE (%))', fontsize=y_fontsize, labelpad=10)
-    ax[3][0].set_ylabel('OXYGEN CONC.\nCOLUMN 2\n B TYPE (%)', fontsize=y_fontsize, labelpad=10)
-    ax[4][0].set_ylabel('OXYGEN CONC.\nCOLUMN 3\n D TYPE (%)', fontsize=y_fontsize, labelpad=10)
-    ax[5][0].set_ylabel('OXYGEN CONC.\nCOLUMN 4\n D + A TYPE\nCOMPACTED (%)', fontsize=y_fontsize, labelpad=10)
-    ax[6][0].set_ylabel('OXYGEN CONC.\nCOLUMN 5\n D + B TYPE\nCOMPACTED (%)', fontsize=y_fontsize, labelpad=10)
-    ax[7][0].set_ylabel('OXYGEN CONC.\nCOLUMN 6\n A + B + D\nMIXED (%)', fontsize=y_fontsize, labelpad=10)
+    ax[2][0].set_ylabel('OXYGEN CONC.\nCOLUMN 1\nA TYPE (%)', fontsize=y_fontsize, labelpad=10)
+    ax[3][0].set_ylabel('OXYGEN CONC.\nCOLUMN 2\nB TYPE (%)', fontsize=y_fontsize, labelpad=10)
+    ax[4][0].set_ylabel('OXYGEN CONC.\nCOLUMN 3\nD TYPE (%)', fontsize=y_fontsize, labelpad=10)
+    ax[5][0].set_ylabel('OXYGEN CONC.\nCOLUMN 4\nD+A TYPE (%)', fontsize=y_fontsize, labelpad=10)
+    ax[6][0].set_ylabel('OXYGEN CONC.\nCOLUMN 5\nD+B TYPE (%)', fontsize=y_fontsize, labelpad=10)
+    ax[7][0].set_ylabel('OXYGEN CONC.\nCOLUMN 6\nA+B+D (%)', fontsize=y_fontsize, labelpad=10)
     
     #ax[0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
     #ax[1].set_title('(B)',x=0.04,y=0.8,fontweight='bold')
@@ -344,8 +312,8 @@ for ii in range(len(date)):
     ax[6][0].set_axisbelow(True)
     ax[7][0].set_axisbelow(True)
     ax[5][0].legend(bbox_to_anchor=(1.07, 0.06 ), title="SOIL\nDEPTHS\n(C,D,E\nF,G,H)",loc='center', borderaxespad=0.,fontsize=10,handletextpad=0.23,labelspacing=0.22,ncol=1,columnspacing=0.4) 
-    ax_ox_abd.legend(bbox_to_anchor=(0.01, 0.01), loc='lower left' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-    ax_ox_345.legend(bbox_to_anchor=(0.01, 0.01), loc='lower left' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+    ax_ox_abd.legend(bbox_to_anchor=(0.01, 0.005), loc='lower left' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+    ax_ox_345.legend(bbox_to_anchor=(0.01, 0.005), loc='lower left' , borderaxespad=0.,fontsize=10,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 
     ax[0][0].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
     ax[1][0].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
@@ -358,30 +326,41 @@ for ii in range(len(date)):
     ax_ox_abd.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
     ax_ox_345.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 
-    ax[0][0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
-    ax[1][0].set_title('(B)',x=0.04,y=0.8,fontweight='bold')
-    ax[2][0].set_title('(C)',x=0.04,y=0.6,fontweight='bold')
-    ax[3][0].set_title('(D)',x=0.04,y=0.6,fontweight='bold')
-    ax[4][0].set_title('(E)',x=0.04,y=0.6,fontweight='bold')
-    ax[5][0].set_title('(F)',x=0.04,y=0.6,fontweight='bold')
-    ax[6][0].set_title('(G)',x=0.04,y=0.6,fontweight='bold')
-    ax[7][0].set_title('(H)',x=0.04,y=0.6,fontweight='bold')
-    ax_ox_abd.set_title('(I)',x=0.08,y=0.93,fontweight='bold')
-    ax_ox_345.set_title('(J)',x=0.08,y=0.93,fontweight='bold')
+    ax[0][0].set_title('(A)',x=0.95,y=0.82,fontweight='bold')
+    ax[1][0].set_title('(B)',x=0.95,y=0.82,fontweight='bold')
+    ax[2][0].set_title('(C)',x=0.95,y=0.82,fontweight='bold')
+    ax[3][0].set_title('(D)',x=0.95,y=0.82,fontweight='bold')
+    ax[4][0].set_title('(E)',x=0.95,y=0.82,fontweight='bold')
+    ax[5][0].set_title('(F)',x=0.95,y=0.82,fontweight='bold')
+    ax[6][0].set_title('(G)',x=0.95,y=0.82,fontweight='bold')
+    ax[7][0].set_title('(H)',x=0.95,y=0.82,fontweight='bold')
+    ax_ox_abd.set_title('(I)',x=0.08,y=0.94,fontweight='bold')
+    ax_ox_345.set_title('(J)',x=0.08,y=0.94,fontweight='bold')
     
  
     ax[7][0].xaxis.set_major_formatter(mdates.DateFormatter('%b')) 
     ax[7][0].set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
-    ax[0][0].set_ylim([0,10])
-    ax[1][0].set_ylim([0,60])
-    ax2.set_ylim([0,2500])
-    ax[2][0].set_ylim([0,22])
-    ax[3][0].set_ylim([0,22])
-    ax[4][0].set_ylim([0,22])
-    ax[5][0].set_ylim([0,22])
-    ax[6][0].set_ylim([0,22])
-    ax[7][0].set_ylim([0,22])  
+    ax[0][0].set_ylim([-0.5,10])
+    ax[1][0].set_ylim([-2,60])
+    ax2.set_ylim([-10,2500])
+    ax[2][0].set_ylim([-1,22])
+    ax[3][0].set_ylim([-1,22])
+    ax[4][0].set_ylim([-1,22])
+    ax[5][0].set_ylim([-1,22])
+    ax[6][0].set_ylim([-1,22])
+    ax[7][0].set_ylim([-1,22])  
 
+    ax[1][0].tick_params('y', colors='royalblue')
+    ax2.tick_params('y', colors='darkblue')
+    ax[0][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[1][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax2.yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[2][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[3][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[4][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[5][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[6][0].yaxis.set_major_locator(plt.MaxNLocator(5))
+    ax[7][0].yaxis.set_major_locator(plt.MaxNLocator(5))
         
 
     #ax[5].set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
