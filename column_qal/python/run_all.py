@@ -1,4 +1,4 @@
-execfile('python/pull_data2.py')
+#execfile('python/pull_data2.py')
 execfile('python/init_pandas.py')
 
 execfile('python/init_pandas_mo_su.py')

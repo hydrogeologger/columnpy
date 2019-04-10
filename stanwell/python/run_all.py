@@ -7,6 +7,7 @@ execfile('python/read_schedule.py')
 # this is a milestone done at 2018-05-02
 
 #execfile('python/plot_weather_daily.py')
-execfile('python/plot_weather.py')
-execfile('python/plot_stanwell.py')
+execfile('python/plot_weather.py') # plot weather result
+execfile('python/plot_stanwell.py')  # plot sensor result
+#execfile('plot_stanwell_video.py')  # producing video from photo and data. the photo path is also hardcoded in this script!!!!
 
