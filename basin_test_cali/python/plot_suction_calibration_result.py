@@ -50,10 +50,10 @@ if plot_moisture_calibration:
     ms=6
     mew=2
     grid_width=2
-    y_fontsize=11
-    fig, ax = plt.subplots(4,2,sharex=False,figsize=(8,9))
+    y_fontsize=13
+    fig, ax = plt.subplots(4,2,sharex=False,figsize=(10,11))
     fig.subplots_adjust(hspace=.3,wspace=.3)
-    fig.subplots_adjust(left=0.15, right=0.98, top=0.97, bottom=0.08)
+    fig.subplots_adjust(left=0.12, right=0.93, top=0.97, bottom=0.08)
     for i in ax:
       for j in i:
         for axis in ['top','bottom','left','right']:
@@ -116,14 +116,14 @@ if plot_moisture_calibration:
     ax[3][1].semilogy(dp, np.exp(-1.5*(dp**aa-bb)),color='purple',linewidth=lw, linestyle='--')
 
 
-    ax[0][0].set_title('(A) Suction sensor A1',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
-    ax[0][1].set_title('(B) Suction sensor A2',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
-    ax[1][0].set_title('(C) Suction sensor A3',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
-    ax[1][1].set_title('(D) Suction sensor B1',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
-    ax[2][0].set_title('(E) Suction sensor B2',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
-    ax[2][1].set_title('(F) Suction sensor D1',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
-    ax[3][0].set_title('(G) Suction sensor D2',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
-    ax[3][1].set_title('(H) Suction sensor D3',x=0.02,y=0.85,fontweight='bold',horizontalalignment='left')
+    ax[0][0].set_title('(A) Suction sensor A1',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
+    ax[0][1].set_title('(B) Suction sensor A2',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
+    ax[1][0].set_title('(C) Suction sensor A3',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
+    ax[1][1].set_title('(D) Suction sensor B1',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
+    ax[2][0].set_title('(E) Suction sensor B2',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
+    ax[2][1].set_title('(F) Suction sensor D1',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
+    ax[3][0].set_title('(G) Suction sensor D2',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
+    ax[3][1].set_title('(H) Suction sensor D3',x=0.02,y=0.85,fontweight='bold',fontsize=12,horizontalalignment='left')
     
     #ax[0][0].set_xlim([14,25])
     #ax[0][1].set_xlim([14,25])
@@ -131,23 +131,23 @@ if plot_moisture_calibration:
     #ax[1][1].set_xlim([14,25])
     #ax[2][0].set_xlim([14,25])
     #ax[2][1].set_xlim([14,25])
-    ax[0][0].set_xlim([-0.01,1.01])
-    ax[0][1].set_xlim([-0.01,1.01])
-    ax[1][0].set_xlim([-0.01,1.01])
-    ax[1][1].set_xlim([-0.01,1.01])
-    ax[2][0].set_xlim([-0.01,1.01])
-    ax[2][1].set_xlim([-0.01,1.01])
-    ax[3][0].set_xlim([-0.01,1.01])
-    ax[3][1].set_xlim([-0.01,1.01])
+    ax[0][0].set_xlim([-0.01,1.05])
+    ax[0][1].set_xlim([-0.01,1.05])
+    ax[1][0].set_xlim([-0.01,1.05])
+    ax[1][1].set_xlim([-0.01,1.05])
+    ax[2][0].set_xlim([-0.01,1.05])
+    ax[2][1].set_xlim([-0.01,1.05])
+    ax[3][0].set_xlim([-0.01,1.05])
+    ax[3][1].set_xlim([-0.01,1.05])
 
-    ax[0][0].set_ylim([1.0e0,1.0e7])
-    ax[0][1].set_ylim([1.0e0,1.0e7])
-    ax[1][0].set_ylim([1.0e0,1.0e7])
-    ax[1][1].set_ylim([1.0e0,1.0e7])
-    ax[2][0].set_ylim([1.0e0,1.0e7])
-    ax[2][1].set_ylim([1.0e0,1.0e7])
-    ax[3][0].set_ylim([1.0e0,1.0e7])
-    ax[3][1].set_ylim([1.0e0,1.0e7])
+    ax[0][0].set_ylim([1.0e0,5.5e3])
+    ax[0][1].set_ylim([1.0e0,5.5e3])
+    ax[1][0].set_ylim([1.0e0,5.5e3])
+    ax[1][1].set_ylim([1.0e0,5.5e3])
+    ax[2][0].set_ylim([1.0e0,5.5e3])
+    ax[2][1].set_ylim([1.0e0,5.5e3])
+    ax[3][0].set_ylim([1.0e0,5.5e3])
+    ax[3][1].set_ylim([1.0e0,5.5e3])
 
     ax[0][0].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
     ax[0][1].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')

@@ -1,21 +1,21 @@
 # linear fitting for moisture 
 #dp=np.linspace(250,530,num=30)
 #alpha_1=-4.8
-##alpha_2=-10.1
-##Galpha_3=-10.1
-##sch_name='bacteria_first'
+###alpha_2=-10.1
+###Galpha_3=-10.1
+###sch_name='bacteria_first'
 #sp_sch[sch_name].moa1_fit1     = np.polyfit(sp_sch[sch_name].df['moa1'],sp_sch[sch_name].df ['sat_scale1'],1)
 #sp_sch[sch_name].moa1_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moa1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moa1_fit1[1]  )
 #sp_sch[sch_name].moa1_fit2     = np.polyfit(sp_sch[sch_name].df['moa1'],sp_sch[sch_name].df ['sat_scale1'],2)
-##sp_sch[sch_name].mo0_fit_twopoint=[360,290,alpha_1]
+###sp_sch[sch_name].mo0_fit_twopoint=[360,290,alpha_1]
 #sp_sch[sch_name].moa1_fit_twopoint=[394,252,-7.1]#alpha_1]
 #sp_sch[sch_name].moa1_dp= (dp**sp_sch[sch_name].moa1_fit_twopoint[2]-sp_sch[sch_name].moa1_fit_twopoint[0]**sp_sch[sch_name].moa1_fit_twopoint[2])/(sp_sch[sch_name].moa1_fit_twopoint[1]**sp_sch[sch_name].moa1_fit_twopoint[2]-sp_sch[sch_name].moa1_fit_twopoint[0]**sp_sch[sch_name].moa1_fit_twopoint[2])
 #sp_sch[sch_name].moa1_text='y = (x$^{-10.1}$-290$^{-10.1}$)/(530$^{-10.1}$-290$^{-10.1}$)'
-#
+##
 #sp_sch[sch_name].moa3_fit1     = np.polyfit(sp_sch[sch_name].df['moa3'],sp_sch[sch_name].df ['sat_scale1'],1)
 #sp_sch[sch_name].moa3_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moa3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moa3_fit1[1]  )
 #sp_sch[sch_name].moa3_fit2     = np.polyfit(sp_sch[sch_name].df['moa3'],sp_sch[sch_name].df ['sat_scale1'],2)
-##sp_sch[sch_name].mo1_fit_twopoint=[380,290,alpha_1]
+###sp_sch[sch_name].mo1_fit_twopoint=[380,290,alpha_1]
 #sp_sch[sch_name].moa3_fit_twopoint=[543,283,-2.8]#alpha_1]
 #sp_sch[sch_name].moa3_dp= (dp**sp_sch[sch_name].moa3_fit_twopoint[2]-sp_sch[sch_name].moa3_fit_twopoint[0]**sp_sch[sch_name].moa3_fit_twopoint[2])/(sp_sch[sch_name].moa3_fit_twopoint[1]**sp_sch[sch_name].moa3_fit_twopoint[2]-sp_sch[sch_name].moa3_fit_twopoint[0]**sp_sch[sch_name].moa3_fit_twopoint[2])
 #sp_sch[sch_name].moa3_text='y = (x$^{-10.1}$-275$^{-10.1}$)/(530$^{-10.1}$-275$^{-10.1}$)'
@@ -141,49 +141,49 @@ if plot_moisture_calibration:
 
     
     sch_name='basin_test'
-    ax[0][0].plot(sp_sch[sch_name].df['moa1'], sp_sch[sch_name].df ['sat_scale1'],   'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_A',markevery=2) 
+    ax[0][0].plot(sp_sch[sch_name].df['moa1'], sp_sch[sch_name].df ['sat_scale1'],   'o',mfc='none' ,markeredgecolor='r',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'A-type',markevery=2) 
     #ax[0][0].plot(dp, sp_sch[sch_name].mo0_fit1[0]*dp+sp_sch[sch_name].mo0_fit1[1],color='r',linewidth=lw,label=sp_sch[sch_name].mo0_fit1_str) 
     #ax[0][0].plot(dp, sp_sch[sch_name].vw1_fit2[0]*dp**2+sp_sch[sch_name].vw1_fit2[1]*dp+sp_sch[sch_name].vw1_fit2[2],color='k',linewidth=lw,label=sp_sch[sch_name].vw1_fit1_str) 
     #ax[0][0].plot(dp, sp_sch[sch_name].mo0_dp  ,color='r',linewidth=lw,label=sp_sch[sch_name].mo0_text,linestyle='--') 
     ax[0][0].plot(dp1, sp_sch[sch_name].moa1_dp  ,color='r',linewidth=lw,linestyle='--')
 
-    ax[0][1].plot(sp_sch[sch_name].df['moa3'],sp_sch[sch_name].df ['sat_scale1'],    's',mfc='none' ,markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_A',markevery=2) 
+    ax[0][1].plot(sp_sch[sch_name].df['moa3'],sp_sch[sch_name].df ['sat_scale1'],    's',mfc='none' ,markeredgecolor='g',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'A-type',markevery=2) 
     #ax[0][1].plot(dp, sp_sch[sch_name].mo1_fit1[0]*dp+sp_sch[sch_name].mo1_fit1[1],color='r',linewidth=lw,label=sp_sch[sch_name].mo1_fit1_str) 
     #ax[0][1].plot(dp, sp_sch[sch_name].vw2_fit2[0]*dp**2+sp_sch[sch_name].vw2_fit2[1]*dp+sp_sch[sch_name].vw2_fit2[2],color='k',linewidth=lw,label=sp_sch[sch_name].vw2_fit1_str) 
     ax[0][1].plot(dp2, sp_sch[sch_name].moa3_dp,color='g',linewidth=lw,linestyle='--') 
     #ax[0][1].plot(dp, sp_sch[sch_name].mo1_dp,color='r',linewidth=lw,label=sp_sch[sch_name].mo1_text,linestyle='--')
 
     
-    ax[1][0].plot(sp_sch[sch_name].df['mob1'],sp_sch[sch_name].df ['sat_scale1'],    'v',mfc='none' ,markeredgecolor='y',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_B',markevery=2) 
+    ax[1][0].plot(sp_sch[sch_name].df['mob1'],sp_sch[sch_name].df ['sat_scale1'],    'v',mfc='none' ,markeredgecolor='y',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'B-type',markevery=2) 
     #ax[1][0].plot(dp, sp_sch[sch_name].mo2_fit1[0]*dp+sp_sch[sch_name].mo2_fit1[1],color='r',linewidth=lw,label=sp_sch[sch_name].mo2_fit1_str) 
     ax[1][0].plot(dp3, sp_sch[sch_name].mob1_dp,color='y',linewidth=lw,linestyle='--') 
 #   ax[1][0].plot(dp, sp_sch[sch_name].mo2_dp,color='r',linewidth=lw,label=sp_sch[sch_name].mo2_text,linestyle='--')
 
 #    sch_name='Marandoo_third'
-    ax[1][1].plot(sp_sch[sch_name].df['mob2'],sp_sch[sch_name].df ['sat_scale2'],    'x',mfc='none' ,markeredgecolor='blue',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_B',markevery=2) 
+    ax[1][1].plot(sp_sch[sch_name].df['mob2'],sp_sch[sch_name].df ['sat_scale2'],    'x',mfc='none' ,markeredgecolor='blue',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'B-type',markevery=2) 
     #ax[1][1].plot(dp, sp_sch[sch_name].mo3_fit1[0]*dp+sp_sch[sch_name].mo3_fit1[1],color='r',linewidth=lw,label=sp_sch[sch_name].mo3_fit1_str) 
     ax[1][1].plot(dp4, sp_sch[sch_name].mob2_dp,color='blue',linewidth=lw,linestyle='--') 
     #ax[1][1].plot(dp, sp_sch[sch_name].mo3_dp,color='r',linewidth=lw,label=sp_sch[sch_name].mo3_text,linestyle='--')   
 
 #    sch_name='Marandoo_second'
-    ax[2][0].plot(sp_sch[sch_name].df['mob3'],sp_sch[sch_name].df ['sat_scale2'],    '^',mfc='none' ,markeredgecolor='gold',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_B',markevery=2) 
+    ax[2][0].plot(sp_sch[sch_name].df['mob3'],sp_sch[sch_name].df ['sat_scale2'],    '^',mfc='none' ,markeredgecolor='gold',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'B-type',markevery=2) 
     #ax[2][0].plot(dp, sp_sch[sch_name].mo4_fit1[0]*dp+sp_sch[sch_name].mo4_fit1[1],color='r',linewidth=lw,label=sp_sch[sch_name].mo4_fit1_str) 
     ax[2][0].plot(dp5, sp_sch[sch_name].mob3_dp,color='gold',linewidth=lw,linestyle='--') 
     #ax[2][0].plot(dp, sp_sch[sch_name].mo4_dp,color='r',linewidth=lw,label=sp_sch[sch_name].mo4_text,linestyle='--')
 
-    ax[2][1].plot(sp_sch[sch_name].df['moc1'],sp_sch[sch_name].df ['sat_scale2'],    'd',mfc='none' ,markeredgecolor='black',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_D',markevery=2) 
+    ax[2][1].plot(sp_sch[sch_name].df['moc1'],sp_sch[sch_name].df ['sat_scale2'],    'd',mfc='none' ,markeredgecolor='black',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'D-type',markevery=2) 
     #ax[2][1].plot(dp, sp_sch[sch_name].mo5_fit1[0]*dp+sp_sch[sch_name].mo5_fit1[1],color='r',linewidth=lw,label=sp_sch[sch_name].mo5_fit1_str) 
     ax[2][1].plot(dp6, sp_sch[sch_name].moc1_dp,color='black',linewidth=lw,linestyle='--') 
     #ax[2][1].plot(dp, sp_sch[sch_name].mo5_dp,color='r',linewidth=lw,label=sp_sch[sch_name].mo5_text,linestyle='--')
 #
 
     #sch_name='bacteria_second'
-    ax[3][0].plot(sp_sch[sch_name].df['moc2'], sp_sch[sch_name].df ['sat_scale1'],   'p',mfc='none' ,markeredgecolor='orange',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_D',markevery=2)
+    ax[3][0].plot(sp_sch[sch_name].df['moc2'], sp_sch[sch_name].df ['sat_scale1'],   'p',mfc='none' ,markeredgecolor='orange',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'D-type',markevery=2)
     #ax[0][0].plot(dp, sp_sch[sch_name].mo0_fit1[0]*dp+sp_sch[sch_name].mo0_fit1[1],color='g',linewidth=lw,label=sp_sch[sch_name].mo0_fit1_str)
     #ax[0][0].plot(dp, sp_sch[sch_name].vw1_fit2[0]*dp**2+sp_sch[sch_name].vw1_fit2[1]*dp+sp_sch[sch_name].vw1_fit2[2],color='k',linewidth=lw,label=sp_sch[sch_name].vw1_fit1_str) 
     ax[3][0].plot(dp7, sp_sch[sch_name].moc2_dp,color='orange',linewidth=lw,linestyle='--')
 
-    ax[3][1].plot(sp_sch[sch_name].df['moc3'],sp_sch[sch_name].df ['sat_scale1'],    '*',mfc='none' ,markeredgecolor='purple',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'Type_D',markevery=2)
+    ax[3][1].plot(sp_sch[sch_name].df['moc3'],sp_sch[sch_name].df ['sat_scale1'],    '*',mfc='none' ,markeredgecolor='purple',markersize=ms,markeredgewidth=mew,fillstyle='full',label= 'D-type',markevery=2)
     #ax[0][1].plot(dp, sp_sch[sch_name].mo1_fit1[0]*dp+sp_sch[sch_name].mo1_fit1[1],color='g',linewidth=lw,label=sp_sch[sch_name].mo1_fit1_str)
     #ax[0][1].plot(dp, sp_sch[sch_name].vw2_fit2[0]*dp**2+sp_sch[sch_name].vw2_fit2[1]*dp+sp_sch[sch_name].vw2_fit2[2],color='k',linewidth=lw,label=sp_sch[sch_name].vw2_fit1_str) 
     ax[3][1].plot(dp8, sp_sch[sch_name].moc3_dp,color='purple',linewidth=lw,linestyle='--')

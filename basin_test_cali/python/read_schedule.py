@@ -5,7 +5,6 @@ import sensorfun
 reload(sensorfun)
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
 import figlib
-import numpy as np
 reload(figlib)
 lw=5
 ms=8
@@ -113,7 +112,7 @@ for line in open("schedule.ipt"):
 
         aa=-1.1 #coef tested best
         #aa=-0.91 #coef tested best
-        bb=5 #coef tested best       
+        bb=6 #coef tested best       
         
         #if sch_name=='basin_test':
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['sua1']   ,plot=plot_interpolate  ,coef=5e-16)  # done
@@ -402,7 +401,7 @@ for line in open("schedule.ipt"):
             #sp_sch[sch_name].df['cum_evap_scale2']-sp_sch[sch_name].df['cum_evap_scale2'].iloc[-1])
             #    )/(sp_sch[sch_name].df['cum_evap_scale2'].iloc[-1]-sp_sch[sch_name].df['cum_evap_scale2'].iloc[dry_index_third])
             # the minimum mooisture content is set to be 0.15 as 
-        moist_minimum=0.01
+        moist_minimum=0.1
             #dry_index_third, min_value = min(enumerate( abs(sp_sch[sch_name].df['date_time']- sp_sch[sch_name].time_surface_emerge
             #    )), key=operator.itemgetter(1))
             #sp_sch[sch_name].idx_surface_emerge = dry_index_third
@@ -429,12 +428,12 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.3)
         #sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.32)
         sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=0.49,mf=4.01,af=201.32,hr=1132.68,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.295)
-        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.295)
-        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.32)
+        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.291)
+        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.3225)
         #sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
-        sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
-        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.402)
-        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.482)
+        #sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
+        #sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.402)
+        #sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.482)
 
 
 # linear fitting for moisture 
