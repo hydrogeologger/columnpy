@@ -425,12 +425,19 @@ for line in open("schedule.ipt"):
         #    nf=0.9311,mf=0.1229,hr=238968.16,af=2.7090,psi_0=1e-0)
         #sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.5,
         #    nf=0.9311,mf=0.1229,hr=238968.16,af=2.7090,psi_0=1e-0)
+<<<<<<< HEAD:basin_test_cali/python/read_schedule_improved.py
         #sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=0.49,mf=4.01,af=201.32,hr=1132.68,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.3)
         #sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.3)
         #sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.32)
         sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=0.49,mf=4.01,af=201.32,hr=1132.68,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.295)
         sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.295)
         sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.32)
+=======
+        #sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
+        sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
+        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.402)
+        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.482)
+>>>>>>> c72352597e8a4eb2e91d75e01b854aabc7d6b0bf:basin_test_cali/python/read_schedule.py
 
 
 # linear fitting for moisture 
