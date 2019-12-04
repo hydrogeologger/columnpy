@@ -69,7 +69,7 @@ dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # s
 #index_col_sw='date_time'
 index_col_sw=False
 
-data_mo_su=pandas_scale.pandas_scale(file_path=data_file_path,
+data=pandas_scale.pandas_scale(file_path=data_file_path,
     source='raw',
     sep=',',
     header=1,
@@ -81,50 +81,50 @@ data_mo_su=pandas_scale.pandas_scale(file_path=data_file_path,
 
 
 #data_mo_su.df.sort_index(ascending=True,inplace=True)
-data_mo_su.df.sort_values('date_time',inplace=True)
+data.df.sort_values('date_time',inplace=True)
 ## https://stackoverflow.com/questions/37787698/how-to-sort-pandas-dataframe-from-one-column
 ## reverse the dataframe by timestamp as the result is upside down
 #data.df.sort_values('timestamp',inplace=True)
 #
-data_mo_su.df = data_mo_su.df.set_index('date_time',drop=False)
+data.df = data.df.set_index('date_time',drop=False)
 #data_mo_su.df = data_mo_su.df.reset_index(drop=True)
 #
 ## 'date_time'  is the column with corrected time zones
-data_mo_su.df['date_time']=data_mo_su.df['date_time']+pd.to_timedelta(10, unit='h')
+data.df['date_time']=data.df['date_time']+pd.to_timedelta(10, unit='h')
 #data_mo_su.df.index=data_mo_su.df.index+pd.to_timedelta(10, unit='h')
 
 #select 'date time' column as index column
 
 
 #data_mo_su.df['hum_dht22'].loc[data_mo_su.df['hum_dht22']<1]=np.nan;
-data_mo_su.df['moa1'].loc[data_mo_su.df['moa1']<1]=np.nan;
+data.df['moa1'].loc[data.df['moa1']<1]=np.nan;
 #data_mo_su.df['moa2'].loc[data_mo_su.df['moa2']<1]=np.nan;
-data_mo_su.df['moa3'].loc[data_mo_su.df['moa3']<1]=np.nan;
-data_mo_su.df['mob1'].loc[data_mo_su.df['mob1']<1]=np.nan;
-data_mo_su.df['mob2'].loc[data_mo_su.df['mob2']<1]=np.nan;
-data_mo_su.df['mob3'].loc[data_mo_su.df['mob3']<1]=np.nan;
-data_mo_su.df['moc1'].loc[data_mo_su.df['moc1']<1]=np.nan;
-data_mo_su.df['moc2'].loc[data_mo_su.df['moc2']<1]=np.nan;
-data_mo_su.df['moc3'].loc[data_mo_su.df['moc3']<1]=np.nan;
-data_mo_su.df['scale1'].loc[data_mo_su.df['scale1']<1]=np.nan;
-data_mo_su.df['scale2'].loc[data_mo_su.df['scale2']<1]=np.nan;
-data_mo_su.df['scale3'].loc[data_mo_su.df['scale3']<1]=np.nan;
-data_mo_su.df['sua1'].loc[data_mo_su.df['sua1']<1]=np.nan;
-data_mo_su.df['sua2'].loc[data_mo_su.df['sua2']<1]=np.nan;
-data_mo_su.df['sua3'].loc[data_mo_su.df['sua3']<1]=np.nan;
-data_mo_su.df['sub1'].loc[data_mo_su.df['sub1']<1]=np.nan;
-data_mo_su.df['sub2'].loc[data_mo_su.df['sub2']<1]=np.nan;
-data_mo_su.df['sub3'].loc[data_mo_su.df['sub3']<1]=np.nan;
-data_mo_su.df['suc1'].loc[data_mo_su.df['suc1']<1]=np.nan;
-data_mo_su.df['suc2'].loc[data_mo_su.df['suc2']<1]=np.nan;
-data_mo_su.df['suc3'].loc[data_mo_su.df['suc3']<1]=np.nan;
+data.df['moa3'].loc[data.df['moa3']<1]=np.nan;
+data.df['mob1'].loc[data.df['mob1']<1]=np.nan;
+data.df['mob2'].loc[data.df['mob2']<1]=np.nan;
+data.df['mob3'].loc[data.df['mob3']<1]=np.nan;
+data.df['moc1'].loc[data.df['moc1']<1]=np.nan;
+data.df['moc2'].loc[data.df['moc2']<1]=np.nan;
+data.df['moc3'].loc[data.df['moc3']<1]=np.nan;
+data.df['scale1'].loc[data.df['scale1']<1]=np.nan;
+data.df['scale2'].loc[data.df['scale2']<1]=np.nan;
+data.df['scale3'].loc[data.df['scale3']<1]=np.nan;
+data.df['sua1'].loc[data.df['sua1']<1]=np.nan;
+data.df['sua2'].loc[data.df['sua2']<1]=np.nan;
+data.df['sua3'].loc[data.df['sua3']<1]=np.nan;
+data.df['sub1'].loc[data.df['sub1']<1]=np.nan;
+data.df['sub2'].loc[data.df['sub2']<1]=np.nan;
+data.df['sub3'].loc[data.df['sub3']<1]=np.nan;
+data.df['suc1'].loc[data.df['suc1']<1]=np.nan;
+data.df['suc2'].loc[data.df['suc2']<1]=np.nan;
+data.df['suc3'].loc[data.df['suc3']<1]=np.nan;
 #data_mo_su.df['temp_dht22'].loc[data_mo_su.df['temp_dht22']<1]=np.nan;
 
 
 ####   special treatment
 time_start=np.datetime64('2018-12-21 23:00')
 time_end=np.datetime64('2019-01-06 21:30')
-mask=data_mo_su.df['date_time'].between(time_start,time_end)
+mask=data.df['date_time'].between(time_start,time_end)
 #time_start_scale=np.datetime64('2018-03-06T08:00')
 #time_end_scale=np.datetime64('2018-03-06T12:30')
 ##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/
@@ -133,72 +133,78 @@ mask=data_mo_su.df['date_time'].between(time_start,time_end)
 
 #------select time period for moisture sensor--------
 time_start_scale3=np.datetime64('2019-01-04 12:00')
-data_mo_su.df['scale3'].loc[time_start_scale3:]=np.nan
+data.df['scale3'].loc[time_start_scale3:]=np.nan
 #time_end_scale3=np.datetime64('2019-01-05 02:00')
 #mask_scale3=data_mo_su.df['date_time'].between(time_start_scale3,time_end_scale3)
 #data_mo_su.df.loc[mask_scale3,'scale3']=np.nan
 
 time_start_scale1=np.datetime64('2018-12-21 23:00')
 time_end_scale1=np.datetime64('2018-12-22 20:00')
-data_mo_su.df['scale1'].loc[:time_end_scale1]=np.nan
+data.df['scale1'].loc[:time_end_scale1]=np.nan
 time_end_scale2=np.datetime64('2018-12-22 22:00')
-data_mo_su.df['scale2'].loc[:time_end_scale2]=np.nan
+data.df['scale2'].loc[:time_end_scale2]=np.nan
 
-time_end_scale3=np.datetime64('2018-12-23 02:00')
-data_mo_su.df['scale3'].loc[:time_end_scale3]=np.nan
+time_end_scale3=np.datetime64('2018-12-23 02:50')
+data.df['scale3'].loc[:time_end_scale3]=np.nan
 
+time_start=np.datetime64('2018-12-25 16:00')
+time_end=np.datetime64('2018-12-29 00:00')
+data.df['scale3'].loc[time_start:time_end]=np.nan
+
+time_start=np.datetime64('2018-12-29 00:00')
+data.df['scale3'].loc[time_start:]=3970
 
 time_start=np.datetime64('2018-12-21 23:00')
 time_end=np.datetime64('2018-12-23 03:00')
 #mask_moa1=data_mo_su.df['date_time'].between(time_start_moa1,time_end_moa1)
 #data_mo_su.df.loc[mask_moa1,'moa1']=np.nan
 time_end_moa1=np.datetime64('2018-12-24 18:00')
-data_mo_su.df['moa1'].loc[:time_end_moa1]=np.nan
+data.df['moa1'].loc[:time_end_moa1]=np.nan
 time_end_moa3=np.datetime64('2018-12-24 12:00')
-data_mo_su.df['moa3'].loc[:time_end_moa3]=np.nan
+data.df['moa3'].loc[:time_end_moa3]=np.nan
 
 time_end_mob1=np.datetime64('2018-12-26 14:30')
-data_mo_su.df['mob1'].loc[:time_end_mob1]=np.nan
+data.df['mob1'].loc[:time_end_mob1]=np.nan
 time_end_mob2=np.datetime64('2018-12-23 06:00')
-data_mo_su.df['mob2'].loc[:time_end_mob2]=np.nan
+data.df['mob2'].loc[:time_end_mob2]=np.nan
 
-data_mo_su.df['mob3'].loc[:time_end]=np.nan
+data.df['mob3'].loc[:time_end]=np.nan
 
 time_end_moc1=np.datetime64('2018-12-24 23:00')
-data_mo_su.df['moc1'].loc[:time_end_moc1]=np.nan
+data.df['moc1'].loc[:time_end_moc1]=np.nan
 
 time_end_moc2=np.datetime64('2018-12-24 07:00')
-data_mo_su.df['moc2'].loc[:time_end_moc2]=np.nan
+data.df['moc2'].loc[:time_end_moc2]=np.nan
 time_end_moc3=np.datetime64('2018-12-26 13:30')
-data_mo_su.df['moc3'].loc[:time_end_moc3]=np.nan
+data.df['moc3'].loc[:time_end_moc3]=np.nan
 
 
 #------select time period for suction sensor-------
 time_end_su=np.datetime64('2018-12-22 12:00')
 
 time_end_sua1=np.datetime64('2018-12-23 13:00')
-data_mo_su.df['sua1'].loc[:time_end_sua1]=np.nan
+data.df['sua1'].loc[:time_end_sua1]=np.nan
 
 time_end_sua2=np.datetime64('2018-12-22 23:00')
-data_mo_su.df['sua2'].loc[:time_end_su]=np.nan
+data.df['sua2'].loc[:time_end_su]=np.nan
 
 time_end_sua3=np.datetime64('2018-12-23 23:30')
-data_mo_su.df['sua3'].loc[:time_end_su]=np.nan
+data.df['sua3'].loc[:time_end_su]=np.nan
 
 time_end_sub1=np.datetime64('2018-12-22 06:00')
-data_mo_su.df['sub1'].loc[:time_end_sub1]=np.nan
+data.df['sub1'].loc[:time_end_sub1]=np.nan
 
 time_end_sub3=np.datetime64('2018-12-22 03:00')
-data_mo_su.df['sub3'].loc[:time_end_sub3]=np.nan
+data.df['sub3'].loc[:time_end_sub3]=np.nan
 
 time_end_suc1=np.datetime64('2018-12-22 21:00')
-data_mo_su.df['suc1'].loc[:time_end_su]=np.nan
+data.df['suc1'].loc[:time_end_su]=np.nan
 
 time_end_suc2=np.datetime64('2018-12-23 09:00')
-data_mo_su.df['suc2'].loc[:time_end_suc2]=np.nan
+data.df['suc2'].loc[:time_end_suc2]=np.nan
 
 time_end_suc3=np.datetime64('2018-12-24 10:00')
-data_mo_su.df['suc3'].loc[:time_end_suc3]=np.nan
+data.df['suc3'].loc[:time_end_suc3]=np.nan
 
 
 
