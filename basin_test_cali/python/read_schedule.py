@@ -437,14 +437,14 @@ for line in open("schedule.ipt"):
 
 
 # linear fitting for moisture 
-dp1=np.linspace(249,530,num=30)
-dp2=np.linspace(249,530,num=30)
-dp3=np.linspace(250,530,num=30)
-dp4=np.linspace(260,530,num=30)
-dp5=np.linspace(250,530,num=30)
-dp6=np.linspace(260,530,num=30)
-dp7=np.linspace(250,530,num=30)
-dp8=np.linspace(250,530,num=30)
+dp1=np.linspace(252,395,num=30)
+dp2=np.linspace(283,555,num=30)
+dp3=np.linspace(277,460,num=30)
+dp4=np.linspace(548,590,num=30)
+dp5=np.linspace(287,500,num=30)
+dp6=np.linspace(513,576,num=30)
+dp7=np.linspace(323,530,num=30)
+dp8=np.linspace(274,490,num=30)
 
 alpha_1=-4.8
 #alpha_2=-10.1
@@ -454,7 +454,7 @@ sp_sch[sch_name].moa1_fit1     = np.polyfit(sp_sch[sch_name].df['moa1'],sp_sch[s
 sp_sch[sch_name].moa1_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moa1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moa1_fit1[1]  )
 sp_sch[sch_name].moa1_fit2     = np.polyfit(sp_sch[sch_name].df['moa1'],sp_sch[sch_name].df ['sat_scale1'],2)
 #sp_sch[sch_name].mo0_fit_twopoint=[360,290,alpha_1]
-sp_sch[sch_name].moa1_fit_twopoint=[390,252,-11]
+sp_sch[sch_name].moa1_fit_twopoint=[390,252,-9]
 sp_sch[sch_name].moa1_dp= (dp1**sp_sch[sch_name].moa1_fit_twopoint[2]-sp_sch[sch_name].moa1_fit_twopoint[0]**sp_sch[sch_name].moa1_fit_twopoint[2])/(sp_sch[sch_name].moa1_fit_twopoint[1]**sp_sch[sch_name].moa1_fit_twopoint[2]-sp_sch[sch_name].moa1_fit_twopoint[0]**sp_sch[sch_name].moa1_fit_twopoint[2])
 sp_sch[sch_name].moa1_text='y = (x$^{-10.1}$-290$^{-10.1}$)/(530$^{-10.1}$-290$^{-10.1}$)'
 
@@ -464,7 +464,7 @@ sp_sch[sch_name].moa3_fit1     = np.polyfit(sp_sch[sch_name].df['moa3'],sp_sch[s
 sp_sch[sch_name].moa3_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moa3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moa3_fit1[1]  )
 sp_sch[sch_name].moa3_fit2     = np.polyfit(sp_sch[sch_name].df['moa3'],sp_sch[sch_name].df ['sat_scale1'],2)
 #sp_sch[sch_name].mo1_fit_twopoint=[380,290,alpha_1]
-sp_sch[sch_name].moa3_fit_twopoint=[543,283,-6.2]
+sp_sch[sch_name].moa3_fit_twopoint=[543,283,-5]
 sp_sch[sch_name].moa3_dp= (dp2**sp_sch[sch_name].moa3_fit_twopoint[2]-sp_sch[sch_name].moa3_fit_twopoint[0]**sp_sch[sch_name].moa3_fit_twopoint[2])/(sp_sch[sch_name].moa3_fit_twopoint[1]**sp_sch[sch_name].moa3_fit_twopoint[2]-sp_sch[sch_name].moa3_fit_twopoint[0]**sp_sch[sch_name].moa3_fit_twopoint[2])
 sp_sch[sch_name].moa3_text='y = (x$^{-10.1}$-275$^{-10.1}$)/(530$^{-10.1}$-275$^{-10.1}$)'
 
@@ -496,7 +496,7 @@ sp_sch[sch_name].moc1_fit1     = np.polyfit(sp_sch[sch_name].df['moc1'],sp_sch[s
 sp_sch[sch_name].moc1_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moc1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moc1_fit1[1]  )
 sp_sch[sch_name].moc1_fit2     = np.polyfit(sp_sch[sch_name].df['moc1'],sp_sch[sch_name].df ['sat_scale2'],2)
 #sp_sch[sch_name].mo5_fit_twopoint=[530,285,alpha_1]
-sp_sch[sch_name].moc1_fit_twopoint=[574,513,alpha_1]
+sp_sch[sch_name].moc1_fit_twopoint=[574,513,-10]
 sp_sch[sch_name].moc1_dp= (dp6**sp_sch[sch_name].moc1_fit_twopoint[2]-sp_sch[sch_name].moc1_fit_twopoint[0]**sp_sch[sch_name].moc1_fit_twopoint[2])/(sp_sch[sch_name].moc1_fit_twopoint[1]**sp_sch[sch_name].moc1_fit_twopoint[2]-sp_sch[sch_name].moc1_fit_twopoint[0]**sp_sch[sch_name].moc1_fit_twopoint[2])
 sp_sch[sch_name].moc1_text='y = (x$^{-10.1}$-273$^{-10.1}$)/(530$^{-10.1}$-273$^{-10.1}$)'
 
