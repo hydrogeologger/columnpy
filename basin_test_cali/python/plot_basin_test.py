@@ -204,7 +204,7 @@ ax[3].set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
 ax[0].set_ylim([0,10])
 ax[1].set_ylim([0,5])
 ax[2].set_ylim([-0.1,1.2])
-ax[3].set_ylim([1,2.5e6])
+ax[3].set_ylim([1,1e5])
 #ax[4].set_ylim([1.1,-0.1])
 #ax[5].set_ylim([1,1.2e6])
 
@@ -233,5 +233,5 @@ sp_sch[sch_name].df.to_csv('output_data/'+sch_name+'.csv')
 #sp_sch[sch_name].df.to_csv('output_data/'+sch_name+'.csv')
 
 
-fig.savefig('figure/plot_basin_test'+sch_name+'.png', format='png', dpi=500)
+fig.savefig('figure/improved/plot_basin_test'+sch_name+'.png', format='png', dpi=500)
 
