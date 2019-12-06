@@ -4,6 +4,7 @@ from datetime import datetime
 import matplotlib.image as image
 import matplotlib.pylab as pylab
 import matplotlib.pyplot as plot
+import numpy as np
 matplotlib.use('Agg')
 
 lw=1.5
@@ -55,6 +56,7 @@ date=[datetime.strptime(x,'%Y_%m_%d_%H_%M') for x in photo_taken_time]
 #    idx_im, min_value = min(enumerate( abs(sp_sch[sch_name].df['date_time']-im_time)), key=operator.itemgetter(1))
 #    idx_settlement, min_value = min(enumerate( abs(daily_data_manual.index-im_time)), key=operator.itemgetter(1))
 #    idx_rainm, min_value = min(enumerate( abs(df_mean.index-im_time)), key=operator.itemgetter(1))
+#for ii in range(len(date)):
 for ii in range(len(date)):
     im_path=path_im+file_name[ii]
     im=image.imread(im_path)
@@ -77,11 +79,12 @@ for ii in range(len(date)):
     ax[5] = plt.subplot2grid((7, 2), (5, 0), colspan=1)
     ax[6] = plt.subplot2grid((7, 2), (6, 0), colspan=1)
 
+
     fig.subplots_adjust(hspace=.20)
     fig.subplots_adjust(left=0.1, right=0.89, top=0.97, bottom=0.05)
     #ax_img.set_position([0.47,0.01,0.53,0.97])
     ax_mo = plt.subplot2grid((2, 5), (1,3), colspan=1)
-    ax_mo.set_position([0.52,0.08,0.15,0.42])
+    ax_mo.set_position([0.52,0.08,0.15,0.42]) #[left, bottom, width, height]
     #
     ax_mo.set_xlabel('VOLUMETRIC\nMOISTURE CONTENT')
     ax_mo.set_ylabel('DEPTH FROM COLUMN TOP(cm)')
@@ -98,7 +101,7 @@ for ii in range(len(date)):
     ax_mo.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
     ax_temp.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 
-    
+
     #fig, ax = plt.subplots(6,sharex=True,figsize=(6,8))
     #jfig.subplots_adjust(hspace=.15)
     mkevy=4
@@ -131,25 +134,23 @@ for ii in range(len(date)):
 
     #----------vertical line----------------------------------
     #plot.axvline(x=[idx_im],color='red',linestyle='-')
-    plot.axvline(x=[idx_im],color='red',linestyle='-')
-    
-    #def axvline(xs, ax=None, **plot_kwargs):
-    #    """
-    #    Draw vertical lines on plot
-    #    :param xs: A scalar, list, or 1D array of horizontal offsets
-    #    :param ax:The axis (or none to use gca)
-    #    :param plot_kwargs: Keyword arguements to be passed to plot
-    #    :return: THe plot object correspongding to the lines.
-    #    """
-    #    if ax is None:
-    #        ax = plot.gca()
-    #    xs = np.array((xs, ) if np.isscalar(xs) else xs, copy=False)
-    #    lims = ax.get_ylim()
-    #    x_points = np.repeat(xs[:,None], repeats=3,axis=1).flatten()
-    #    y_points = np.repeat(np.array(lims + (np.nan, ))[None,:],repeats=len(xs),axis=0).flatten()
-    #    plot = ax.plot(x_points, y_points, scaley = False, **plot_kwargs)
-    #    return plot
+    #plot.axvline(x=[idx_im] , color='red',linestyle='-', linewidth = 2)
+    #x_min = 0.1
+    #x_max = 7.11
+    #y_min = 0
+    #y_max = 10
+    #x_vals = range(x_min, x_max+1)# possible x values for the line
+    #x_vals = range(idx_im)
 
+    #def update_line(num, line):
+    #    i = x_vals[num]
+    #    line.set_data( [i, i], [y_min, y_max]  )
+    #    return line,
+
+    #fig = plt.figure()
+
+    #l , v = plt.plot(0.1, 7.11, 0, 10, linewidth=2, color= 'red')
+    #----------------------------------------------------------------
 
     #ta=sp_sch['stanwell'].df
     
@@ -157,6 +158,7 @@ for ii in range(len(date)):
     #ax[0].set_ylim([-4,30])
     ax[0].bar(df_mean.index, df_last['rainmm'], width=1.8,edgecolor='white',lw=0.1)
     ax[0].set_ylim([-0.1,33])
+    ax[0].vlines(date[ii], -0.1, 33,  colors='red', linestyles='-', linewidth=2)
 
     #yy=(ta['ir_up']-ta['ir_down'])*0.007+0.2*ta['wdspdkphavg2m'].fillna(0)
     #ax[1].plot(ta['date_time'][:idx_im], yy[:idx_im], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
@@ -166,7 +168,7 @@ for ii in range(len(date)):
     ax[1].bar(df_mean.index,df_mean['pet_mmPday'],width=1.0,color='brown',edgecolor='white',label='Pote.\nevap.',lw=0.1)
     ax[1].bar(df_mean.index,df_mean['aet_mmPday'],width=1.0,color='orange',edgecolor='white',label='Actu.\nevap.',lw=0.1)
     ax[1].set_ylim([-0.1,11])
-
+    ax[1].vlines(date[ii], -0.1, 11,  colors='red', linestyles='-', linewidth=2)
 
 
 
@@ -179,6 +181,7 @@ for ii in range(len(date)):
     #ax[2].set_ylim([-10-110,140-110])
     #ax[2].set_ylim([-100,1300])
     ax[2].set_ylim([-100,1100])
+    ax[2].vlines(date[ii], -100, 1100,  colors='red', linestyles='-', linewidth=2)
     #ax[2].set_ylim([-140+110,120,])
     
     #ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp0'][::mkevy].values, '-' ,color='maroon',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='1 cm',markevery=mkevy)
@@ -204,7 +207,9 @@ for ii in range(len(date)):
     #ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp8'][::mkevy].values, '-' ,color='royalblue',linewidth=lw,markerfacecolor='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='70cm',markevery=mkevy)
     #ax[3].set_ylim([5,40])
     ax[3].set_ylim([5,45])
-    
+    ax[3].vlines(date[ii], 5, 45,  colors='red', linestyles='-', linewidth=2)
+
+
     mkevy=12
     mkevy=24
     
@@ -219,13 +224,16 @@ for ii in range(len(date)):
     ax[4].plot(ta['date_time'][::mkevy], ta['mmo8'][::mkevy], '-' ,color='royalblue',linewidth=lw,markerfacecolor='crimson' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='crimson',label='70cm',markevery=mkevy)
     ax[4].plot(ta['date_time'][::mkevy], ta['mmo9'][::mkevy], '-' ,color='darkblue',linewidth=lw,markerfacecolor='pink' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='pink',label='85cm',markevery=mkevy)
     ax[4].set_ylim([-0.05,0.8])
-    
+    ax[4].vlines(date[ii], -0.05, 0.8,  colors='red', linestyles='-', linewidth=2)    
+
     ax[5].plot(ta['date_time'], ta['ec0']/1000., '-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
     ax[5].plot(ta['date_time'], ta['ec2']/1000., '-',color='royalblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='60cm')
     ax[5].set_ylim([-0.2,1.7])
+    ax[5].vlines(date[ii], -0.2, 1.7,  colors='red', linestyles='-', linewidth=2)
 
     ax[6].plot(daily_data_manual.index, daily_data_manual['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
     ax[6].set_ylim([-1,179])
+    ax[6].vlines(date[ii], -1, 179,  colors='red', linestyles='-', linewidth=2)
 
     
     ax[0].set_xticklabels([])
@@ -318,8 +326,8 @@ for ii in range(len(date)):
     ax[6].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
     ax[6].set_xlabel('DATE')
     #plt.xticks(rotation=45)
-    #plt.show(block=False)
-    plt.show(block=True)
+    plt.show(block=False)
+    #plt.show(block=True)
     output_name = 'figure/video_vline/000'+str(ii)+'.jpg'
     fig.savefig(output_name, format='jpg', dpi=100)
     plt.close()

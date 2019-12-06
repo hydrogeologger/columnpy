@@ -29,8 +29,8 @@ lw=2
 ms=6
 mew=2
 grid_width=2
-y_fontsize=11
-fig, ax = plt.subplots(4,sharex=True,figsize=(9,9))
+y_fontsize=13
+fig, ax = plt.subplots(4,sharex=True,figsize=(10,10))
 fig.subplots_adjust(hspace=.10)
 fig.subplots_adjust(left=0.15, right=0.79, top=0.97, bottom=0.05)
 
@@ -39,9 +39,9 @@ for i in ax:
     i.spines[axis].set_linewidth(2)
 
 sch_name='basin_test'
-ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale1*constants.m2mm, '-',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin_a (Type A)',markevery=1)
-ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale2*constants.m2mm, '-',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin_b (Type B)',markevery=2)
-ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale3*constants.m2mm, '-',color='greenyellow',markersize=ms,markeredgewidth=mew, markeredgecolor='greenyellow',label='Basin_c (Type D)',markevery=2)
+ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale1*constants.m2mm, '-',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin_a (A-type)',markevery=1)
+ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale2*constants.m2mm, '-',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin_b (B-type)',markevery=2)
+ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale3*constants.m2mm, '-',color='greenyellow',markersize=ms,markeredgewidth=mew, markeredgecolor='greenyellow',label='Basin_c (D-type)',markevery=2)
 
 #sch_name='bacteria_second'
 #ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale1*constants.m2mm,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
@@ -51,9 +51,9 @@ ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale3
 #ax[0].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.cum_evap_scale2*constants.m2mm,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)
 
 #sch_name='bacteria_first'
-ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale1*constants.ms2mmday,'-',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin_a (Type A)',markevery=1)
-ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale2*constants.ms2mmday,'-',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin_b (Type B)',markevery=2)
-ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale3*constants.ms2mmday,'-',color='greenyellow',markersize=ms,markeredgewidth=mew, markeredgecolor='greenyellow',label='Basin_c (Type D)',markevery=2)
+ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale1*constants.ms2mmday,'-',color='brown'  ,markersize=ms,markeredgewidth=mew, markeredgecolor='brown'  ,label='Basin_a (A-type)',markevery=1)
+ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale2*constants.ms2mmday,'-',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',label='Basin_b (B-type)',markevery=2)
+ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale3*constants.ms2mmday,'-',color='greenyellow',markersize=ms,markeredgewidth=mew, markeredgecolor='greenyellow',label='Basin_c (D-type)',markevery=2)
 #sch_name='bacteria_second'
 #ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale1*constants.ms2mmday,'o',color='brown',markersize=ms,markeredgewidth=mew, markeredgecolor='brown',markevery=1)
 #ax[1].plot(sp_sch[sch_name].df['date_time'], sp_sch[sch_name].df.evap_rate_scale2*constants.ms2mmday,'s',color='orange',markersize=ms,markeredgewidth=mew, markeredgecolor='orange',markevery=2)
@@ -199,19 +199,19 @@ ax[3].set_ylabel('SUCTION\n(kPa)', fontsize=y_fontsize, labelpad=20)
 #ax[4].set_ylabel('DEG. OF SAT.\n FROM SCALE', fontsize=y_fontsize, labelpad=20)
 #ax[5].set_ylabel('SUCTION\nFROM SENSOR\n(kPa) ', fontsize=y_fontsize, labelpad=20)
 #ax[7].set_ylabel('SUCT. FROM \n TEMP. HUMI.\n SENSOR (M)', fontsize=y_fontsize, labelpad=20)
-
+ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%d/%b'))
 ax[3].set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
 ax[0].set_ylim([0,10])
 ax[1].set_ylim([0,5])
-ax[2].set_ylim([-0.1,1.2])
-ax[3].set_ylim([1,2.5e6])
+ax[2].set_ylim([-0.01,1.2])
+ax[3].set_ylim([1,5.5e4])
 #ax[4].set_ylim([1.1,-0.1])
 #ax[5].set_ylim([1,1.2e6])
 
-ax[0].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-ax[1].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-ax[2].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-ax[3].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[0].legend(bbox_to_anchor=(1.11, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[1].legend(bbox_to_anchor=(1.11, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[2].legend(bbox_to_anchor=(1.10, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[3].legend(bbox_to_anchor=(1.08, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 #ax[4].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 #ax[5].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=9,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 #ax[0].set_title('(A)',x=0.02,y=0.8)
@@ -233,5 +233,5 @@ sp_sch[sch_name].df.to_csv('output_data/'+sch_name+'.csv')
 #sp_sch[sch_name].df.to_csv('output_data/'+sch_name+'.csv')
 
 
-fig.savefig('figure/plot_basin_test'+sch_name+'.png', format='png', dpi=500)
+fig.savefig('figure/improved/plot_basin_test'+sch_name+'.png', format='png', dpi=500)
 

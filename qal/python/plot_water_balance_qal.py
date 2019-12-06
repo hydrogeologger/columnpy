@@ -34,6 +34,7 @@ rs1994_param=0.21;rs1994_param2=35.63 # good
 rs1994_param=0.32;rs1994_param2=35.63 # good TO190712
 rs1994_param=0.345;rs1994_param2=35.63 # good T20190713
 rs1994_param=0.36;rs1994_param2=35.63 # good T20190723
+rs1994_param=0.39;rs1994_param2=35.63 # good T20190723
 #time_start=np.datetime64('2018-03-27 19:00')
 #time_switch=np.datetime64('2018-11-01 00:00')
 #time_end=np.datetime64('2019-03-04T06:30')
@@ -409,20 +410,21 @@ plt.plot(df_mean.index, df_last['rainmm']) #, width=1.0)
 
 
 #ax=plt.figure(figsize=(6,6))
-fig, ax = plt.subplots(figsize=(10,8))
+#fig, ax = plt.subplots(figsize=(10,8))
+fig, ax = plt.subplots(figsize=(8,6))
 for axis in ['top','bottom','left','right']:
   i.spines[axis].set_linewidth(2)
 #plt.plot(df_mean.index,df_mean['cumsum_net_water_pos_out_m']*1000,'-c',label='Calculated from\nweather station')
 #plt.plot(df_mean.index,(85.-df_mean['total_moisture_cm'])*0.01*1000,'brown',label='Calculated from\nmoisture profile')
-plt.plot(df_mean.index,df_mean['cumsum_net_water_storage_m']*1000+610,'-c',label='Calculated from\nweather station')
-plt.plot(df_mean.index,(df_mean['total_moisture_cm'])*0.01*1000,'brown',label='Calculated from\nmoisture profile')
+plt.plot(df_mean.index,df_mean['cumsum_net_water_storage_m']*1000+640,'-c',linewidth=1.7,label='Calculated from weather station')
+plt.plot(df_mean.index,(df_mean['total_moisture_cm'])*0.01*1000-20,'brown',linewidth=1.7,label='Calculated from moisture profile')
+ax.set_ylim([300,700])
 
-#ax.set_ylim([-10,360])
-
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-ax.set_xlabel('DATE')
+#ax.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%d/%b/%y'))
+ax.set_xlabel('DATE',fontsize=12)
 #ax.set_ylabel('WATER LOSS FROM COLUMN (mm)')
-ax.set_ylabel('EQUIVALENT WATER STORAGE IN COLUMN (mm)')
-ax.legend(bbox_to_anchor=(0.1, 0.99 ), loc='upper left', borderaxespad=0.,fontsize=9,handletextpad=0.83,labelspacing=1.32,ncol=1,columnspacing=0.4)
+ax.set_ylabel('EQUIVALENT WATER STORAGE IN COLUMN (mm)',fontsize=12, labelpad=10)
+ax.legend(bbox_to_anchor=(0.1, 0.99 ), loc='upper left', borderaxespad=0.,fontsize=12,handletextpad=0.6,labelspacing=1,ncol=1,columnspacing=0.1)
 ax.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 fig.savefig('figure/plot_water_balance_over_time.png', format='png', dpi=100)

@@ -199,25 +199,25 @@ for line in open("schedule.ipt"):
         
 
 
-        sp_sch[sch_name].df['mmo0']=(310.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(310.**alpha-266**alpha)*schedule['porosity']   # 1 cm
+        sp_sch[sch_name].df['mmo0']=(310.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(310.**alpha-270**alpha)*schedule['porosity']   # 1 cm
         #sp_sch[sch_name].df['mmo0']=(295.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(295.**alpha-270**alpha)   # 1 cm
-        sp_sch[sch_name].df['mmo1']=(345.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(345.**alpha-280**alpha)*schedule['porosity']   # 5 cm
+        sp_sch[sch_name].df['mmo1']=(345.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(345.**alpha-284**alpha)*schedule['porosity']   # 5 cm
         #sp_sch[sch_name].df['mmo1']=(550.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(550.**alpha-270**alpha)   # 5 cm
-        sp_sch[sch_name].df['mmo2']=(310.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(310.**alpha-270**alpha)*schedule['porosity']   # 8 cm 
+        sp_sch[sch_name].df['mmo2']=(310.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(310.**alpha-273**alpha)*schedule['porosity']   # 8 cm 
         #sp_sch[sch_name].df['mmo2']=(295.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(295.**alpha-270**alpha)   # 8 cm 
-        sp_sch[sch_name].df['mmo3']=(300.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(300.0**alpha-270**alpha)*schedule['porosity']   # 13cm
+        sp_sch[sch_name].df['mmo3']=(300.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(300.0**alpha-272**alpha)*schedule['porosity']   # 13cm
         #sp_sch[sch_name].df['mmo3']=(295.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(295.**alpha-270**alpha)   # 13cm
         #sp_sch[sch_name].df['mmo4']=(295.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(295.**alpha-270**alpha)   # 20cm
-        sp_sch[sch_name].df['mmo4']=(320.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(320.**alpha-270**alpha)*schedule['porosity']   # 20cm
+        sp_sch[sch_name].df['mmo4']=(320.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(320.**alpha-273**alpha)*schedule['porosity']   # 20cm
         sp_sch[sch_name].df['mmo5']=(310.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(310.**alpha-280**alpha)*schedule['porosity']   # 28cm
         #sp_sch[sch_name].df['mmo5']=(295.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(295.**alpha-275**alpha)   # 28cm
         sp_sch[sch_name].df['mmo6']=(320.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(320.**alpha-276**alpha)*schedule['porosity']   # 38cm
         #sp_sch[sch_name].df['mmo6']=(550.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(550.**alpha-270**alpha)   # 38cm
-        sp_sch[sch_name].df['mmo7']=(540.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(540.**alpha-275**alpha)*schedule['porosity']   # 48cm
+        sp_sch[sch_name].df['mmo7']=(540.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(540.**alpha-297**alpha)*schedule['porosity']   # 48cm
         #sp_sch[sch_name].df['mmo7']=(550.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(530.**alpha-270**alpha)   # 48cm
-        sp_sch[sch_name].df['mmo8']=(540.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(540.**alpha-285**alpha)*schedule['porosity']   # 70cm
+        sp_sch[sch_name].df['mmo8']=(540.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(540.**alpha-287**alpha)*schedule['porosity']   # 70cm
         #sp_sch[sch_name].df['mmo8']=(550.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(550.**alpha-285**alpha)   # 70cm
-        sp_sch[sch_name].df['mmo9']=(540.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(540.**alpha-276**alpha)*schedule['porosity']   # 85cm 
+        sp_sch[sch_name].df['mmo9']=(540.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(540.**alpha-277.5**alpha)*schedule['porosity']   # 85cm 
         #sp_sch[sch_name].df['mmo9']=(550.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(550.**alpha-275**alpha)   # 85cm
 
         #sp_sch[sch_name].df['mmo0']=sp_sch[sch_name].df['mmo0_p1'].fillna(0)+sp_sch[sch_name].df['mmo0_p2'].fillna(0)    # 1 cm
@@ -243,12 +243,12 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df['mmo1'].loc[ sp_sch[sch_name].df['mmo1']>0.53]=0.53
         #sp_sch[sch_name].df['mmo2'].loc[ sp_sch[sch_name].df['mmo2']>0.53]=0.53
         #sp_sch[sch_name].df['mmo3'].loc[ sp_sch[sch_name].df['mmo3']>0.53]=0.53
-        #sp_sch[sch_name].df['mmo4'].loc[ sp_sch[sch_name].df['mmo4']>0.53]=0.53
+        sp_sch[sch_name].df['mmo4'].loc[ sp_sch[sch_name].df['mmo4']>0.56]=0.56
         #sp_sch[sch_name].df['mmo5'].loc[ sp_sch[sch_name].df['mmo5']>0.53]=0.53
-        #sp_sch[sch_name].df['mmo6'].loc[ sp_sch[sch_name].df['mmo6']>0.53]=0.53
-        sp_sch[sch_name].df['mmo7'].loc[ sp_sch[sch_name].df['mmo7']>0.53]=0.53
-        #sp_sch[sch_name].df['mmo8'].loc[ sp_sch[sch_name].df['mmo8']>0.53]=0.53
-        #sp_sch[sch_name].df['mmo9'].loc[ sp_sch[sch_name].df['mmo9']>0.53]=0.53
+        sp_sch[sch_name].df['mmo6'].loc[ sp_sch[sch_name].df['mmo6']>0.53]=0.53
+        sp_sch[sch_name].df['mmo7'].loc[ sp_sch[sch_name].df['mmo7']>0.56]=0.56
+        sp_sch[sch_name].df['mmo8'].loc[ sp_sch[sch_name].df['mmo8']>0.56]=0.56
+        sp_sch[sch_name].df['mmo9'].loc[ sp_sch[sch_name].df['mmo9']>0.56]=0.56
         
         sp_sch[sch_name].df['mmo2'].loc[ sp_sch[sch_name].df['mmo2']<0  ]=np.nan
         sp_sch[sch_name].df['mmo3'].loc[ sp_sch[sch_name].df['mmo3']<0  ]=np.nan
@@ -265,7 +265,22 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['mmo0'][mask]=sp_sch[sch_name].df['mmo0']*0.7
         sp_sch[sch_name].df['mmo0'].loc[sp_sch[sch_name].df['mmo0']<0]=0
         
+        
+        #----calculating suction by using voumetric water content (SWCC)-------
+        sp_sch[sch_name].df['su0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo0'])/1000 #convert Pa to kPa
+        sp_sch[sch_name].df['su1_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo1'])/1000
+        sp_sch[sch_name].df['su2_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo2'])/1000
+        sp_sch[sch_name].df['su3_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo3'])/1000
+        sp_sch[sch_name].df['su4_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo4'])/1000
+        sp_sch[sch_name].df['su5_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo5'])/1000
+        sp_sch[sch_name].df['su6_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo6'])/1000
+        sp_sch[sch_name].df['su7_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=3.8,vwc=sp_sch[sch_name].df['mmo7'])/1000
+        sp_sch[sch_name].df['su8_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=20,vwc=sp_sch[sch_name].df['mmo8'])/1000
+        sp_sch[sch_name].df['su9_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=1.5,mf=0.15,af=20,vwc=sp_sch[sch_name].df['mmo9'])/1000
 
+
+
+        
         #time_start=np.datetime64('2018-12-20T06:40')
         #time_end=np.datetime64('2019-03-22T04:30')
         #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
@@ -621,6 +636,7 @@ rs1994_param=0.21;rs1994_param2=35.63 # good
 rs1994_param=0.32;rs1994_param2=35.63 # gooda TO190712 
 rs1994_param=0.345;rs1994_param2=35.63 # good T20190713
 rs1994_param=0.36;rs1994_param2=35.63 # good T20190723
+rs1994_param=0.39;rs1994_param2=35.63 # good T20190723
 #time_start=np.datetime64('2018-03-27 19:00')
 #time_switch=np.datetime64('2018-11-01 00:00')
 #time_end=np.datetime64('2019-03-04T06:30')
@@ -656,6 +672,7 @@ sp_sch[sch_name].df['aet_part2_mmPday']=constants.air_density_kgPm3*constants.he
 sp_sch[sch_name].df['pet_mmPday']=sp_sch[sch_name].df['pet_part1_mmPday'] + sp_sch[sch_name].df['pet_part2_mmPday'].fillna(0)
 sp_sch[sch_name].df['aet_mmPday']=sp_sch[sch_name].df['aet_part1_mmPday'] + sp_sch[sch_name].df['aet_part2_mmPday'].fillna(0)
 
+sp_sch[sch_name].df['norm_evprate']=sp_sch[sch_name].df['aet_mmPday']/sp_sch[sch_name].df['pet_mmPday']
 #time_start=np.datetime64('2018-06-07T04:40')
 #time_end=np.datetime64('2018-07-01T00:00')
 #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)

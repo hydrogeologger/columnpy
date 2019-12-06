@@ -132,7 +132,7 @@ ax[2].set_axisbelow(True)
 ax[3].set_axisbelow(True)
 ax[4].set_axisbelow(True)
 ax[5].set_axisbelow(True)
-ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=17)
+ax[0].set_ylabel('DAILY\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=17)
 ax[1].set_ylabel('SOLAR\nRADIATION\n(W/m$^{2}$)', fontsize=y_fontsize, labelpad=4)
 ax[2].set_ylabel('WIND\nSPEED\n(m/s)', fontsize=y_fontsize, labelpad=18)
 ax[3].set_ylabel('TEMPERATURE\n($^\circ$C)', fontsize=y_fontsize, labelpad=18)
@@ -146,6 +146,7 @@ ax[5].legend(bbox_to_anchor=(1.09, 0.5 ), loc='center', borderaxespad=0.,fontsiz
 
 
 ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%d/%b/%y'))
 ax[5].set_xlabel('DATE')
 plt.show(block=False)
 

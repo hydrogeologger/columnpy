@@ -132,7 +132,7 @@ ax[4].plot(ta['date_time'][::mkevy], ta['mmo6'][::mkevy], '-' ,color='lightblue'
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo7'][::mkevy], '-' ,color='cyan',linewidth=lw, markerfacecolor='yellow' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='yellow',label='48cm',markevery=mkevy)
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo8'][::mkevy], '-' ,color='royalblue',linewidth=lw,markerfacecolor='crimson' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='crimson',label='70cm',markevery=mkevy)
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo9'][::mkevy], '-' ,color='darkblue',linewidth=lw,markerfacecolor='pink' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='pink',label='85cm',markevery=mkevy)
-ax[4].set_ylim([-0.01,0.55])
+ax[4].set_ylim([-0.01,0.56])
 
 ax[5].plot(ta['date_time'], ta['ec0']/1000., '-',color='olive',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
 ax[5].plot(ta['date_time'], ta['ec1']/1000., '-',color='royalblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='60cm')
@@ -140,12 +140,12 @@ ax[5].set_ylim([-0.2,5.1])
 
 
 
-ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=10,color='blue')
-ax[1].set_ylabel('DAILY\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=12)
-ax[2].set_ylabel('WATER\nPRESSURE\n(mm)', fontsize=y_fontsize, labelpad=10)
-ax[3].set_ylabel('TEMPERATURE\nBELOW SOIL\nSURFACE\n($^\circ$C)', fontsize=y_fontsize, labelpad=10)
-ax[4].set_ylabel('VOL. MOIS.\nCONTENT\nBELOW COLUMN\nSURFACE', fontsize=y_fontsize, labelpad=10)
-ax[5].set_ylabel('ELECTRICAL\nCONDUCTIVITY\nBELOW SOIL\nSURFACE \n(dS/m)', fontsize=y_fontsize, labelpad=12)
+ax[0].set_ylabel('DAILY\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=15,color='blue')
+ax[1].set_ylabel('DAILY\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=15)
+ax[2].set_ylabel('WATER\nPRESSURE\n(mm)', fontsize=y_fontsize, labelpad=6)
+ax[3].set_ylabel('TEMPERATURE\n($^\circ$C)', fontsize=y_fontsize, labelpad=10)
+ax[4].set_ylabel('VOLUMETRIC\nWATER CONTENT', fontsize=y_fontsize, labelpad=15)
+ax[5].set_ylabel('ELECTRICAL\nCONDUCTIVITY\n(dS/m)', fontsize=y_fontsize, labelpad=12)
 
 ax[0].set_title('(A)',x=0.04,y=0.8,fontweight='bold')
 ax[1].set_title('(B)',x=0.04,y=0.8,fontweight='bold')
@@ -199,7 +199,8 @@ ax[5].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 #ax[3].plot(ta['date_time'], ta['temp_suc6'], 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Moisture A')
 #ax[3].plot(ta['date_time'], ta['temp_suc7'], 'o' ,markerfacecolor='brown' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='Moisture A')
 
-ax[5].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+#ax[5].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+ax[5].xaxis.set_major_formatter(mdates.DateFormatter('%d/%b/%y'))
 ax[5].set_xlabel('DATE')
 #plt.xticks(rotation=45)
 plt.show(block=False)
