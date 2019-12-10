@@ -281,7 +281,7 @@ ax[1].legend(bbox_to_anchor=(0.5, 2.45),  loc='center' , borderaxespad=0.,fontsi
 #ax[4].set_title('(E) Column 5, D + B type',x=0.01,y=0.8,fontweight='bold',loc='left')
 #ax[5].set_title('(F) Column 6, A +B + D type',x=0.01,y=0.8,fontweight='bold',loc='left')
 #ax[3].set_title('(D)',x=0.04,y=0.75,fontweight='bold')
-ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b-%d'))
+ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b/%y'))
 
 #ax[4].set_title('(E)',x=0.03,y=0.75,fontweight='bold')
 #ax[5].set_title('(F)',x=0.03,y=0.75,fontweight='bold')
