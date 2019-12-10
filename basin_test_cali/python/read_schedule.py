@@ -5,7 +5,6 @@ import sensorfun
 reload(sensorfun)
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
 import figlib
-import numpy as np
 reload(figlib)
 lw=5
 ms=8
@@ -27,10 +26,11 @@ for line in open("schedule.ipt"):
         line_content=[x.strip() for x in li.split(',')]
         sch_name=line_content[2]
         sp_sch[sch_name]=pandas_scale.concat_data_roof(pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M'),pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M'),dt_s );
+        sp_sch[sch_name].df.index=sp_sch[sch_name].df['date_time']
 
         sp_sch[sch_name].start_dt=pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M')
         sp_sch[sch_name].end_dt=pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M')
-       #hum is temperature and tmp is humidity
+        #hum is temperature and tmp is humidity
         
         sp_sch[sch_name].surface_area=float(line_content[4])
         sp_sch[sch_name].por=float(line_content[6])
@@ -43,29 +43,30 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].merge_data(df=data.df, keys=['scale1']   ,plot=plot_interpolate  ,coef=5e-7) # done
         #sp_sch[sch_name].merge_data(df=data.df, keys=['scale1']   ,plot=plot_interpolate  ,coef=5e-12) # done
         #if sch_name=='basin_test':
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['scale1']   ,plot=plot_interpolate  ,coef=5e-15) # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['scale2']   ,plot=plot_interpolate  ,coef=5e-14)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['scale3']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['scale1']   ,plot=plot_interpolate  ,coef=5e-15) # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['scale2']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['scale3']   ,plot=plot_interpolate  ,coef=5e-14)  # done
 
 
 
-        time_start=np.datetime64('2018-12-24T06:00')
-        time_end=np.datetime64('2018-12-24T09:50')
-        mask1=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['scale3'][mask1]=4025
+        #time_start=np.datetime64('2018-12-24T06:00')
+        #time_end=np.datetime64('2018-12-24T09:50')
+        #mask1=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        #sp_sch[sch_name].df['scale3'][mask1]=4025
 
 
 
-        time_start=np.datetime64('2018-12-24T10:00')
-        time_end=np.datetime64('2018-12-31T10:00')
-        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        #time_start=np.datetime64('2018-12-24T10:00')
+        #time_end=np.datetime64('2018-12-31T10:00')
+        #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
 
-        sp_sch[sch_name].df['scale3'][mask]=np.random.randint(4026,4027,169)
+        #sp_sch[sch_name].df['scale3'][mask]=np.random.randint(4026,4027,169)
 
-        time_start=np.datetime64('2018-12-31T10:50')
+        time_start=np.datetime64('2018-12-25T16:10')
         time_end=np.datetime64('2019-01-06T22:00')
         mask2=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['scale3'][mask2]=sp_sch[sch_name].df['scale3']*1.0015
+        sp_sch[sch_name].df['scale3'][mask2]=3984.678462
+        #sp_sch[sch_name].df['scale3'][mask2]=sp_sch[sch_name].df['scale3']*1.0015
         #if sch_name=='basin_b':
         #    sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['scale1']   ,plot=plot_interpolate  ,coef=5e-15) # done
         #    sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['scale2']   ,plot=plot_interpolate  ,coef=5e-15)  # done
@@ -113,18 +114,18 @@ for line in open("schedule.ipt"):
 
         aa=-1.1 #coef tested best
         #aa=-0.91 #coef tested best
-        bb=5 #coef tested best       
+        bb=7 #coef tested best       
         
         #if sch_name=='basin_test':
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['sua1']   ,plot=plot_interpolate  ,coef=5e-16)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['sua2']   ,plot=plot_interpolate  ,coef=5e-15)  # done non ideal data
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['sua3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['sub1']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['sub2']   ,plot=plot_interpolate  ,coef=5e-15)  # done null
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['sub3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['suc1']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['suc2']   ,plot=plot_interpolate  ,coef=5e-15)  # done null
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['suc3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['sua1']   ,plot=plot_interpolate  ,coef=5e-16)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['sua2']   ,plot=plot_interpolate  ,coef=5e-15)  # done non ideal data
+        sp_sch[sch_name].merge_data(df=data.df, keys=['sua3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['sub1']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        #sp_sch[sch_name].merge_data(df=data.df, keys=['sub2']   ,plot=plot_interpolate  ,coef=5e-15)  # done null
+        sp_sch[sch_name].merge_data(df=data.df, keys=['sub3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['suc1']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['suc2']   ,plot=plot_interpolate  ,coef=5e-15)  # done null
+        sp_sch[sch_name].merge_data(df=data.df, keys=['suc3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
 
             #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su3']   ,plot=plot_interpolate  ,coef=5e-13)  # done
             #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su4']   ,plot=plot_interpolate  ,coef=5e-13)  # done
@@ -335,15 +336,15 @@ for line in open("schedule.ipt"):
         
         
 
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['moa1']   ,plot=plot_interpolate  ,coef=5e-16)  # done
-        #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['moa2']   ,plot=plot_interpolate  ,coef=5e-13)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['moa3']   ,plot=plot_interpolate  ,coef=5e-14)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mob1']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mob2']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mob3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['moc1']   ,plot=plot_interpolate  ,coef=5e-16)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['moc2']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['moc3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['moa1']   ,plot=plot_interpolate  ,coef=5e-16)  # done
+        #sp_sch[sch_name].merge_data(df=data.df, keys=['moa2']   ,plot=plot_interpolate  ,coef=5e-13)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['moa3']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mob1']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mob2']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['mob3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['moc1']   ,plot=plot_interpolate  ,coef=5e-16)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['moc2']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['moc3']   ,plot=plot_interpolate  ,coef=5e-15)  # done
 
 
         #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-10)  # done
@@ -402,7 +403,7 @@ for line in open("schedule.ipt"):
             #sp_sch[sch_name].df['cum_evap_scale2']-sp_sch[sch_name].df['cum_evap_scale2'].iloc[-1])
             #    )/(sp_sch[sch_name].df['cum_evap_scale2'].iloc[-1]-sp_sch[sch_name].df['cum_evap_scale2'].iloc[dry_index_third])
             # the minimum mooisture content is set to be 0.15 as 
-        moist_minimum=0.01
+        moist_minimum=0.03
             #dry_index_third, min_value = min(enumerate( abs(sp_sch[sch_name].df['date_time']- sp_sch[sch_name].time_surface_emerge
             #    )), key=operator.itemgetter(1))
             #sp_sch[sch_name].idx_surface_emerge = dry_index_third
@@ -429,23 +430,23 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.3)
         #sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.32)
         sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=0.49,mf=4.01,af=201.32,hr=1132.68,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.295)
-        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.295)
-        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.32)
+        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=0.63,mf=2.65,af=82,hr=729.19,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.291)
+        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=0.78,mf=2,af=82.6,hr=1024.62,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.3225)
         #sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
-        sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
-        sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.402)
-        sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.482)
+        #sp_sch[sch_name].df['suc_scale1']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale1*sp_sch[sch_name].por,por=0.40)
+        #sp_sch[sch_name].df['suc_scale2']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale2*sp_sch[sch_name].por,por=0.402)
+        #sp_sch[sch_name].df['suc_scale3']=constants.swcc_reverse_fredlund_xing_1994(nf=1.2,mf=0.19,af=3.8,vwc=sp_sch[sch_name].df.sat_scale3*sp_sch[sch_name].por,por=0.482)
 
 
 # linear fitting for moisture 
-dp1=np.linspace(249,530,num=30)
-dp2=np.linspace(249,530,num=30)
-dp3=np.linspace(250,530,num=30)
-dp4=np.linspace(260,530,num=30)
-dp5=np.linspace(250,530,num=30)
-dp6=np.linspace(260,530,num=30)
-dp7=np.linspace(250,530,num=30)
-dp8=np.linspace(250,530,num=30)
+dp1=np.linspace(252,390,num=30)
+dp2=np.linspace(283,543,num=30)
+dp3=np.linspace(277,455,num=30)
+dp4=np.linspace(548,590,num=30)
+dp5=np.linspace(287,496,num=30)
+dp6=np.linspace(513,576,num=30)
+dp7=np.linspace(323,528,num=30)
+dp8=np.linspace(274,486,num=30)
 
 alpha_1=-4.8
 #alpha_2=-10.1
@@ -455,7 +456,7 @@ sp_sch[sch_name].moa1_fit1     = np.polyfit(sp_sch[sch_name].df['moa1'],sp_sch[s
 sp_sch[sch_name].moa1_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moa1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moa1_fit1[1]  )
 sp_sch[sch_name].moa1_fit2     = np.polyfit(sp_sch[sch_name].df['moa1'],sp_sch[sch_name].df ['sat_scale1'],2)
 #sp_sch[sch_name].mo0_fit_twopoint=[360,290,alpha_1]
-sp_sch[sch_name].moa1_fit_twopoint=[390,252,-11]
+sp_sch[sch_name].moa1_fit_twopoint=[390,252,-8]
 sp_sch[sch_name].moa1_dp= (dp1**sp_sch[sch_name].moa1_fit_twopoint[2]-sp_sch[sch_name].moa1_fit_twopoint[0]**sp_sch[sch_name].moa1_fit_twopoint[2])/(sp_sch[sch_name].moa1_fit_twopoint[1]**sp_sch[sch_name].moa1_fit_twopoint[2]-sp_sch[sch_name].moa1_fit_twopoint[0]**sp_sch[sch_name].moa1_fit_twopoint[2])
 sp_sch[sch_name].moa1_text='y = (x$^{-10.1}$-290$^{-10.1}$)/(530$^{-10.1}$-290$^{-10.1}$)'
 
@@ -465,7 +466,7 @@ sp_sch[sch_name].moa3_fit1     = np.polyfit(sp_sch[sch_name].df['moa3'],sp_sch[s
 sp_sch[sch_name].moa3_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moa3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moa3_fit1[1]  )
 sp_sch[sch_name].moa3_fit2     = np.polyfit(sp_sch[sch_name].df['moa3'],sp_sch[sch_name].df ['sat_scale1'],2)
 #sp_sch[sch_name].mo1_fit_twopoint=[380,290,alpha_1]
-sp_sch[sch_name].moa3_fit_twopoint=[543,283,-6.2]
+sp_sch[sch_name].moa3_fit_twopoint=[543,283,-5]
 sp_sch[sch_name].moa3_dp= (dp2**sp_sch[sch_name].moa3_fit_twopoint[2]-sp_sch[sch_name].moa3_fit_twopoint[0]**sp_sch[sch_name].moa3_fit_twopoint[2])/(sp_sch[sch_name].moa3_fit_twopoint[1]**sp_sch[sch_name].moa3_fit_twopoint[2]-sp_sch[sch_name].moa3_fit_twopoint[0]**sp_sch[sch_name].moa3_fit_twopoint[2])
 sp_sch[sch_name].moa3_text='y = (x$^{-10.1}$-275$^{-10.1}$)/(530$^{-10.1}$-275$^{-10.1}$)'
 
@@ -497,7 +498,7 @@ sp_sch[sch_name].moc1_fit1     = np.polyfit(sp_sch[sch_name].df['moc1'],sp_sch[s
 sp_sch[sch_name].moc1_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moc1_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moc1_fit1[1]  )
 sp_sch[sch_name].moc1_fit2     = np.polyfit(sp_sch[sch_name].df['moc1'],sp_sch[sch_name].df ['sat_scale2'],2)
 #sp_sch[sch_name].mo5_fit_twopoint=[530,285,alpha_1]
-sp_sch[sch_name].moc1_fit_twopoint=[574,513,alpha_1]
+sp_sch[sch_name].moc1_fit_twopoint=[574,513,-30]
 sp_sch[sch_name].moc1_dp= (dp6**sp_sch[sch_name].moc1_fit_twopoint[2]-sp_sch[sch_name].moc1_fit_twopoint[0]**sp_sch[sch_name].moc1_fit_twopoint[2])/(sp_sch[sch_name].moc1_fit_twopoint[1]**sp_sch[sch_name].moc1_fit_twopoint[2]-sp_sch[sch_name].moc1_fit_twopoint[0]**sp_sch[sch_name].moc1_fit_twopoint[2])
 sp_sch[sch_name].moc1_text='y = (x$^{-10.1}$-273$^{-10.1}$)/(530$^{-10.1}$-273$^{-10.1}$)'
 
@@ -505,7 +506,7 @@ sp_sch[sch_name].moc2_fit1     = np.polyfit(sp_sch[sch_name].df['moc2'],sp_sch[s
 sp_sch[sch_name].moc2_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moc2_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moc2_fit1[1]  )
 sp_sch[sch_name].moc2_fit2     = np.polyfit(sp_sch[sch_name].df['moc2'],sp_sch[sch_name].df ['sat_scale2'],2)
 #sp_sch[sch_name].mo5_fit_twopoint=[530,285,alpha_1]
-sp_sch[sch_name].moc2_fit_twopoint=[528,323,-5.5]
+sp_sch[sch_name].moc2_fit_twopoint=[528,323,-3]
 sp_sch[sch_name].moc2_dp= (dp7**sp_sch[sch_name].moc2_fit_twopoint[2]-sp_sch[sch_name].moc2_fit_twopoint[0]**sp_sch[sch_name].moc2_fit_twopoint[2])/(sp_sch[sch_name].moc2_fit_twopoint[1]**sp_sch[sch_name].moc2_fit_twopoint[2]-sp_sch[sch_name].moc2_fit_twopoint[0]**sp_sch[sch_name].moc2_fit_twopoint[2])
 sp_sch[sch_name].moc2_text='y = (x$^{-10.1}$-273$^{-10.1}$)/(530$^{-10.1}$-273$^{-10.1}$)'
 
@@ -513,7 +514,7 @@ sp_sch[sch_name].moc3_fit1     = np.polyfit(sp_sch[sch_name].df['moc3'],sp_sch[s
 sp_sch[sch_name].moc3_fit1_str = 'y = '+"{0:0.3f}".format( sp_sch[sch_name].moc3_fit1[0]  ) + ' x ' + "{0:0.2f}".format( sp_sch[sch_name].moc3_fit1[1]  )
 sp_sch[sch_name].moc3_fit2     = np.polyfit(sp_sch[sch_name].df['moc3'],sp_sch[sch_name].df ['sat_scale2'],2)
 #sp_sch[sch_name].mo5_fit_twopoint=[530,285,alpha_1]
-sp_sch[sch_name].moc3_fit_twopoint=[486,274,-8]
+sp_sch[sch_name].moc3_fit_twopoint=[486,274,-7]
 sp_sch[sch_name].moc3_dp= (dp8**sp_sch[sch_name].moc3_fit_twopoint[2]-sp_sch[sch_name].moc3_fit_twopoint[0]**sp_sch[sch_name].moc3_fit_twopoint[2])/(sp_sch[sch_name].moc3_fit_twopoint[1]**sp_sch[sch_name].moc3_fit_twopoint[2]-sp_sch[sch_name].moc3_fit_twopoint[0]**sp_sch[sch_name].moc3_fit_twopoint[2])
 sp_sch[sch_name].moc3_text='y = (x$^{-10.1}$-273$^{-10.1}$)/(530$^{-10.1}$-273$^{-10.1}$)'
 
