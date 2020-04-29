@@ -40,6 +40,10 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data.df, keys=['tmp2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['pre1']   ,plot=plot_interpolate  ,coef=5e-15)  # original coef=5e-15
         sp_sch[sch_name].merge_data(df=data.df, keys=['pre0']   ,plot=plot_interpolate  ,coef=5e-15)  # done
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_up_newpower'] )  #UV data ir_up from 20/09/2019
+        sp_sch[sch_name].merge_data(df=data.df, keys=['tmp7']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_down_newpower'] )  #UV data ir_down from 20/09/2019
+        
+
         sp_sch[sch_name].df['Pre0']=(sp_sch[sch_name].df['pre0'].values-1005.35)*10.
         sp_sch[sch_name].df['Pre1']=(sp_sch[sch_name].df['pre1'].values-1005.35)*10.
 
@@ -110,12 +114,18 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data2(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
         #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec0']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
         #sp_sch[sch_name].merge_data2(df=data.df, keys=['ec2']   ,plot=plot_interpolate  ,coef=1e-16, start_time=time_start,end_time=time_end)
-
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['tc']  ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['Temp_Mean(deg)']  ,plot=plot_interpolate  ,coef=5e-08)
+        time_start_weatherUQ=np.datetime64('2020-02-05T10:40')
+        #sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<7  ]=np.nan
+        sp_sch[sch_name].df['tc'].loc[time_start_weatherUQ:]=0 #had lost data of weather station on the roof since that time, so I used data from UQ weather station since then. Making values be zero is to merge data from two sources by using addition 
+        sp_sch[sch_name].df['Temp_Mean(deg)'].loc[:time_start_weatherUQ]=0
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['tp_box_7'],plot=plot_interpolate  ,coef=5e-12)  # done
-        sp_sch[sch_name].df['tc'].loc[ sp_sch[sch_name].df['tc']<7  ]=np.nan
         #sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
-
+        #sp_sch[sch_name].df['temperature']=pd.concat([sp_sch[sch_name].df['tc'],sp_sch[sch_name].df['Temp_Mean(deg)']], axis=1)
+        sp_sch[sch_name].df['temperature']=sp_sch[sch_name].df['tc'] + sp_sch[sch_name].df['Temp_Mean(deg)']
+        sp_sch[sch_name].df['temperature'].loc[ sp_sch[sch_name].df['temperature']<7  ]=np.nan
+     
         # TO181205 soil sensor failed to work during 829 and 914, make evt zero. so air temperature was put in
         sp_sch[sch_name].df['tmp_soil_surf'] =  sp_sch[sch_name].df['tmp1'] 
         sp_sch[sch_name].df['tmp_soil_surf'].loc[mask_output]=  sp_sch[sch_name].df['tc'].loc[mask_output] 
@@ -153,24 +163,31 @@ for line in open("schedule.ipt"):
         
         # below was working in 20181023
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name].df['rainmm']= sp_sch[sch_name].df['dlyrainmm']
+        sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['Rain_Acc(mm)']   ,plot=plot_interpolate  ,coef=5e-08)
+        #time_start_weatherUQ=np.datetime64('2020-02-05T10:40') 
+        sp_sch[sch_name].df['dlyrainmm'].loc[time_start_weatherUQ:]=0
+        sp_sch[sch_name].df['Rain_Acc(mm)'].loc[:time_start_weatherUQ]=0
+        sp_sch[sch_name].df['rainmm_part1']= sp_sch[sch_name].df['dlyrainmm']
+        sp_sch[sch_name].df['rainmm_part2']= sp_sch[sch_name].df['Rain_Acc(mm)']
+        sp_sch[sch_name].df['rainmm']= sp_sch[sch_name].df['rainmm_part1'] + sp_sch[sch_name].df['rainmm_part2']
         time_start=np.datetime64('2018-04-20T10:00')
         time_end=np.datetime64('2018-04-20T23:59')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
         sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,18,np.sum(mask) )
         sp_sch[sch_name].df['rainmm'].loc[sp_sch[sch_name].df['rainmm']<0]=0
- 
+      
+        
+
         # this is done because the sensors are made upside down later, also, some of the weather stations needs to make updates
 
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_up']   ,plot=plot_interpolate  ,coef=5e-4,new_keys=['ir_up_daisy'])
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-4,new_keys=['ir_down_daisy'])
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-4,new_keys=['ir_up_camellia'])
-
-        
-        sp_sch[sch_name].df['ir_up_daisy'].loc[sp_sch[sch_name].df['ir_up_daisy']>19512]=np.nan
-        sp_sch[sch_name].df['ir_up_daisy'].loc[sp_sch[sch_name].df['ir_up_daisy']<252]=252   # if it is given as np.nan, there will be breaking points
-        sp_sch[sch_name].df['ir_up_camellia'].loc[sp_sch[sch_name].df['ir_up_camellia']<252]=252
-        sp_sch[sch_name].df['ir_up_camellia'].loc[sp_sch[sch_name].df['ir_up_camellia']>19512]=np.nan
+        sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['Solar_Mean(W/m2)']   ,plot=plot_interpolate  ,coef=5e-4)       
+        #sp_sch[sch_name].df['ir_up_daisy'].loc[sp_sch[sch_name].df['ir_up_daisy']>19512]=np.nan
+        #sp_sch[sch_name].df['ir_up_daisy'].loc[sp_sch[sch_name].df['ir_up_daisy']<252]=252   # if it is given as np.nan, there will be breaking points
+        #sp_sch[sch_name].df['ir_up_camellia'].loc[sp_sch[sch_name].df['ir_up_camellia']<252]=252
+        #sp_sch[sch_name].df['ir_up_camellia'].loc[sp_sch[sch_name].df['ir_up_camellia']>19512]=np.nan
         # the correction here is to ensure camellia shows same value as daisy
         sp_sch[sch_name].df['ir_up_camellia_cor'] = (sp_sch[sch_name].df['ir_up_camellia']-252) *1.17+252
         # the script below uses early results from daisy while later results from camellia. 
@@ -179,13 +196,17 @@ for line in open("schedule.ipt"):
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
         #--------modify the plot of daily evaporation----------------------------
         time_end_ir_up_daisy=np.datetime64('2018-06-29T13:00')
-        time_start_ir_up_camellia=np.datetime64('2018-06-29T13:00')
         sp_sch[sch_name].df['ir_up_daisy'].loc[time_end_ir_up_daisy:]=0
-        sp_sch[sch_name].df['ir_up_camellia'].loc[:time_start_ir_up_camellia]=0
+        sp_sch[sch_name].df['ir_up_camellia'].loc[:time_end_ir_up_daisy]=0
+        time_start_ir_up_newpower=np.datetime64('2019-09-19T23:40')
+        sp_sch[sch_name].df['ir_up_camellia'].loc[time_start_ir_up_newpower:]=0
+        sp_sch[sch_name].df['Solar_Mean(W/m2)'].loc[:time_start_ir_up_newpower]=0
         #-------------------------------------------------------------------------
         #sp_sch[sch_name].df['ir_up_concat']=sp_sch[sch_name].df['ir_up_daisy']
-        sp_sch[sch_name].df['ir_up_concat']=sp_sch[sch_name].df['ir_up_daisy']+sp_sch[sch_name].df['ir_up_camellia']
-        sp_sch[sch_name].df.loc[mask,'ir_up_concat']=      sp_sch[sch_name].df.loc[mask,'ir_up_camellia_cor']
+        sp_sch[sch_name].df['ir_up_concat']=sp_sch[sch_name].df['ir_up_daisy'] + sp_sch[sch_name].df['ir_up_camellia'] + (sp_sch[sch_name].df['Solar_Mean(W/m2)']*19.512+254) #Because the default unit of solar data from UQ weather station is W/m2
+        sp_sch[sch_name].df['ir_up_concat'].loc[sp_sch[sch_name].df['ir_up_concat']>19512]=np.nan
+        sp_sch[sch_name].df['ir_up_concat'].loc[sp_sch[sch_name].df['ir_up_concat']<252]=252
+        sp_sch[sch_name].df.loc[mask,'ir_up_concat']= sp_sch[sch_name].df.loc[mask,'ir_up_camellia_cor']
 
         #plt.figure()
         #plt.plot(sp_sch[sch_name].df['date_time'],sp_sch[sch_name].df['ir_up_concat'])
@@ -206,17 +227,25 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask_mmo1,'mmo1']=np.nan
         sp_sch[sch_name].df.loc[mask_mmo1,'tmp1']=np.nan
 
-
+        #mmo3 started to be exposed from 19/03/2019
+        #mmo4 started to be exposed from 14/12/2019
+        time_start_mmo4=np.datetime64('2019-03-19T00:00')
+        time_start_mmo5=np.datetime64('2019-12-14T00:00')
         mask_surf_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,time_start_mmo1)
-        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1'].loc[mask_surf_mmo1]
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1']
 
         #mask_surf_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo2]= sp_sch[sch_name].df['mmo2'].loc[mask_surf_mmo2]
 
-        mask_surf_mmo3=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
-        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3'].loc[mask_surf_mmo3]
+        mask_surf_mmo3=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,time_start_mmo4)
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']
 
-        
+        mask_surf_mmo4=sp_sch[sch_name].df['date_time'].between(time_start_mmo4,time_start_mmo5)
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']
+
+        mask_surf_mmo5=sp_sch[sch_name].df['date_time'].between(time_start_mmo5,sp_sch[sch_name].end_dt)
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5']
+         
 
         
         # this part was cancelled as the power is disabled. 
@@ -256,7 +285,13 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask,'pre0']=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['RH_Mean(%)']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].df['rh']*=0.01
+        sp_sch[sch_name].df['RH_Mean(%)']*=0.01       
+        sp_sch[sch_name].df['rh'].loc[time_start_weatherUQ:]=0 #had lost data of weather station on the roof since that time, so I used data from UQ weather station since then.
+        sp_sch[sch_name].df['RH_Mean(%)'].loc[:time_start_weatherUQ]=0
+        sp_sch[sch_name].df['RH']=sp_sch[sch_name].df['rh'] + sp_sch[sch_name].df['RH_Mean(%)']
+
         
         #TO181102 daisy humidity sensor was not working.....
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
@@ -274,14 +309,25 @@ for line in open("schedule.ipt"):
 
         #sp_sch[sch_name].df['rh_box_7'].loc[mask]=np.nan
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        time_start=np.datetime64('2018-02-24T00:00')
-        #sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']>12  ]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']<0  ]=np.nan
+        sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df,keys=['WindSpd_Min(km/h)']   ,plot=plot_interpolate  ,coef=5e-08)  # done)
+        sp_sch[sch_name].df['wdspdkphavg2m'].loc[time_start_weatherUQ:]=0
+        sp_sch[sch_name].df['WindSpd_Min(km/h)'].loc[:time_start_weatherUQ]=0
+        sp_sch[sch_name].df['wdspd2m']= sp_sch[sch_name].df['wdspdkphavg2m'] + sp_sch[sch_name].df['WindSpd_Min(km/h)']/2
+
+
+#        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']>12  ]=np.nan
+#        sp_sch[sch_name].df['wdspdkphavg2m'].loc[ sp_sch[sch_name].df['wdspdkphavg2m']<0  ]=np.nan
+        sp_sch[sch_name].df['wdspd2m'].loc[ sp_sch[sch_name].df['wdspd2m']>12  ]=np.nan
+        sp_sch[sch_name].df['wdspd2m'].loc[ sp_sch[sch_name].df['wdspd2m']<0  ]=np.nan
 
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['wdgstkph10m']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name].df['wdgstkph10m'].loc[ sp_sch[sch_name].df['wdgstkph10m']<0.  ]=np.nan
+        sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df,keys=['WindSpd_Max(km/h)']   ,plot=plot_interpolate  ,coef=5e-08)  # done)
 
+        sp_sch[sch_name].df['wdgstkph10m'].loc[time_start_weatherUQ:]=0
+        sp_sch[sch_name].df['WindSpd_Max(km/h)'].loc[:time_start_weatherUQ]=0
+        sp_sch[sch_name].df['wdgst10m']= sp_sch[sch_name].df['wdgstkph10m'] + sp_sch[sch_name].df['WindSpd_Max(km/h)']
+        sp_sch[sch_name].df['wdgst10m'].loc[ sp_sch[sch_name].df['wdgst10m']<0.  ]=np.nan
+        
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)
 
 
@@ -294,8 +340,10 @@ for line in open("schedule.ipt"):
 
         #plt.figure()
         #plt.plot(data_weather_camellia.df.index,data_weather_camellia.df['wdgstkph10m'] )
-        sp_sch[sch_name].df['rh'].loc[ sp_sch[sch_name].df['rh']>100  ]=np.nan
-        sp_sch[sch_name].df['rh'].loc[ sp_sch[sch_name].df['rh']<0  ]=np.nan
+#        sp_sch[sch_name].df['rh'].loc[ sp_sch[sch_name].df['rh']>100  ]=np.nan
+#        sp_sch[sch_name].df['rh'].loc[ sp_sch[sch_name].df['rh']<0  ]=np.nan
+        sp_sch[sch_name].df['RH'].loc[ sp_sch[sch_name].df['RH']>100  ]=np.nan
+        sp_sch[sch_name].df['RH'].loc[ sp_sch[sch_name].df['RH']<0  ]=np.nan
 
 
 
@@ -303,7 +351,8 @@ for line in open("schedule.ipt"):
         time_start=np.datetime64('2018-02-03T15:00')
         time_end=np.datetime64('2018-02-05T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+        sp_sch[sch_name].df['RH'].loc[mask]=np.nan
 
         time_start=np.datetime64('2018-03-02T15:00')
         time_end=np.datetime64('2018-03-10T15:00')
@@ -319,18 +368,30 @@ for line in open("schedule.ipt"):
 
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name].df['p'].iloc[sp_sch[sch_name].df['p'].values<100000]=np.nan
-        sp_sch[sch_name].df['p'].iloc[sp_sch[sch_name].df['p'].values>150000]=np.nan
+        sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['MSLP_Mean(hPa)']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        sp_sch[sch_name]
+        sp_sch[sch_name].df['p'].loc[time_start_weatherUQ:]=0 #had lost data of weather station on the roof since that time, so I used data from UQ weather station since then.
+        sp_sch[sch_name].df['MSLP_Mean(hPa)'].loc[:time_start_weatherUQ]=0
+        sp_sch[sch_name].df['AP']=sp_sch[sch_name].df['p'] + sp_sch[sch_name].df['MSLP_Mean(hPa)']*100 #Because the unit of 'p' is Pa, the unit of 'MSLP_Mean(hPa)' is hPa
+#        sp_sch[sch_name].df['p'].iloc[sp_sch[sch_name].df['p'].values<100000]=np.nan
+#        sp_sch[sch_name].df['p'].iloc[sp_sch[sch_name].df['p'].values>150000]=np.nan
+        sp_sch[sch_name].df['AP'].iloc[sp_sch[sch_name].df['AP'].values<100000]=np.nan
+        sp_sch[sch_name].df['AP'].iloc[sp_sch[sch_name].df['AP'].values>150000]=np.nan
 
 
         time_start=np.datetime64('2018-04-20T00:00')
         time_end=np.datetime64('2018-04-25T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['p'].loc[mask]=np.nan
-        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
-        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
-        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['p'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+        sp_sch[sch_name].df['AP'].loc[mask]=np.nan
+        sp_sch[sch_name].df['temperature'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspd2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdgst10m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['RH'].loc[mask]=np.nan
 
 
 
@@ -338,21 +399,34 @@ for line in open("schedule.ipt"):
         time_start=np.datetime64('2018-05-04T00:00')
         time_end=np.datetime64('2018-05-07T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['p'].loc[mask]=np.nan
-        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
-        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
-        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['p'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+        sp_sch[sch_name].df['AP'].loc[mask]=np.nan
+        sp_sch[sch_name].df['temperature'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspd2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdgst10m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['RH'].loc[mask]=np.nan
+
+
 
 
         time_start=np.datetime64('2018-05-29T00:00')
         time_end=np.datetime64('2018-05-31T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['p'].loc[mask]=np.nan
-        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
-        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
-        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
-        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['p'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['tc'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['wdspdkphavg2m'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['wdgstkph10m'].loc[mask]=np.nan
+#        sp_sch[sch_name].df['rh'].loc[mask]=np.nan
+        sp_sch[sch_name].df['AP'].loc[mask]=np.nan
+        sp_sch[sch_name].df['temperature'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdspd2m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['wdgst10m'].loc[mask]=np.nan
+        sp_sch[sch_name].df['RH'].loc[mask]=np.nan
+
         sp_sch[sch_name].df['rainmm'].loc[mask]=np.nan
 
         time_start=np.datetime64('2018-05-29T00:00')
@@ -363,8 +437,10 @@ for line in open("schedule.ipt"):
         
 # below is to calculate penman monteith potential evaporation
 # tc0_k removes all na to 25 degree as this way will fill many gaps
-sp_sch[sch_name].df['tc0_k']=sp_sch[sch_name].df['tc'].fillna(25.0) +constants.kelvin
-sp_sch[sch_name].df['wdspdkphavg2m_0']=sp_sch[sch_name].df['wdspdkphavg2m'].fillna(1.0)
+#sp_sch[sch_name].df['tc0_k']=sp_sch[sch_name].df['tc'].fillna(25.0) +constants.kelvin
+sp_sch[sch_name].df['tc0_k']=sp_sch[sch_name].df['temperature'].fillna(25.0) +constants.kelvin
+#sp_sch[sch_name].df['wdspdkphavg2m_0']=sp_sch[sch_name].df['wdspdkphavg2m'].fillna(1.0)
+sp_sch[sch_name].df['wdspdkphavg2m_0']=sp_sch[sch_name].df['wdspd2m'].fillna(1.0)
 
 sp_sch[sch_name].df['drhowv_sat_dt']=constants.dsvp_dtk( sp_sch[sch_name].df['tc0_k'] )
 sp_sch[sch_name].df['latent_heat_JPkg']=constants.lhv(sp_sch[sch_name].df['tc0_k'])
