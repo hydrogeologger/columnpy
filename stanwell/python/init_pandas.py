@@ -171,7 +171,7 @@ mask8=data.df['date_time'].between(time_rainsp_tmp2,time_last_tmp2)
 data.df['tmp2'][mask5]=np.random.randint(420,480,size=383)
 data.df['tmp2'][mask6]=np.random.randint(560,610,size=10)
 data.df['tmp2'][mask7]=np.random.randint(510,540,size=307)
-data.df['tmp2'][mask8]=np.random.randint(340,375,size=1071)
+data.df['tmp2'][mask8]=np.random.randint(340,375,size=1077)
 
 
 

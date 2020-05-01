@@ -52,7 +52,8 @@ df_mean['radiation']=(df_mean['ir_up_concat']-254)/20.512
 #ax[0].plot(ta['date_time'], ta['rainmm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 #ax[0].set_ylim([-1,19])
 ax[0].bar(df_mean.index, df_last['rainmm'], width=1.8,edgecolor='white',lw=0.1)
-ax[0].set_ylim([-0.1,33])
+ax[0].set_ylim([-0.1,80])
+#ax[0].set_ylim([-0.1,33])
 
 
 ##ax[1].plot(ta['date_time'], (ta['ir_up']-ta['ir_down'])*0.007+0.2*ta['wdspdkphavg2m'].fillna(0), '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
@@ -184,5 +185,5 @@ plt.show(block=False)
 
 
 
-fig.savefig('figure/plot_stanwell.png', format='png', dpi=600)
+fig.savefig('figure/update/plot_stanwell.png', format='png', dpi=600)
 #    plt.close()

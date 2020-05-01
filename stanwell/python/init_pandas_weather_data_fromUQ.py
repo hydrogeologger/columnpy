@@ -29,6 +29,10 @@ data_weather_fromUQ=pandas_scale.pandas_scale(file_path=data_weather_fromUQ_path
     index_col=index_col_sw
     )
 
+
+#data_weather_fromUQ.df.sort_values('date_time',inplace=True)
+#data_weather_fromUQ.df = data_weather_fromUQ.df.reset_index(drop=True)
+
 data_weather_fromUQ.df.sort_index(ascending=True,inplace=True)
 #data_weather_fromUQ.df.index=data_weather_camellia.df.index+pd.to_timedelta(10, unit='h') #for the data from UQ, the time zone is UTC+10.
 data_weather_fromUQ.df['date_time']= data_weather_fromUQ.df.index

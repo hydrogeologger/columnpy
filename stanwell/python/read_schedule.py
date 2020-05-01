@@ -15,7 +15,8 @@ grid_width=2
 y_fontsize=20
 
 with open('schedule.json') as f:
-        schedule = json.load(f) #, object_pairs_hook=OrderedDict)
+    schedule = json.load(f) #, object_pairs_hook=OrderedDict)
+
 schedule['average_dry_density']=float(schedule['average_dry_density'])
 schedule['specific_gravity']=float(schedule['specific_gravity'])
 schedule['porosity']=1-schedule['average_dry_density']/schedule['specific_gravity']
@@ -42,7 +43,6 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data.df, keys=['pre0']   ,plot=plot_interpolate  ,coef=5e-15)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_up_newpower'] )  #UV data ir_up from 20/09/2019
         sp_sch[sch_name].merge_data(df=data.df, keys=['tmp7']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_down_newpower'] )  #UV data ir_down from 20/09/2019
-        
 
         sp_sch[sch_name].df['Pre0']=(sp_sch[sch_name].df['pre0'].values-1005.35)*10.
         sp_sch[sch_name].df['Pre1']=(sp_sch[sch_name].df['pre1'].values-1005.35)*10.
@@ -57,8 +57,7 @@ for line in open("schedule.ipt"):
 #
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-09-14T17:00')
-
-        
+ 
         ## the new method has already considered the boundary effect
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp0']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
@@ -84,17 +83,16 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
         #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-7)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
-
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo0']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo1']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo2']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo3']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo4']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo5']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo6']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-14)  # done
+        sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-14)  # done
 
 
         time_start=np.datetime64('2018-08-29T13:00')
@@ -124,10 +122,14 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df['tp_box_7'].loc[ sp_sch[sch_name].df['tp_box_7']<15 ]=np.nan
         #sp_sch[sch_name].df['temperature']=pd.concat([sp_sch[sch_name].df['tc'],sp_sch[sch_name].df['Temp_Mean(deg)']], axis=1)
         sp_sch[sch_name].df['temperature']=sp_sch[sch_name].df['tc'] + sp_sch[sch_name].df['Temp_Mean(deg)']
-        sp_sch[sch_name].df['temperature'].loc[ sp_sch[sch_name].df['temperature']<7  ]=np.nan
-     
+        sp_sch[sch_name].df['temperature'].loc[ sp_sch[sch_name].df['temperature']<7  ]=np.nan 
         # TO181205 soil sensor failed to work during 829 and 914, make evt zero. so air temperature was put in
-        sp_sch[sch_name].df['tmp_soil_surf'] =  sp_sch[sch_name].df['tmp1'] 
+        time_surface_switch1=np.datetime64('2018-10-14T03:40') #sp_sch[sch_name].df['tmp1'] is NaN after this time
+        time_surface_switch2=np.datetime64('2019-03-14T23:40') #values of sp_sch[sch_name].df['tmp2'],['tmp3'],['tmp4'],['tmp5'] had been invalid after this time.
+        sp_sch[sch_name].df['tmp_soil_surf'] =  sp_sch[sch_name].df['tmp1']
+        sp_sch[sch_name].df['tmp_soil_surf'].loc[:time_surface_switch1] =  sp_sch[sch_name].df['tmp1'] 
+        sp_sch[sch_name].df['tmp_soil_surf'].loc[time_surface_switch1:time_surface_switch2] =  sp_sch[sch_name].df['tmp2']
+        sp_sch[sch_name].df['tmp_soil_surf'].loc[time_surface_switch2:] =  sp_sch[sch_name].df['tmp6']*1.2
         sp_sch[sch_name].df['tmp_soil_surf'].loc[mask_output]=  sp_sch[sch_name].df['tc'].loc[mask_output] 
 
         '''
@@ -135,48 +137,52 @@ for line in open("schedule.ipt"):
         plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['tmp_soil_surf'])
         '''
 
+
+
+        time_start_newraspi0=np.datetime64('2018-11-13T00:40')
+        time_end_newraspi0=np.datetime64('2019-03-30T00:40')
+        mask=sp_sch[sch_name].df['date_time'].between(time_start_newraspi0,time_end_newraspi0)
         coef=-3.1 # been a while
         coef=-1.8 
         coef=-4.5 
         coef=-5.0 
         coef=-7.0 
         #coef=-2.1
-        sp_sch[sch_name].df['mmo0']=(570.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo1']=(570.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-270**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(550.**coef-270**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo3']=(570.0**coef-sp_sch[sch_name].df['mo3']**coef)/(550.**coef-280**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-270**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo0']=(580.0**coef-sp_sch[sch_name].df['mo0']**coef)/(580.**coef-254**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo1']=(550.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-265**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(570.**coef-265**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo3']=(452.0**coef-sp_sch[sch_name].df['mo3']**coef)/(452.**coef-272**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo4']=(450.0**coef-sp_sch[sch_name].df['mo4']**coef)/(450.**coef-272**coef)*schedule['porosity']
         #sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-285**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-270**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo5']=(430.0**coef-sp_sch[sch_name].df['mo5']**coef)/(430.**coef-262**coef)*schedule['porosity']
         #sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-285**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo6']=(570.0**coef-sp_sch[sch_name].df['mo6']**coef)/(550.**coef-280**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo7']=(570.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-275**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo8']=(570.0**coef-sp_sch[sch_name].df['mo8']**coef)/(550.**coef-285**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo9']=(570.0**coef-sp_sch[sch_name].df['mo9']**coef)/(550.**coef-285**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo6']=(520.0**coef-sp_sch[sch_name].df['mo6']**coef)/(520.**coef-268**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo7']=(550.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-235**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo8']=(550.0**coef-sp_sch[sch_name].df['mo8']**coef)/(550.**coef-274**coef)*schedule['porosity']
+        sp_sch[sch_name].df['mmo9']=(550.0**coef-sp_sch[sch_name].df['mo9']**coef)/(550.**coef-277**coef)*schedule['porosity']
 
         time_start_mmo2=np.datetime64('2018-10-31T14:00')
         mask_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo2,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df['mmo2'].loc[mask_mmo2]=np.nan
+ 
+        sp_sch[sch_name].df.loc[sp_sch[sch_name].df['mmo5']>schedule['porosity']]=np.nan
+        sp_sch[sch_name].df.loc[sp_sch[sch_name].df['mmo6']>schedule['porosity']]=schedule['porosity']
 
         # this was in 20180522
-        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        
+        #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done 
         # below was working in 20181023
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['Rain_Acc(mm)']   ,plot=plot_interpolate  ,coef=5e-08)
         #time_start_weatherUQ=np.datetime64('2020-02-05T10:40') 
         sp_sch[sch_name].df['dlyrainmm'].loc[time_start_weatherUQ:]=0
         sp_sch[sch_name].df['Rain_Acc(mm)'].loc[:time_start_weatherUQ]=0
-        sp_sch[sch_name].df['rainmm_part1']= sp_sch[sch_name].df['dlyrainmm']
-        sp_sch[sch_name].df['rainmm_part2']= sp_sch[sch_name].df['Rain_Acc(mm)']
-        sp_sch[sch_name].df['rainmm']= sp_sch[sch_name].df['rainmm_part1'] + sp_sch[sch_name].df['rainmm_part2']
+        sp_sch[sch_name].df['rainmm']= sp_sch[sch_name].df['dlyrainmm'] + sp_sch[sch_name].df['Rain_Acc(mm)']
         time_start=np.datetime64('2018-04-20T10:00')
         time_end=np.datetime64('2018-04-20T23:59')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
         sp_sch[sch_name].df.loc[mask,'rainmm']=np.linspace(0.93,18,np.sum(mask) )
         sp_sch[sch_name].df['rainmm'].loc[sp_sch[sch_name].df['rainmm']<0]=0
-      
-        
+ 
 
         # this is done because the sensors are made upside down later, also, some of the weather stations needs to make updates
 
@@ -227,27 +233,29 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df.loc[mask_mmo1,'mmo1']=np.nan
         sp_sch[sch_name].df.loc[mask_mmo1,'tmp1']=np.nan
 
-        #mmo3 started to be exposed from 19/03/2019
-        #mmo4 started to be exposed from 14/12/2019
-        time_start_mmo4=np.datetime64('2019-03-19T00:00')
-        time_start_mmo5=np.datetime64('2019-12-14T00:00')
+        #mmo3 started to be exposed from 14/03/2019
+        #mmo4 started to be exposed from 16/12/2019
+        time_end_mmo3=np.datetime64('2019-03-14T22:40')
+        time_end_mmo4=np.datetime64('2019-12-16T09:00')
+        sp_sch[sch_name].df.loc[time_end_mmo3:,'mmo3']=np.nan
+        sp_sch[sch_name].df.loc[time_end_mmo4:,'mmo4']=np.nan
+        sp_sch[sch_name].df.loc[sp_sch[sch_name].df['mmo4']>schedule['porosity']]=np.nan  
+ 
         mask_surf_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,time_start_mmo1)
         sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1']
 
         #mask_surf_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo2]= sp_sch[sch_name].df['mmo2'].loc[mask_surf_mmo2]
 
-        mask_surf_mmo3=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,time_start_mmo4)
+        mask_surf_mmo3=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,time_end_mmo3)
         sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']
 
-        mask_surf_mmo4=sp_sch[sch_name].df['date_time'].between(time_start_mmo4,time_start_mmo5)
+        mask_surf_mmo4=sp_sch[sch_name].df['date_time'].between(time_end_mmo3,time_end_mmo4)
         sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']
 
-        mask_surf_mmo5=sp_sch[sch_name].df['date_time'].between(time_start_mmo5,sp_sch[sch_name].end_dt)
+        mask_surf_mmo5=sp_sch[sch_name].df['date_time'].between(time_end_mmo4,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5']
-         
-
-        
+ 
         # this part was cancelled as the power is disabled. 
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-09-14T17:00')
@@ -265,7 +273,7 @@ for line in open("schedule.ipt"):
         #time_end=np.datetime64('2018-03-02T15:00')
         #mask=data_weather_camellia.df['date_time'].between(time_start,time_end)
         #data_weather_camellia.df['rh_box_7'].loc[mask]=np.nan
-        
+ 
         #------------modify tmp3&tmp7----------------------
         time_start=np.datetime64('2018-12-22T01:00')
         time_end=np.datetime64('2019-03-04T06:30')
@@ -291,8 +299,7 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['rh'].loc[time_start_weatherUQ:]=0 #had lost data of weather station on the roof since that time, so I used data from UQ weather station since then.
         sp_sch[sch_name].df['RH_Mean(%)'].loc[:time_start_weatherUQ]=0
         sp_sch[sch_name].df['RH']=sp_sch[sch_name].df['rh'] + sp_sch[sch_name].df['RH_Mean(%)']
-
-        
+ 
         #TO181102 daisy humidity sensor was not working.....
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
 
@@ -326,8 +333,7 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['wdgstkph10m'].loc[time_start_weatherUQ:]=0
         sp_sch[sch_name].df['WindSpd_Max(km/h)'].loc[:time_start_weatherUQ]=0
         sp_sch[sch_name].df['wdgst10m']= sp_sch[sch_name].df['wdgstkph10m'] + sp_sch[sch_name].df['WindSpd_Max(km/h)']
-        sp_sch[sch_name].df['wdgst10m'].loc[ sp_sch[sch_name].df['wdgst10m']<0.  ]=np.nan
-        
+        sp_sch[sch_name].df['wdgst10m'].loc[ sp_sch[sch_name].df['wdgst10m']<0.  ]=np.nan 
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['wdspdkphavg2m']   ,plot=plot_interpolate  ,coef=5e-08)
 
 
@@ -432,9 +438,8 @@ for line in open("schedule.ipt"):
         time_start=np.datetime64('2018-05-29T00:00')
         time_end=np.datetime64('2018-06-07T15:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['ir_up_concat'].loc[mask]=np.nan
-        
-        
+        sp_sch[sch_name].df['ir_up_concat'].loc[mask]=np.nan 
+
 # below is to calculate penman monteith potential evaporation
 # tc0_k removes all na to 25 degree as this way will fill many gaps
 #sp_sch[sch_name].df['tc0_k']=sp_sch[sch_name].df['tc'].fillna(25.0) +constants.kelvin
@@ -490,18 +495,18 @@ sp_sch[sch_name].df['aet_part2_mmPday']=constants.air_density_kgPm3*constants.he
 sp_sch[sch_name].df['pet_mmPday']=sp_sch[sch_name].df['pet_part1_mmPday'] + sp_sch[sch_name].df['pet_part2_mmPday'].fillna(0)
 sp_sch[sch_name].df['aet_mmPday']=sp_sch[sch_name].df['aet_part1_mmPday'] + sp_sch[sch_name].df['aet_part2_mmPday'].fillna(0)
 
-time_start=np.datetime64('2018-11-11 00:00')
-time_end=np.datetime64('2018-11-12 00:00')
-mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-sp_sch[sch_name].df['pet_mmPday'][mask]=sp_sch[sch_name].df['pet_mmPday']*0.5
-sp_sch[sch_name].df['aet_mmPday'][mask]=sp_sch[sch_name].df['aet_mmPday']*0.5
-
-
-time_start1=np.datetime64('2018-12-23 00:00')
-time_end1=np.datetime64('2018-12-24 00:00')
-mask1=sp_sch[sch_name].df['date_time'].between(time_start1,time_end1)
-sp_sch[sch_name].df['pet_mmPday'][mask1]=sp_sch[sch_name].df['pet_mmPday']*0.6
-sp_sch[sch_name].df['aet_mmPday'][mask1]=sp_sch[sch_name].df['aet_mmPday']*0.6
+#time_start=np.datetime64('2018-11-11 00:00')
+#time_end=np.datetime64('2018-11-12 00:00')
+#mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+#sp_sch[sch_name].df['pet_mmPday'][mask]=sp_sch[sch_name].df['pet_mmPday']*0.5
+#sp_sch[sch_name].df['aet_mmPday'][mask]=sp_sch[sch_name].df['aet_mmPday']*0.5
+#
+#
+#time_start1=np.datetime64('2018-12-23 00:00')
+#time_end1=np.datetime64('2018-12-24 00:00')
+#mask1=sp_sch[sch_name].df['date_time'].between(time_start1,time_end1)
+#sp_sch[sch_name].df['pet_mmPday'][mask1]=sp_sch[sch_name].df['pet_mmPday']*0.6
+#sp_sch[sch_name].df['aet_mmPday'][mask1]=sp_sch[sch_name].df['aet_mmPday']*0.6
 
 
 
