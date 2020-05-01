@@ -156,7 +156,7 @@ ax[2].plot(sp.index[::iv], sp.wox0_c[::iv],'-',color='maroon',markersize=ms-3,ma
 sp_wlo=prof['grange_5_luo2_wet']['data'].df
 #sp_dlo=prof['grange_5_luo2_dry']['data'].df
 sp_moi=prof['grange_5_mo_su']['data'].df
-iv=100
+iv=120
 mark_every=200
 ax[3].plot(sp_moi.index[::iv], sp_moi.wluo7[::iv],'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
 ax[3].plot(sp_wlo.index[::iv], sp_wlo.wluo6[::iv],'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
@@ -173,7 +173,7 @@ sp_wlo=prof['grange_3_luo2_wet']['data'].df
 #sp_dlo=prof['grange_3_luo2_dry']['data'].df
 sp_moi=prof['grange_3_mo_su']['data'].df
 mark_every=200
-iv=100
+iv=120
 ax[4].plot(sp_moi.index[::iv], sp_moi.wluo7[::iv],'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
 ax[4].plot(sp_wlo.index[::iv], sp_wlo.wluo6[::iv],'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
 #ax[4].plot(sp_wlo.index[::iv], sp_wlo.wluo5[::iv],'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
@@ -188,7 +188,7 @@ sp_wlo=prof['grange_4_luo2_wet']['data'].df
 #sp_dlo=prof['grange_4_luo2_dry']['data'].df
 sp_moi=prof['grange_4_mo_su']['data'].df
 mark_every=400
-iv=100
+iv=120
 ax[5].plot(sp_moi.index[::iv], sp_moi.wluo7[::iv],'-',color='darkblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='0.5m',markevery=mark_every,ms=12)
 ax[5].plot(sp_wlo.index[::iv], sp_wlo.wluo6[::iv],'-',color='royalblue',markersize=ms+3,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='1.0m',markevery=mark_every,ms=12)
 ax[5].plot(sp_wlo.index[::iv], sp_wlo.wluo5[::iv],'-',color='lightblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='1.5m',markevery=mark_every,ms=12)
@@ -258,7 +258,7 @@ ax[4].legend(bbox_to_anchor=(0.5, 5.68),  loc='center' , borderaxespad=0.,fontsi
 #ax[4].set_title('(E) Column 5, D + B type',x=0.01,y=0.8,fontweight='bold',loc='left')
 #ax[5].set_title('(F) Column 6, A +B + D type',x=0.01,y=0.8,fontweight='bold',loc='left')
 #ax[3].set_title('(D)',x=0.04,y=0.75,fontweight='bold')
-ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b-%d'))
+ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b/%y'))
 
 #ax[4].set_title('(E)',x=0.03,y=0.75,fontweight='bold')
 #ax[5].set_title('(F)',x=0.03,y=0.75,fontweight='bold')
