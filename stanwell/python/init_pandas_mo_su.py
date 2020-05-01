@@ -62,7 +62,9 @@ dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # s
 #dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%d/%b/%Y %H:%M:%S')  # 18/Jun/2017 23:29:03
 
 # 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
-index_col_sw=False
+#index_col_sw=False
+index_col_sw='date_time'
+
 
 data_mo_su=pandas_scale.pandas_scale(file_path=data_file_path,
     source='raw',
@@ -73,17 +75,23 @@ data_mo_su=pandas_scale.pandas_scale(file_path=data_file_path,
     date_parser=dateparse,
     index_col=index_col_sw
     )
+####below is to set the index as datetime
+data_mo_su.df.sort_index(ascending=True,inplace=True)
+data_mo_su.df.index=data_mo_su.df.index+pd.to_timedelta(10, unit='h')
+data_mo_su.df['date_time']= data_mo_su.df.index
 
 
-data_mo_su.df.sort_values('date_time',inplace=True)
+#######below is to set the index as ordinal 
+#data_mo_su.df.sort_values('date_time',inplace=True)
+#data_mo_su.df = data_mo_su.df.reset_index(drop=True)
+#data_mo_su.df['date_time']=data_mo_su.df['date_time']+pd.to_timedelta(10, unit='h')
+#################
 ## https://stackoverflow.com/questions/37787698/how-to-sort-pandas-dataframe-from-one-column
 ## reverse the dataframe by timestamp as the result is upside down
 #data.df.sort_values('timestamp',inplace=True)
 #
-data_mo_su.df = data_mo_su.df.reset_index(drop=True)
 #
 ## 'date_time'  is the column with corrected time zones
-data_mo_su.df['date_time']=data_mo_su.df['date_time']+pd.to_timedelta(10, unit='h')
 
 
 

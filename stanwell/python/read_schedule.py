@@ -172,6 +172,11 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['rainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done 
         # below was working in 20181023
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08)  # done
+        
+
+        sp_sch[sch_name].merge_data2(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08, start_time=sp_sch[sch_name].start_dt,end_time=sp_sch[sch_name].end_dt )
+        sp_sch[sch_name].merge_data2(df=data_weather_camellia.df, keys=['dlyrainmm']   ,plot=plot_interpolate  ,coef=5e-08, start_time=sp_sch[sch_name].start_dt,end_time=sp_sch[sch_name].end_dt )
+        
         sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['Rain_Acc(mm)']   ,plot=plot_interpolate  ,coef=5e-08)
         #time_start_weatherUQ=np.datetime64('2020-02-05T10:40') 
         sp_sch[sch_name].df['dlyrainmm'].loc[time_start_weatherUQ:]=0
