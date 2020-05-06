@@ -51,8 +51,12 @@ df_mean['radiation']=(df_mean['ir_up_concat']-254)/20.512
 
 #ax[0].plot(ta['date_time'], ta['rainmm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 #ax[0].set_ylim([-1,19])
-ax[0].bar(df_mean.index, df_last['rainmm'], width=1.8,edgecolor='white',lw=0.1)
-ax[0].set_ylim([-0.1,80])
+ax1=ax[0]
+ax1.bar(df_mean.index, df_last['rainmm'], width=1.8,edgecolor='white',lw=0.1)
+ax2=ax1.twinx()
+ax2.plot(df_mean.index, df_mean['cumsum_rainmm'], '-',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
+ax1.set_ylim([-0.1,80])
+ax2.set_ylim([-0.1,1600])
 #ax[0].set_ylim([-0.1,33])
 
 
@@ -69,7 +73,7 @@ ax[0].set_ylim([-0.1,80])
 
 ax[1].bar(df_mean.index,df_mean['pet_mmPday'],width=1.0,color='brown',edgecolor='white',label='Pote.\nevap.',lw=0.1)
 ax[1].bar(df_mean.index,df_mean['aet_mmPday'],width=1.0,color='orange',edgecolor='white',label='Actu.\nevap.',lw=0.1)
-ax[1].set_ylim([-0.1,11])
+ax[1].set_ylim([-0.1,12])
 
 
 
@@ -125,17 +129,31 @@ ax[5].plot(ta['date_time'], ta['ec0']/1000., '-',color='olive',markersize=ms,mar
 ax[5].plot(ta['date_time'], ta['ec2']/1000., '-',color='royalblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='60cm')
 ax[5].set_ylim([-0.2,1.7])
 
-ax[6].plot(daily_data_manual.index, daily_data_manual['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
-ax[6].set_ylim([-1,179])
+#ax3=ax[6]
+#ax3.plot(daily_data_manual.index, daily_data_manual['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
+#ax4=ax3.twinx()
+#ax4.plot(daily_data_manual.index,daily_data_manual['newavg_dry_density'],'-',color='darkgreen',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
+#ax3.set_ylim([-1,340])
+#ax4.set_ylim([600,950])
+ax3=ax[6]
+ax3.plot(ta['date_time'], ta['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
+ax4=ax3.twinx()
+ax4.plot(ta['date_time'],ta['newavg_dry_density'],'-',color='darkgreen',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
+ax3.set_ylim([-1,340])
+ax4.set_ylim([600,950])
 
 
-ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=15)
+#ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=15)
+ax1.set_ylabel('DAILY\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=18,color='blue')
+ax2.set_ylabel('CUMULATIVE\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=6,color='red')
 ax[1].set_ylabel('DAILY\nEVAPORATION\n(mm)', fontsize=y_fontsize, labelpad=15)
 ax[2].set_ylabel('WATER\nPRESSURE\n(mm)', fontsize=y_fontsize, labelpad=5)
 ax[3].set_ylabel('TEMPERATURE\nBELOW COLUMN\nSURFACE\n($^\circ$C)', fontsize=y_fontsize, labelpad=13)
 ax[4].set_ylabel('VOL. MOIS.\nCONTENT\nBELOW COLUMN\nSURFACE', fontsize=y_fontsize, labelpad=15)
 ax[5].set_ylabel('ELECTRICAL\nCONDUCTIVITY\nBELOW COLUMN\nSURFACE \n(dS/m)', fontsize=y_fontsize, labelpad=15)
-ax[6].set_ylabel('SURFACE \n SETTLEMENT\n(mm)', fontsize=y_fontsize, labelpad=15)
+#ax[6].set_ylabel('SURFACE \n SETTLEMENT\n(mm)', fontsize=y_fontsize, labelpad=15)
+ax3.set_ylabel('SURFACE \n SETTLEMENT\n(mm)', fontsize=y_fontsize, labelpad=15,color='maroon')
+ax4.set_ylabel('DRY DENSITY\n(kg/m)', fontsize=y_fontsize, labelpad=10,color='darkgreen')
 
 ax[0].set_title('(a)',x=0.03,y=0.8,fontweight='bold')
 ax[1].set_title('(b)',x=0.03,y=0.8,fontweight='bold')
@@ -178,7 +196,8 @@ ax[4].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[5].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax[6].grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 
-ax[5].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+#ax[5].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+ax[5].xaxis.set_major_formatter(mdates.DateFormatter('%b/%y'))
 ax[6].set_xlabel('DATE')
 #plt.xticks(rotation=45)
 plt.show(block=False)

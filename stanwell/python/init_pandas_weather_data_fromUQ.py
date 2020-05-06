@@ -38,6 +38,22 @@ data_weather_fromUQ.df.sort_index(ascending=True,inplace=True)
 data_weather_fromUQ.df['date_time']= data_weather_fromUQ.df.index
 
 
+#initial data of surface settlement from manual script
 
 
+data_settlement_header=['date_time','settlement_mm']
+data_settlement_path=current_path+'/data/manual/manual_for_merge/'    # warning, all the files should be .dat
+
+data_settlement=pandas_scale.pandas_scale(file_path=data_settlement_path,
+    source='raw',
+    sep=',',
+    header=1,
+    names=data_settlement_header,
+    parse_dates=data_date_time,
+    date_parser=dateparse,
+    index_col=index_col_sw
+    ) 
+
+data_settlement.df.sort_index(ascending=True,inplace=True)
+data_settlement.df['date_time']= data_settlement.df.index
 

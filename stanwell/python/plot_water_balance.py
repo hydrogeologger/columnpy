@@ -91,7 +91,7 @@ plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_part1_mmPday'],'r-')
 plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['pet_part2_mmPday'],'g-') 
 
 plt.figure()
-plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['mmo9'],'r-') 
+plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['aet_mmPday'],'r-') 
 
 plt.figure()
 plt.plot(sp_sch[sch_name].df.index[mask],sp_sch[sch_name].df['rainmm'][mask],'r-') 
