@@ -168,8 +168,8 @@ for line in open("schedule.ipt"):
         coef=-5.0 
         coef=-7.0 
         #coef=-2.1
-        sp_sch[sch_name].df['mmo0']=(580.0**coef-sp_sch[sch_name].df['mo0']**coef)/(580.**coef-258**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
-        sp_sch[sch_name].df['mmo1']=(550.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-265**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
+        sp_sch[sch_name].df['mmo0']=(550.0**coef-sp_sch[sch_name].df['mo0']**coef)/(550.**coef-260**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
+        sp_sch[sch_name].df['mmo1']=(550.0**coef-sp_sch[sch_name].df['mo1']**coef)/(550.**coef-270**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
         sp_sch[sch_name].df['mmo2']=(570.0**coef-sp_sch[sch_name].df['mo2']**coef)/(570.**coef-265**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
         sp_sch[sch_name].df['mmo3']=(452.0**coef-sp_sch[sch_name].df['mo3']**coef)/(452.**coef-275**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
         sp_sch[sch_name].df['mmo4']=(450.0**coef-sp_sch[sch_name].df['mo4']**coef)/(450.**coef-270**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
@@ -178,8 +178,8 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-285**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo6']=(550.0**coef-sp_sch[sch_name].df['mo6']**coef)/(550.**coef-280**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
         sp_sch[sch_name].df['mmo7']=(550.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-275**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
-        sp_sch[sch_name].df['mmo8']=(570.0**coef-sp_sch[sch_name].df['mo8']**coef)/(570.**coef-283**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
-        sp_sch[sch_name].df['mmo9']=(570.0**coef-sp_sch[sch_name].df['mo9']**coef)/(570.**coef-283**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
+        sp_sch[sch_name].df['mmo8']=(570.0**coef-sp_sch[sch_name].df['mo8']**coef)/(570.**coef-282**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
+        sp_sch[sch_name].df['mmo9']=(570.0**coef-sp_sch[sch_name].df['mo9']**coef)/(570.**coef-282**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
 
         time_start_mmo2=np.datetime64('2018-10-31T14:00')
         mask_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo2,sp_sch[sch_name].end_dt)
@@ -330,6 +330,8 @@ for line in open("schedule.ipt"):
         time_end=np.datetime64('2018-10-23T17:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
         sp_sch[sch_name].df.loc[mask,'pre0']=np.nan
+        time_end_pre0=np.datetime64('2018-12-01T00:00')
+        sp_sch[sch_name].df
         
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['rh']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['RH_Mean(%)']   ,plot=plot_interpolate  ,coef=5e-08)  # done
@@ -499,6 +501,10 @@ sp_sch[sch_name].df['ra_sPm']=np.log(2/0.000001) **2.0 /0.41**2.0/sp_sch[sch_nam
 #rs1994_para=0.22;rs1994_param2=35.63 # good 
 rs1994_param=0.18;rs1994_param2=35.63 # good 
 rs1994_param=0.21;rs1994_param2=35.63 # good 
+rs1994_param_1=0.3;rs1994_param2_1=35.63
+rs1994_param_2=0.35;rs1994_param2_2=35.63
+
+
 
 #time_start=np.datetime64('2018-03-27 19:00')
 #time_switch=np.datetime64('2018-11-01 00:00')
@@ -507,6 +513,12 @@ rs1994_param=0.21;rs1994_param2=35.63 # good
 #mask2=sp_sch[sch_name].df['date_time'].between(time_switch,time_end)
 
 sp_sch[sch_name].df['rs_sPm']=10.*np.exp(rs1994_param2*(rs1994_param- sp_sch[sch_name].df['mmo_surf']  ))
+sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo4]=10.*np.exp(rs1994_param2_1*(rs1994_param_1- sp_sch[sch_name].df['mmo_surf']  ))
+sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo5]=10.*np.exp(rs1994_param2_2*(rs1994_param_2- sp_sch[sch_name].df['mmo_surf']  ))
+
+
+
+
 
 sp_sch[sch_name].df['pet_pm_denom'] = sp_sch[sch_name].df['drhowv_sat_dt'] + constants.psych* ( 1.+ 1./sp_sch[sch_name].df['ra_sPm'] )
 

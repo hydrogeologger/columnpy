@@ -57,6 +57,8 @@ ax2=ax1.twinx()
 ax2.plot(df_mean.index, df_mean['cumsum_rainmm'], '-',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
 ax1.set_ylim([-0.1,80])
 ax2.set_ylim([-0.1,1600])
+ax1.tick_params(axis='y',colors='blue')
+ax2.tick_params(axis='y',colors='red')
 #ax[0].set_ylim([-0.1,33])
 
 
@@ -140,7 +142,9 @@ ax3.plot(ta['date_time'], ta['settlement_mm'], '-',color='maroon',markersize=ms,
 ax4=ax3.twinx()
 ax4.plot(ta['date_time'],ta['newavg_dry_density'],'-',color='darkgreen',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
 ax3.set_ylim([-1,340])
-ax4.set_ylim([600,950])
+ax4.set_ylim([400,650])
+ax3.tick_params(axis='y',colors='maroon')
+ax4.tick_params(axis='y',colors='darkgreen')
 
 
 #ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=15)
