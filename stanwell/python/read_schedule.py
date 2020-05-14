@@ -69,7 +69,7 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df.loc[mask,'tmp2']=np.random.random(len(mask))*50+710
         sp_sch[sch_name].df['ec2']=sp_sch[sch_name].df['tmp2']
 
-        coef_modified=0.88
+        coef_modified=0.85
         time_top_chopped=np.datetime64('2019-03-15T00:00')
         sp_sch[sch_name].df['ec2'].loc[time_top_chopped:]*=coef_modified
         sp_sch[sch_name].df['Pre1'].loc[time_top_chopped:]*=coef_modified
@@ -185,7 +185,7 @@ for line in open("schedule.ipt"):
         mask_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo2,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df['mmo2'].loc[mask_mmo2]=np.nan
 
-        coef_modified=0.88
+        #coef_modified=0.88
         sp_sch[sch_name].df['mmo4'].loc[time_top_chopped:]=sp_sch[sch_name].df['mmo4']*coef_modified
         sp_sch[sch_name].df['mmo5'].loc[time_top_chopped:]=sp_sch[sch_name].df['mmo5']*coef_modified
         sp_sch[sch_name].df['mmo6'].loc[time_top_chopped:]=sp_sch[sch_name].df['mmo6']*coef_modified
@@ -272,6 +272,7 @@ for line in open("schedule.ipt"):
         #mmo3 started to be exposed from 14/03/2019
         #mmo4 started to be exposed from 16/12/2019
         time_end_mmo3=np.datetime64('2019-03-14T22:40')
+        #time_start_mmo4=np.datetime64('2019-09-01T00:00')#this is the time when soil surface settled to the top of mmo4
         time_end_mmo4=np.datetime64('2019-12-16T09:00')
         sp_sch[sch_name].df.loc[time_end_mmo3:,'mmo3']=np.nan
         sp_sch[sch_name].df.loc[time_end_mmo4:,'mmo4']=np.nan
@@ -285,11 +286,14 @@ for line in open("schedule.ipt"):
 
         mask_surf_mmo3=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,time_end_mmo3)
         sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']
-
+        #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']*(sp_sch[sch_name].df['porosity']/(1+sp_sch[sch_name].df['porosity']))
+        #mask_surf_mmo4_start=sp_sch[sch_name].df['date_time'].between(time_end_mmo3,time_start_mmo4)
         mask_surf_mmo4=sp_sch[sch_name].df['date_time'].between(time_end_mmo3,time_end_mmo4)
-        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']
+        
+        #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4_start]= sp_sch[sch_name].df['mmo4']*0.7
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*((1-sp_sch[sch_name].df['porosity'])/(1+sp_sch[sch_name].df['porosity']))
         mask_surf_mmo5=sp_sch[sch_name].df['date_time'].between(time_end_mmo4,sp_sch[sch_name].end_dt)
-        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5']
+        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5'].fillna(sp_sch[sch_name].df['mmo6'])*((1-sp_sch[sch_name].df['porosity'])/(1+sp_sch[sch_name].df['porosity']))
 
         # this part was cancelled as the power is disabled. 
         time_start=np.datetime64('2018-08-29T13:00')
@@ -500,9 +504,9 @@ sp_sch[sch_name].df['ra_sPm']=np.log(2/0.000001) **2.0 /0.41**2.0/sp_sch[sch_nam
 #sp_sch[sch_name].df['rs_sPm']=constants.rs1994(sp_sch[sch_name].df['mmo_surf'],1.0)
 #rs1994_para=0.22;rs1994_param2=35.63 # good 
 rs1994_param=0.18;rs1994_param2=35.63 # good 
-rs1994_param=0.21;rs1994_param2=35.63 # good 
-rs1994_param_1=0.3;rs1994_param2_1=35.63
-rs1994_param_2=0.35;rs1994_param2_2=35.63
+rs1994_param=0.23;rs1994_param2=35.63 # good 
+#rs1994_param_1=0.5;rs1994_param2_1=35.63
+#rs1994_param_2=0.35;rs1994_param2_2=35.63
 
 
 
@@ -512,9 +516,15 @@ rs1994_param_2=0.35;rs1994_param2_2=35.63
 #mask1=sp_sch[sch_name].df['date_time'].between(time_start,time_switch)
 #mask2=sp_sch[sch_name].df['date_time'].between(time_switch,time_end)
 
+
 sp_sch[sch_name].df['rs_sPm']=10.*np.exp(rs1994_param2*(rs1994_param- sp_sch[sch_name].df['mmo_surf']  ))
-sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo4]=10.*np.exp(rs1994_param2_1*(rs1994_param_1- sp_sch[sch_name].df['mmo_surf']  ))
-sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo5]=10.*np.exp(rs1994_param2_2*(rs1994_param_2- sp_sch[sch_name].df['mmo_surf']  ))
+#sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo4]=10.*np.exp(rs1994_param2*(rs1994_param+(250-sp_sch[sch_name].df['settlement_mm'])/250- sp_sch[sch_name].df['mmo_surf']  ))
+#sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo5]=10.*np.exp(rs1994_param2*(rs1994_param+(325-sp_sch[sch_name].df['settlement_mm'])/325- sp_sch[sch_name].df['mmo_surf']  ))
+
+
+#sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo3]=10.*np.exp(rs1994_param2_2*(rs1994_param_2- sp_sch[sch_name].df['mmo_surf']  ))
+#sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo4]=10.*np.exp(rs1994_param2_1*(rs1994_param_1- sp_sch[sch_name].df['mmo_surf']  ))
+#sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo5]=10.*np.exp(rs1994_param2_2*(rs1994_param_2- sp_sch[sch_name].df['mmo_surf']  ))
 
 
 

@@ -1,4 +1,4 @@
-
+import datetime
 '''
 plt.figure()
 plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['sat_vapor_pressure_soil_pa'])
@@ -80,8 +80,8 @@ ax[7].set_ylabel('vapor_p_air', fontsize=y_fontsize, labelpad=15)
 
 df_mean.index=df_mean.index+pd.to_timedelta(12, unit='h')
 df_mean['date_time']=df_mean.index
-depth_y=np.array([1,5,8,13,20,28,38,48,70,85]) #acordording to location sensor
-depth_y=np.array([1,5,8,13,20,28,38,48,70,85])
+depth_y=np.array([1,3,8,13,20,28,38,48,70,85]) #acordording to location sensor
+depth_y=np.array([1,3,8,13,20,28,38,48,70,85])
 responsible_depth_cm=np.concatenate( (np.diff(depth_y),np.array([36])) )
 
 df_mean['total_moisture_cm']=df_mean['mmo0'].fillna(0)*responsible_depth_cm[0] \
@@ -144,6 +144,15 @@ df_mean['evap_rate_ee']=np.concatenate( (np.diff(ee),np.array([np.nan])))
 #plt.figure()
 #plt.bar(df_mean.index,df_mean['pet_mmPday'])
 #plt.bar(df_mean.index,df_mean['aet_mmPday'])
+time_start_ponding1 = datetime.datetime(2019,03,28,12,00)
+time_end_ponding1 = datetime.datetime(2019,04,02,12,00)
+time_start_ponding2 = datetime.datetime(2020,02,06,12,00)
+time_end_ponding2 = datetime.datetime(2020,03,10,12,00)
+mask1=df_mean['date_time'].between(time_start_ponding1,time_end_ponding1)#the first time period when the column was obviously filled with ponding water above soil surface
+mask2=df_mean['date_time'].between(time_start_ponding2,time_end_ponding2)#the second time period when the column was obviously filled with ponding water above soil surface
+
+df_mean['aet_mmPday'].loc[mask1]=0
+df_mean['aet_mmPday'].loc[mask2]=0
 
 df_mean['total_water_out_m']=np.cumsum(df_mean['aet_mmPday'])*constants.mPmm
 df_last['total_water_in_m']=np.cumsum(df_last['rainmm'].fillna(0))*constants.mPmm
@@ -192,14 +201,14 @@ plt.plot(ta['date_time'], ta['rainmm'], '-',color='maroon',markersize=ms,markere
 plt.plot(df_mean.index, df_last['rainmm']) #, width=1.0)
 '''
 
-
 #ax=plt.figure(figsize=(6,6))
 fig, ax = plt.subplots(figsize=(10,8))
 for axis in ['top','bottom','left','right']:
   i.spines[axis].set_linewidth(2)
 #plt.plot(df_mean.index,df_mean['cumsum_net_water_pos_out_m']*1000,'-c',label='From weather station')
 #plt.plot(df_mean.index,(85.-df_mean['total_moisture_cm'])*0.01*1000,'brown',label='From moisture profile')
-plt.plot(df_mean.index,df_mean['cumsum_net_water_storage_m']*1000+840,'-c',linewidth=1.7,label='Calculated from weather station')
+plt.plot(df_mean.index,df_mean['cumsum_net_water_storage_m']*1000+900,'-c',linewidth=1.7,label='Calculated from weather station')
+#plt.plot(df_mean.index[mask2],df_mean['cumsum_net_water_storage_m'][mask2]*1000+1200,'-c',linewidth=1.7,label='Calculated from weather station')
 plt.plot(df_mean.index,(df_mean['total_moisture_cm'])*0.01*1000-20,'brown',linewidth=1.7,label='Calculated from moisture profile')
 ax.set_ylim([0,900])
 
