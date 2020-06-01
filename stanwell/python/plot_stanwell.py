@@ -48,6 +48,7 @@ for i in ax:
 ta=sp_sch[sch_name].df
 ta['radiation']=(ta['ir_up_concat']-254)/20.512
 df_mean['radiation']=(df_mean['ir_up_concat']-254)/20.512
+df_mean['cumsum_rainmm']=np.cumsum(df_last['rainmm'])
 
 #ax[0].plot(ta['date_time'], ta['rainmm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 #ax[0].set_ylim([-1,19])
@@ -73,8 +74,10 @@ ax2.tick_params(axis='y',colors='red')
 #ax[1].bar(df_mean.index, temp, width=1.0)
 #ax[1].bar(df_mean.index,-df_mean['evap_rate_ee']*2, width=1.0)
 
-ax[1].bar(df_mean.index,df_mean['pet_mmPday'],width=1.0,color='brown',edgecolor='white',label='Pote.\nevap.',lw=0.1)
-ax[1].bar(df_mean.index,df_mean['aet_mmPday'],width=1.0,color='orange',edgecolor='white',label='Actu.\nevap.',lw=0.1)
+#ax[1].bar(df_mean.index,df_mean['pet_mmPday'],width=1.0,color='brown',edgecolor='white',label='Pote.\nevap.',lw=0.1)
+#ax[1].bar(df_mean.index,df_mean['aet_mmPday'],width=1.0,color='orange',edgecolor='white',label='Actu.\nevap.',lw=0.1)
+ax[1].bar(df_mean.index,pEt,width=1.0,color='brown',edgecolor='white',label='Pote.\nevap.',lw=0.1)
+ax[1].bar(df_mean.index,aEt,width=1.0,color='orange',edgecolor='white',label='Actu.\nevap.',lw=0.1)
 ax[1].set_ylim([-0.1,12])
 
 
@@ -141,8 +144,8 @@ ax3=ax[6]
 ax3.plot(ta['date_time'], ta['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
 ax4=ax3.twinx()
 ax4.plot(ta['date_time'],ta['newavg_dry_density'],'-',color='darkgreen',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
-ax3.set_ylim([-1,340])
-ax4.set_ylim([400,650])
+ax3.set_ylim([-1,300])
+ax4.set_ylim([400,750])
 ax3.tick_params(axis='y',colors='maroon')
 ax4.tick_params(axis='y',colors='darkgreen')
 

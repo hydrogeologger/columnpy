@@ -10,6 +10,6 @@ execfile('python/read_schedule.py')
 #execfile('python/plot_weather_daily.py')
 execfile('python/plot_weather.py') # plot weather result
 execfile('python/plot_stanwell.py')  # plot sensor result
-execfile('python/plot_water_balance.py') #plot water mass balance
+execfile('python/plot_coef_moisture_balance.py') #plot water mass balance
 #execfile('plot_stanwell_video.py')  # producing video from photo and data. the photo path is also hardcoded in this script!!!!
 
