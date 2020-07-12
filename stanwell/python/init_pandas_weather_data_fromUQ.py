@@ -42,7 +42,7 @@ data_weather_fromUQ.df['date_time']= data_weather_fromUQ.df.index
 
 
 data_settlement_header=['date_time','settlement_mm']
-data_settlement_path=current_path+'/data/manual/manual_for_merge/'    # warning, all the files should be .dat
+data_settlement_path=current_path+'/data/manual/manual_for_merge/update/'    # warning, all the files should be .dat
 
 data_settlement=pandas_scale.pandas_scale(file_path=data_settlement_path,
     source='raw',

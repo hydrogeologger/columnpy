@@ -8,6 +8,7 @@ import json
 import figlib
 import wafo.interpolate as wf
 import datetime
+import decimal
 reload(figlib)
 lw=5
 ms=8
@@ -49,8 +50,8 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data.df, keys=['tmp2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data.df, keys=['pre1']   ,plot=plot_interpolate  ,coef=5e-15)  # original coef=5e-15
         sp_sch[sch_name].merge_data(df=data.df, keys=['pre0']   ,plot=plot_interpolate  ,coef=5e-15)  # done
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_up_newpower'] )  #UV data ir_up from 20/09/2019
-        sp_sch[sch_name].merge_data(df=data.df, keys=['tmp7']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_down_newpower'] )  #UV data ir_down from 20/09/2019
+        #sp_sch[sch_name].merge_data(df=data.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_up_newpower'] )  #UV data ir_up from 20/09/2019
+        #sp_sch[sch_name].merge_data(df=data.df, keys=['tmp7']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_down_newpower'] )  #UV data ir_down from 20/09/2019
         #-------------surface settlement----------------- 
         sp_sch[sch_name].merge_data(df=data_settlement.df, keys=['settlement_mm']   ,plot=plot_interpolate  ,coef=5e-15)  # this is to merge datetime in data of surface settlement in accordant with the moisture porfiles
  
@@ -73,11 +74,11 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['ec2']=sp_sch[sch_name].df['tmp2']
 
         coef_modified=0.85
-        time_top_chopped=np.datetime64('2019-03-15T00:00')
+        #time_top_chopped=np.datetime64('2019-03-15T00:00')
+        time_top_chopped=np.datetime64('2019-03-16T10:00')
         sp_sch[sch_name].df['ec2'].loc[time_top_chopped:]*=coef_modified
         sp_sch[sch_name].df['Pre1'].loc[time_top_chopped:]*=coef_modified
-
-
+        
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-09-14T17:00')
  
@@ -92,7 +93,9 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp7']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['tmp9']   ,plot=plot_interpolate  ,coef=5e-10)  # done35
-
+        
+        
+        
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su0']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
@@ -116,6 +119,10 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-14)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-14)  # done
 
+
+        
+        #time_end_tmp6=np.datetime64('2019-03-14T23:40')
+        #sp_sch[sch_name].df['tmp6'].loc[time_end_tmp6:]=sp_sch[sch_name].df['tmp6']*1.2
 
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-09-14T17:00')
@@ -178,8 +185,8 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].df['mmo4']=(570.0**coef-sp_sch[sch_name].df['mo4']**coef)/(550.**coef-285**coef)*schedule['porosity']
         sp_sch[sch_name].df['mmo5']=(550.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-265**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
         #sp_sch[sch_name].df['mmo5']=(570.0**coef-sp_sch[sch_name].df['mo5']**coef)/(550.**coef-285**coef)*schedule['porosity']
-        sp_sch[sch_name].df['mmo6']=(550.0**coef-sp_sch[sch_name].df['mo6']**coef)/(550.**coef-280**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
-        sp_sch[sch_name].df['mmo7']=(550.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-277**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
+        sp_sch[sch_name].df['mmo6']=(550.0**coef-sp_sch[sch_name].df['mo6']**coef)/(550.**coef-276**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
+        sp_sch[sch_name].df['mmo7']=(550.0**coef-sp_sch[sch_name].df['mo7']**coef)/(550.**coef-276**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
         sp_sch[sch_name].df['mmo8']=(570.0**coef-sp_sch[sch_name].df['mo8']**coef)/(570.**coef-282**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
         sp_sch[sch_name].df['mmo9']=(570.0**coef-sp_sch[sch_name].df['mo9']**coef)/(570.**coef-282**coef)*sp_sch[sch_name].df['porosity']#schedule['porosity']
 
@@ -195,9 +202,25 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['mmo8'].loc[time_top_chopped:]=sp_sch[sch_name].df['mmo8']*coef_modified
         sp_sch[sch_name].df['mmo9'].loc[time_top_chopped:]=sp_sch[sch_name].df['mmo9']*coef_modified
 
+        #sp_sch[sch_name].df['mmo0'].loc[sp_sch[sch_name].df['mmo0']>sp_sch[sch_name].df['porosity']]=sp_sch[sch_name].df['porosity']
+        #sp_sch[sch_name].df['mmo1'].loc[sp_sch[sch_name].df['mmo1']>sp_sch[sch_name].df['porosity']]=sp_sch[sch_name].df['porosity']
+        #sp_sch[sch_name].df['mmo3'].loc[sp_sch[sch_name].df['mmo3']>sp_sch[sch_name].df['porosity']]=sp_sch[sch_name].df['porosity']
+
         sp_sch[sch_name].df['mmo5'].loc[sp_sch[sch_name].df['mmo5']>sp_sch[sch_name].df['porosity']]=np.nan
         sp_sch[sch_name].df['mmo6'].loc[sp_sch[sch_name].df['mmo6']>sp_sch[sch_name].df['porosity']]=sp_sch[sch_name].df['porosity']
         sp_sch[sch_name].df['mmo7'].loc[sp_sch[sch_name].df['mmo7']>sp_sch[sch_name].df['porosity']]=sp_sch[sch_name].df['porosity']
+
+        sp_sch[sch_name].df['svwc0']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc1']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc2']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc3']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc4']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc5']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc6']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc7']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc8']=sp_sch[sch_name].df['porosity']
+        sp_sch[sch_name].df['svwc9']=sp_sch[sch_name].df['porosity']
+        
 
         time_start_mmo8=np.datetime64('2019-01-10T14:00')
         time_end_mmo8=np.datetime64('2019-03-25T14:00')
@@ -279,11 +302,24 @@ for line in open("schedule.ipt"):
 
         #------------modify tmp3&tmp7----------------------
         time_start=np.datetime64('2018-12-22T01:00')
-        time_end=np.datetime64('2019-03-04T06:30')
-        mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        sp_sch[sch_name].df['tmp4']=sp_sch[sch_name].df['tmp3']-0.72
-        sp_sch[sch_name].df['tmp7']=sp_sch[sch_name].df['tmp6']-0.45
+        time_chopped=np.datetime64('2019-03-16T10:40')
+        time_end=np.datetime64('2019-12-11T14:00')
+        #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df['tmp4'].loc[time_start:time_chopped]=sp_sch[sch_name].df['tmp3']-0.72
+        sp_sch[sch_name].df['tmp4'].loc[time_chopped:time_end]=sp_sch[sch_name].df['tmp6']+0.45
+        sp_sch[sch_name].df['tmp7'].loc[time_start:]=sp_sch[sch_name].df['tmp6']-0.45
+        
+        sp_sch[sch_name].df['tmp3'].loc[sp_sch[sch_name].df['tmp3']>45]=np.nan
+        sp_sch[sch_name].df['tmp4'].loc[sp_sch[sch_name].df['tmp4']>45]=np.nan
+        sp_sch[sch_name].df['tmp6'].loc[sp_sch[sch_name].df['tmp6']>45]=np.nan
+        sp_sch[sch_name].df['tmp9'].loc[sp_sch[sch_name].df['tmp6']>45]=np.nan
 
+        sp_sch[sch_name].df['tmp3'].loc[sp_sch[sch_name].df['tmp3']<5]=np.nan
+        sp_sch[sch_name].df['tmp4'].loc[sp_sch[sch_name].df['tmp4']<5]=np.nan
+        sp_sch[sch_name].df['tmp6'].loc[sp_sch[sch_name].df['tmp6']<5]=np.nan
+        sp_sch[sch_name].df['tmp9'].loc[sp_sch[sch_name].df['tmp6']<5]=np.nan
+
+       
         time_start=np.datetime64('2018-08-29T13:00')
         time_end=np.datetime64('2018-10-23T17:00')
         mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
@@ -460,68 +496,156 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['mmo_surf']=sp_sch[sch_name].df['mmo0']
 
         #mmo0 starts to be exposed from 13 May
-        time_start_mmo0=np.datetime64('2018-05-13T13:00')
-        mask_mmo0=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,sp_sch[sch_name].end_dt)
+        #time_end_mmo0=np.datetime64('2018-05-13T13:00')
+        time_end_mmo0=np.datetime64('2018-05-22T14:00')
+        mask_mmo0=sp_sch[sch_name].df['date_time'].between(time_end_mmo0,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df.loc[mask_mmo0,'mmo0']=np.nan
         sp_sch[sch_name].df.loc[mask_mmo0,'tmp0']=np.nan
 
+        #sp_sch[sch_name].df['svwc0'].loc[time_start_mmo0:]=np.nan
+
         #mmo1 starts to be exposed from 14 OCT
-        time_start_mmo1=np.datetime64('2018-10-14T13:00')
-        mask_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
+        time_end_mmo1=np.datetime64('2018-10-14T14:00')
+        mask_mmo1=sp_sch[sch_name].df['date_time'].between(time_end_mmo1,sp_sch[sch_name].end_dt)
         sp_sch[sch_name].df.loc[mask_mmo1,'mmo1']=np.nan
         sp_sch[sch_name].df.loc[mask_mmo1,'tmp1']=np.nan
+        #sp_sch[sch_name].df['svwc1'].loc[time_start_mmo1:]=np.nan   
+        #time_end_mmo2=np.datetime64('2018-11-06T14:00')
+        #sp_sch[sch_name].df['svwc2'].loc[time_start_mmo2:]=np.nan
+
         
-        time_start_mmo3=np.datetime64('2018-12-10T14:00') #This is the time when 'mmo3' was used as the moisture of soil surface to calculate the evaporation rate
+        sp_sch[sch_name].df['tmp3'].loc[sp_sch[sch_name].df['tmp3']>45]=np.nan
+        sp_sch[sch_name].df['tmp4'].loc[sp_sch[sch_name].df['tmp4']>45]=np.nan
+        sp_sch[sch_name].df['tmp6'].loc[sp_sch[sch_name].df['tmp6']>45]=np.nan
+        sp_sch[sch_name].df['tmp9'].loc[sp_sch[sch_name].df['tmp6']>45]=np.nan
+
+        sp_sch[sch_name].df['tmp3'].loc[sp_sch[sch_name].df['tmp3']<5]=np.nan
+        sp_sch[sch_name].df['tmp4'].loc[sp_sch[sch_name].df['tmp4']<5]=np.nan
+        sp_sch[sch_name].df['tmp6'].loc[sp_sch[sch_name].df['tmp6']<5]=np.nan
+        sp_sch[sch_name].df['tmp9'].loc[sp_sch[sch_name].df['tmp6']<5]=np.nan
+
+        time_start=np.datetime64('2019-03-14T10:40')
+        time_end=np.datetime64('2019-03-16T10:40')
+        mask_mmo3_cover=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+        sp_sch[sch_name].df['mmo3'].loc[mask_mmo3_cover]=sp_sch[sch_name].df['mmo4'] #This is because the original values of mmo3 are abnormally large, some values are even larger than 1.0. So, I use the values of mmo4 instead.
+
+        #time_start_mmo3=np.datetime64('2018-12-10T14:00') #This is the time when 'mmo3' was used as the moisture of soil surface to calculate the evaporation rate
         #mmo3 started to be exposed from 14/03/2019
         #mmo4 started to be exposed from 16/12/2019
-        time_end_mmo3=np.datetime64('2019-03-14T22:40')
+        time_end_mmo3=np.datetime64('2019-03-16T10:40')
+        #sp_sch[sch_name].df['svwc3'].loc[time_end_mmo3:]=np.nan
+
         #time_start_mmo4=np.datetime64('2019-09-01T00:00')#this is the time when soil surface settled to the top of mmo4
-        time_start_mmo4=np.datetime64('2019-05-19T14:00')
-        time_end_mmo4=np.datetime64('2019-12-11T14:00')
+        #time_start_mmo4=np.datetime64('2019-05-19T14:00')
+        time_end_mmo4=np.datetime64('2019-12-12T17:40')
+        #sp_sch[sch_name].df['svwc4'].loc[time_end_mmo4:]=np.nan
         sp_sch[sch_name].df.loc[time_end_mmo3:,'mmo3']=np.nan
         sp_sch[sch_name].df.loc[time_end_mmo4:,'mmo4']=np.nan
         sp_sch[sch_name].df['mmo4'].loc[sp_sch[sch_name].df['mmo4']>sp_sch[sch_name].df['porosity']]=np.nan  
- 
-        mask_surf_mmo1=sp_sch[sch_name].df['date_time'].between(time_start_mmo0,time_start_mmo1)
-        sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1']
-
-        #mask_surf_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
-        #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo2]= sp_sch[sch_name].df['mmo2'].loc[mask_surf_mmo2]
+        time_start_covermmo4=np.datetime64('2019-10-11T16:40')
+        time_end_covermmo4=np.datetime64('2019-10-25T07:40')
+        mask_covermmo4=sp_sch[sch_name].df['date_time'].between(time_start_covermmo4,time_end_covermmo4)
+        sp_sch[sch_name].df['mmo4'].loc[mask_covermmo4]=sp_sch[sch_name].df['mmo5']*1.1
+        time_start_cover=np.datetime64('2019-11-01T09:40')
+        time_end_cover=np.datetime64('2019-11-05T05:40')
+        mask_cover=sp_sch[sch_name].df['date_time'].between(time_start_cover,time_end_cover)
+        sp_sch[sch_name].df['mmo4'].loc[mask_cover]=sp_sch[sch_name].df['mmo5']*1.1
         
-        settlement_time_end_mmo1 = 0.074  #Unit is m
-        settlement_time_end_mmo3 = 0.169 #Unit is m
-        settlement_time_end_mmo4 =0.227 #Unit is m
-        settlement_time_end = 0.305     #Unit is m 
-        sp_sch[sch_name].df['settle_ratio_mmo3']=(settlement_time_end_mmo3 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)/(settlement_time_end_mmo3 - settlement_time_end_mmo1)
-        sp_sch[sch_name].df['settle_ratio_mmo4']=(settlement_time_end_mmo4 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)/(settlement_time_end_mmo4 - settlement_time_end_mmo3)
-        sp_sch[sch_name].df['settle_ratio_mmo5']=(settlement_time_end - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)/(settlement_time_end - settlement_time_end_mmo4)
+        time_start_drymmo4=np.datetime64('2019-11-24T00:40')
+        time_end_drymmo4=np.datetime64('2019-12-06T12:40')
+        mask_dry_mmo4=sp_sch[sch_name].df['date_time'].between(time_start_drymmo4,time_end_drymmo4)
+        sp_sch[sch_name].df['mmo4'].loc[mask_dry_mmo4]=sp_sch[sch_name].df['mmo4']*0.3
 
-        #mask_surf_mmo3_trans=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,time_start_mmo3) 
-        mask_surf_mmo3=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,time_end_mmo3)
-        #mask_surf_mmo4_trans=sp_sch[sch_name].df['date_time'].between(time_end_mmo3,time_start_mmo4)
+ 
+        mask_surf_mmo1=sp_sch[sch_name].df['date_time'].between(time_end_mmo0,time_end_mmo1)
+        #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1']
+        mask_surf_mmo3=sp_sch[sch_name].df['date_time'].between(time_end_mmo1,time_end_mmo3)
         mask_surf_mmo4=sp_sch[sch_name].df['date_time'].between(time_end_mmo3,time_end_mmo4)
         mask_surf_mmo5=sp_sch[sch_name].df['date_time'].between(time_end_mmo4,sp_sch[sch_name].end_dt)
 
+        #mask_surf_mmo2=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,sp_sch[sch_name].end_dt)
+        #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo2]= sp_sch[sch_name].df['mmo2'].loc[mask_surf_mmo2]
+        settlement_time_end_mmo0 = 0.031 #Unit is m former 0.0303 
+        settlement_time_end_mmo1 = 0.074  #Unit is m former 0.074
+        settlement_time_end_mmo3 = 0.150 #Unit is m former 0.149
+        settlement_time_end_mmo4 =0.225 #Unit is m former 0.227, 0.221 
+        settlement_time_end = 0.320     #Unit is m former 0.310, 0.305
+        #sp_sch[sch_name].df['settle_ratio_mmo3']=(settlement_time_end_mmo3 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)/(settlement_time_end_mmo3 - settlement_time_end_mmo1)
+        #sp_sch[sch_name].df['settle_ratio_mmo4']=(settlement_time_end_mmo4 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)/(settlement_time_end_mmo4 - settlement_time_end_mmo3)
+        #sp_sch[sch_name].df['settle_ratio_mmo5']=(settlement_time_end - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)/(settlement_time_end - settlement_time_end_mmo4)
+
+        #mask_surf_mmo3_trans=sp_sch[sch_name].df['date_time'].between(time_start_mmo1,time_start_mmo3) 
+        #mask_surf_mmo4_trans=sp_sch[sch_name].df['date_time'].between(time_end_mmo3,time_start_mmo4)
+        settle_mmo1 = settlement_time_end_mmo1 - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo1]*constants.mm2m
+        settle_mmo3 = settlement_time_end_mmo3 - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo3]*constants.mm2m
+        settle_mmo4 = settlement_time_end_mmo4 - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo4]*constants.mm2m
+        settle_mmo5 = settlement_time_end - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo5]*constants.mm2m
+        #--------------below is to calculate the distance between specific sensors and soil surface--------------
+        sp_sch[sch_name].df['distance_to_surfsoil']= settlement_time_end_mmo0-sp_sch[sch_name].df['settlement_mm']*constants.mm2m
+        sp_sch[sch_name].df['distance_to_surfsoil'].loc[mask_surf_mmo1]= settlement_time_end_mmo1 - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo1]*constants.mm2m
+        sp_sch[sch_name].df['distance_to_surfsoil'].loc[mask_surf_mmo3]= settlement_time_end_mmo3 - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo3]*constants.mm2m
+        sp_sch[sch_name].df['distance_to_surfsoil'].loc[mask_surf_mmo4]= settlement_time_end_mmo4 - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo4]*constants.mm2m
+        sp_sch[sch_name].df['distance_to_surfsoil'].loc[mask_surf_mmo5]= settlement_time_end - sp_sch[sch_name].df['settlement_mm'].loc[mask_surf_mmo5]*constants.mm2m
+
         #coef_dict={}
         #beta=np.arange(0.0,1,0.01)
-        sigma=np.arange(47,51,0.1)
-        for coef_trans in sigma:
+        #sigma=np.arange(178,180,1)
+        gamma=np.arange(2.5,4.0,0.1)
+        for coef_trans in gamma :
+        #for coef_trans in sigma:
             
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']
             #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']*coef_trans
             #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3_trans]= sp_sch[sch_name].df['mmo3']*np.exp(-(settlement_time_end_mmo3 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)*coef_trans/0.20)
-            sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']#*np.exp(-(settlement_time_end_mmo3 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)*coef_trans)
+
+
+            #-------------curve similar to SWCC---------------
+            a = 0.03
+            n = 7
+            coef1_mmo1 = (settle_mmo1 / a)**n
+            coef1_mmo3 = (settle_mmo3 / a)**n
+            coef1_mmo4 = (settle_mmo4 / a)**n
+            coef1_mmo5 = (settle_mmo5 / a)**n
+            coef2_mmo1 = np.log(np.exp(1) + coef1_mmo1)
+            coef2_mmo3 = np.log(np.exp(1) + coef1_mmo3)
+            coef2_mmo4 = np.log(np.exp(1) + coef1_mmo4)
+            coef2_mmo5 = np.log(np.exp(1) + coef1_mmo5)
+            coef3_mmo1 = (1.0/coef2_mmo1)**coef_trans
+            coef3_mmo3 = (1.0/coef2_mmo3)**coef_trans
+            coef3_mmo4 = (1.0/coef2_mmo4)**coef_trans
+            coef3_mmo5 = (1.0/coef2_mmo5)**coef_trans
+            
+            sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1']*coef3_mmo1
+            sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']*coef3_mmo3
+            sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*coef3_mmo4
+            sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5']*coef3_mmo5
+            
+            #-----power law------------------
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1']*(0.8**(settle_mmo1*coef_trans))
+
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']*(0.8**(settle_mmo3*coef_trans))
+
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*(0.8**(settle_mmo4*coef_trans))
+
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5']*(0.8**(settle_mmo5*coef_trans))
+
+            #-------------exponential--------------------------
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo1]= sp_sch[sch_name].df['mmo1']*np.exp(-coef_trans*(settlement_time_end_mmo1 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m))
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']*np.exp(-coef_trans*(settlement_time_end_mmo3 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m))
+
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*np.exp(-coef_trans*(settlement_time_end_mmo4 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m))
+
+            #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5'].fillna(0)*np.exp(-coef_trans*(settlement_time_end - sp_sch[sch_name].df['settlement_mm']*constants.mm2m))
+            #-------------exponential--------------------------
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']*np.exp(-sp_sch[sch_name].df['settle_ratio_mmo3'])-0.21*sp_sch[sch_name].df['settle_ratio_mmo3'] #0.21 is rs1994_param 
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo3]= sp_sch[sch_name].df['mmo3']*(1-sp_sch[sch_name].df['porosity']/(1+sp_sch[sch_name].df['porosity']))
         #mask_surf_mmo4_start=sp_sch[sch_name].df['date_time'].between(time_end_mmo3,time_start_mmo4)               
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4_start]= sp_sch[sch_name].df['mmo4']*0.7    
             #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*coef_trans
-            sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*np.exp(-(settlement_time_end_mmo4 - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)*coef_trans)
             #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*np.exp(-sp_sch[sch_name].df['settle_ratio_mmo4'])-0.21*sp_sch[sch_name].df['settle_ratio_mmo4']
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo4]= sp_sch[sch_name].df['mmo4']*((1-sp_sch[sch_name].df['porosity'])/(1+sp_sch[sch_name].df['porosity']))
             #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5'].fillna(sp_sch[sch_name].df['mmo6'])*coef_trans
-            sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5'].fillna(0)*np.exp(-(settlement_time_end - sp_sch[sch_name].df['settlement_mm']*constants.mm2m)*coef_trans)
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5'].fillna(sp_sch[sch_name].df['mmo6'])*np.exp(-sp_sch[sch_name].df['settle_ratio_mmo5'])-0.21*sp_sch[sch_name].df['settle_ratio_mmo5']
         #sp_sch[sch_name].df['mmo_surf'].loc[mask_surf_mmo5]= sp_sch[sch_name].df['mmo5'].fillna(sp_sch[sch_name].df['mmo6'])*((1-sp_sch[sch_name].df['porosity'])/(1+sp_sch[sch_name].df['porosity']))
 
@@ -547,6 +671,7 @@ for line in open("schedule.ipt"):
             #rs1994_para=0.22;rs1994_param2=35.63 # good 
             rs1994_param=0.18;rs1994_param2=35.63 # good 
             rs1994_param=0.21;rs1994_param2=35.63 # good 
+            rs1994_param=0.3;rs1994_param2=35.63
             #rs1994_param_1=0.5;rs1994_param2_1=35.63
             #rs1994_param_2=0.35;rs1994_param2_2=35.63
             
@@ -559,7 +684,7 @@ for line in open("schedule.ipt"):
             #mask2=sp_sch[sch_name].df['date_time'].between(time_switch,time_end)
             
             
-            sp_sch[sch_name].df['rs_sPm']=10.*np.exp(rs1994_param2*(rs1994_param- sp_sch[sch_name].df['mmo_surf']  ))
+            sp_sch[sch_name].df['rs_sPm']=10.*np.exp(rs1994_param2*(rs1994_param*sp_sch[sch_name].df['porosity'] - sp_sch[sch_name].df['mmo_surf']  ))
             #sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo4]=10.*np.exp(rs1994_param2*(rs1994_param+(250-sp_sch[sch_name].df['settlement_mm'])/250- sp_sch[sch_name].df['mmo_surf']  ))
             #sp_sch[sch_name].df['rs_sPm'].loc[mask_surf_mmo5]=10.*np.exp(rs1994_param2*(rs1994_param+(325-sp_sch[sch_name].df['settlement_mm'])/325- sp_sch[sch_name].df['mmo_surf']  ))
             
@@ -620,19 +745,35 @@ for line in open("schedule.ipt"):
                 +df_mean['mmo8'].fillna(0)*responsible_depth_cm[8] \
                 +df_mean['mmo9'].fillna(0)*responsible_depth_cm[9]
             
+            time_start_mmo1 = datetime.datetime(2018,05,14,12,00)            
             time_start_mmo3 = datetime.datetime(2018,10,14,12,00)
             time_end_mmo3 = datetime.datetime(2019,03,14,12,00)
             time_end_mmo4 = datetime.datetime(2019,12,12,12,00)
             time_end = datetime.datetime(2020,04,20,12,00)
+            
+            mask_mmo1=df_mean['date_time'].between(time_start_mmo1,time_start_mmo3)
             mask_mmo3=df_mean['date_time'].between(time_start_mmo3,time_end_mmo3)
             mask_mmo4=df_mean['date_time'].between(time_end_mmo3,time_end_mmo4)
             mask_mmo5=df_mean['date_time'].between(time_end_mmo4,time_end)
-            settlement_time_end_mmo3 = 0.169 #Unit is mm
-            cum_responsible_depth_above_mmo4 = 0.190 #Unit is mm
-            settlement_time_end_mmo4 = 0.227 #Unit is mm
-            cum_responsible_depth_above_mmo5 = 0.270 #Unit is mm
-            settlement_time_end = 0.305 #Unit is mm
-            cum_responsible_depth_above_mmo6 = 0.370 #Unit is mm
+            settlement_time_end_mmo1 = 0.074 #Unit is m
+            cum_responsible_depth_above_mmo3 = 0.120 #Unit is m
+            settlement_time_end_mmo3 = 0.150 #Unit is m
+            cum_responsible_depth_above_mmo4 = 0.190 #Unit is m
+            settlement_time_end_mmo4 = 0.225 #Unit is m
+            cum_responsible_depth_above_mmo5 = 0.270 #Unit is m
+            settlement_time_end = 0.320 #Unit is m
+            cum_responsible_depth_above_mmo6 = 0.370 #Unit is m
+
+            df_mean['total_moisture_cm'].loc[mask_mmo1]=df_mean['mmo_surf'].fillna(0)*(settlement_time_end_mmo1-df_mean['settlement_mm']*constants.mm2m) * 100 \
+                +df_mean['mmo2'].fillna(0)*(cum_responsible_depth_above_mmo3 - settlement_time_end_mmo1)*100 \
+                +df_mean['mmo3'].fillna(0)*responsible_depth_cm[3] \
+                +df_mean['mmo4'].fillna(0)*responsible_depth_cm[4] \
+                +df_mean['mmo5'].fillna(0)*responsible_depth_cm[5] \
+                +df_mean['mmo6'].fillna(0)*responsible_depth_cm[6] \
+                +df_mean['mmo7'].fillna(0)*responsible_depth_cm[7] \
+                +df_mean['mmo8'].fillna(0)*responsible_depth_cm[8] \
+                +df_mean['mmo9'].fillna(0)*responsible_depth_cm[9]
+
             
             df_mean['total_moisture_cm'].loc[mask_mmo3]=df_mean['mmo_surf'].fillna(0)*(settlement_time_end_mmo3-df_mean['settlement_mm']*constants.mm2m) * 100 \
                 +df_mean['mmo3'].fillna(0)*(cum_responsible_depth_above_mmo4 - settlement_time_end_mmo3)*100 \
@@ -657,7 +798,7 @@ for line in open("schedule.ipt"):
                 +df_mean['mmo7'].fillna(0)*responsible_depth_cm[7] \
                 +df_mean['mmo8'].fillna(0)*responsible_depth_cm[8] \
                 +df_mean['mmo9'].fillna(0)*responsible_depth_cm[9]
-            
+            #---below is to calculate water mass balance by using data from moisture sensors plus ponding water------- 
             time_start_ponding1 = datetime.datetime(2019,03,28,12,00)
             time_end_ponding1 = datetime.datetime(2019,04,02,12,00)
             time_start_ponding2 = datetime.datetime(2020,01,18,12,00)
@@ -667,7 +808,97 @@ for line in open("schedule.ipt"):
             mask1=df_mean['date_time'].between(time_start_ponding1,time_end_ponding1)#the first time period when the column was obviously filled with ponding water above soil surface
             mask2=df_mean['date_time'].between(time_start_ponding2,time_end_ponding2)#the second time period when the column was obviously filled with ponding water above soil surface
             mask3=df_mean['date_time'].between(time_start_ponding3,time_end_ponding3)#the third time period when the column was obviously filled with ponding water above soil surface
-            
+
+            #-------period 1 of ponding water---------------------
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,15,12,00):datetime.datetime(2018,10,16,12,00)]=df_mean['total_moisture_cm'] + 3.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,16,12,00):datetime.datetime(2018,10,17,12,00)]=df_mean['total_moisture_cm'] + 4.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,17,12,00):datetime.datetime(2018,10,18,12,00)]=df_mean['total_moisture_cm'] + 4.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,18,12,00):datetime.datetime(2018,10,19,12,00)]=df_mean['total_moisture_cm'] + 4.4
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,19,12,00):datetime.datetime(2018,10,20,12,00)]=df_mean['total_moisture_cm'] + 4.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,20,12,00):datetime.datetime(2018,10,21,12,00)]=df_mean['total_moisture_cm'] + 4.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,21,12,00):datetime.datetime(2018,10,22,12,00)]=df_mean['total_moisture_cm'] + 4.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,22,12,00):datetime.datetime(2018,10,23,12,00)]=df_mean['total_moisture_cm'] + 4.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,23,12,00):datetime.datetime(2018,10,24,12,00)]=df_mean['total_moisture_cm'] + 3.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,24,12,00):datetime.datetime(2018,10,25,12,00)]=df_mean['total_moisture_cm'] + 2.9
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,25,12,00):datetime.datetime(2018,10,26,12,00)]=df_mean['total_moisture_cm'] + 2.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2018,10,26,12,00):datetime.datetime(2018,10,27,12,00)]=df_mean['total_moisture_cm'] + 1.3
+
+            #--------period 2 of ponding water--------------------
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2019,03,19,12,00):datetime.datetime(2019,03,20,12,00)]=df_mean['total_moisture_cm'] + 1
+            #--------period 3 of ponding water--------------------
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2019,03,28,12,00):datetime.datetime(2019,03,29,12,00)]=df_mean['total_moisture_cm'] + 0.8
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2019,03,29,12,00):datetime.datetime(2019,03,30,12,00)]=df_mean['total_moisture_cm'] + 1.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2019,03,30,12,00):datetime.datetime(2019,03,31,12,00)]=df_mean['total_moisture_cm'] + 1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2019,03,31,12,00):datetime.datetime(2019,04,01,12,00)]=df_mean['total_moisture_cm'] + 0.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2019,04,01,12,00):datetime.datetime(2019,04,02,12,00)]=df_mean['total_moisture_cm'] + 0.1
+            #--------period 4 of ponding water---------------------
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,18,12,00):datetime.datetime(2020,01,19,12,00)]=df_mean['total_moisture_cm'] + 2.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,19,12,00):datetime.datetime(2020,01,20,12,00)]=df_mean['total_moisture_cm'] + 4.0
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,20,12,00):datetime.datetime(2020,01,21,12,00)]=df_mean['total_moisture_cm'] + 3.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,21,12,00):datetime.datetime(2020,01,22,12,00)]=df_mean['total_moisture_cm'] + 3.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,22,12,00):datetime.datetime(2020,01,23,12,00)]=df_mean['total_moisture_cm'] + 2.4
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,23,12,00):datetime.datetime(2020,01,24,12,00)]=df_mean['total_moisture_cm'] + 2.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,24,12,00):datetime.datetime(2020,01,25,12,00)]=df_mean['total_moisture_cm'] + 2.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,25,12,00):datetime.datetime(2020,01,26,12,00)]=df_mean['total_moisture_cm'] + 2.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,26,12,00):datetime.datetime(2020,01,27,12,00)]=df_mean['total_moisture_cm'] + 1.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,27,12,00):datetime.datetime(2020,01,28,12,00)]=df_mean['total_moisture_cm'] + 1.0
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,01,28,12,00):datetime.datetime(2020,01,29,12,00)]=df_mean['total_moisture_cm'] + 0.5
+            #--------period 5 of ponding water---------------------
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,06,12,00):datetime.datetime(2020,02,07,12,00)]=df_mean['total_moisture_cm'] + 13
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,07,12,00):datetime.datetime(2020,02,8,12,00)]=df_mean['total_moisture_cm'] + 12.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,8,12,00):datetime.datetime(2020,02,9,12,00)]=df_mean['total_moisture_cm'] + 12.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,9,12,00):datetime.datetime(2020,02,10,12,00)]=df_mean['total_moisture_cm'] + 12.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,10,12,00):datetime.datetime(2020,02,11,12,00)]=df_mean['total_moisture_cm'] + 12.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,11,12,00):datetime.datetime(2020,02,12,12,00)]=df_mean['total_moisture_cm'] + 12.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,12,12,00):datetime.datetime(2020,02,13,12,00)]=df_mean['total_moisture_cm'] + 12.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,13,12,00):datetime.datetime(2020,02,14,12,00)]=df_mean['total_moisture_cm'] + 12.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,14,12,00):datetime.datetime(2020,02,15,12,00)]=df_mean['total_moisture_cm'] + 12.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,15,12,00):datetime.datetime(2020,02,16,12,00)]=df_mean['total_moisture_cm'] + 12.0
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,16,12,00):datetime.datetime(2020,02,17,12,00)]=df_mean['total_moisture_cm'] + 11.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,17,12,00):datetime.datetime(2020,02,18,12,00)]=df_mean['total_moisture_cm'] + 10.9
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,18,12,00):datetime.datetime(2020,02,19,12,00)]=df_mean['total_moisture_cm'] + 10.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,19,12,00):datetime.datetime(2020,02,20,12,00)]=df_mean['total_moisture_cm'] + 9.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,20,12,00):datetime.datetime(2020,02,21,12,00)]=df_mean['total_moisture_cm'] + 9.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,21,12,00):datetime.datetime(2020,02,22,12,00)]=df_mean['total_moisture_cm'] + 8.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,22,12,00):datetime.datetime(2020,02,23,12,00)]=df_mean['total_moisture_cm'] + 8.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,23,12,00):datetime.datetime(2020,02,24,12,00)]=df_mean['total_moisture_cm'] + 7.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,24,12,00):datetime.datetime(2020,02,25,12,00)]=df_mean['total_moisture_cm'] + 7.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,25,12,00):datetime.datetime(2020,02,26,12,00)]=df_mean['total_moisture_cm'] + 7.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,26,12,00):datetime.datetime(2020,02,27,12,00)]=df_mean['total_moisture_cm'] + 6.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,27,12,00):datetime.datetime(2020,02,28,12,00)]=df_mean['total_moisture_cm'] + 6.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,28,12,00):datetime.datetime(2020,02,29,12,00)]=df_mean['total_moisture_cm'] + 6.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,29,12,00):datetime.datetime(2020,03,01,12,00)]=df_mean['total_moisture_cm'] + 5.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,01,12,00):datetime.datetime(2020,03,02,12,00)]=df_mean['total_moisture_cm'] + 7.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,02,12,00):datetime.datetime(2020,03,03,12,00)]=df_mean['total_moisture_cm'] + 7.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,03,12,00):datetime.datetime(2020,03,04,12,00)]=df_mean['total_moisture_cm'] + 6.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,04,12,00):datetime.datetime(2020,03,05,12,00)]=df_mean['total_moisture_cm'] + 6.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,05,12,00):datetime.datetime(2020,03,06,12,00)]=df_mean['total_moisture_cm'] + 5.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,06,12,00):datetime.datetime(2020,03,07,12,00)]=df_mean['total_moisture_cm'] + 5.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,07,12,00):datetime.datetime(2020,03,8,12,00)]=df_mean['total_moisture_cm'] + 4.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,8,12,00):datetime.datetime(2020,03,9,12,00)]=df_mean['total_moisture_cm'] + 3.9
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,9,12,00):datetime.datetime(2020,03,10,12,00)]=df_mean['total_moisture_cm'] + 3.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,10,12,00):datetime.datetime(2020,03,11,12,00)]=df_mean['total_moisture_cm'] + 2.8
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,11,12,00):datetime.datetime(2020,03,12,12,00)]=df_mean['total_moisture_cm'] + 2.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,12,12,00):datetime.datetime(2020,03,13,12,00)]=df_mean['total_moisture_cm'] + 2.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,13,12,00):datetime.datetime(2020,03,14,12,00)]=df_mean['total_moisture_cm'] + 4.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,14,12,00):datetime.datetime(2020,03,15,12,00)]=df_mean['total_moisture_cm'] + 4.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,15,12,00):datetime.datetime(2020,03,16,12,00)]=df_mean['total_moisture_cm'] + 4.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,16,12,00):datetime.datetime(2020,03,17,12,00)]=df_mean['total_moisture_cm'] + 6.5
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,17,12,00):datetime.datetime(2020,03,18,12,00)]=df_mean['total_moisture_cm'] + 6.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,18,12,00):datetime.datetime(2020,03,19,12,00)]=df_mean['total_moisture_cm'] + 5.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,19,12,00):datetime.datetime(2020,03,20,12,00)]=df_mean['total_moisture_cm'] + 5.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,20,12,00):datetime.datetime(2020,03,21,12,00)]=df_mean['total_moisture_cm'] + 4.3
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,21,12,00):datetime.datetime(2020,03,22,12,00)]=df_mean['total_moisture_cm'] + 3.6
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,22,12,00):datetime.datetime(2020,03,23,12,00)]=df_mean['total_moisture_cm'] + 2.9
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,23,12,00):datetime.datetime(2020,03,24,12,00)]=df_mean['total_moisture_cm'] + 2.1
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,24,12,00):datetime.datetime(2020,03,25,12,00)]=df_mean['total_moisture_cm'] + 1.2
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,25,12,00):datetime.datetime(2020,03,26,12,00)]=df_mean['total_moisture_cm'] + 0.7
+            df_mean['total_moisture_cm'].loc[datetime.datetime(2020,03,26,12,00):datetime.datetime(2020,03,27,12,00)]=df_mean['total_moisture_cm'] + 0.3
+
+
+
+
+
             #df_mean['aet_mmPday'].loc[mask1]=0
             #df_mean['aet_mmPday'].loc[mask2]=0
             #df_mean['aet_mmPday'].loc[mask3]=0
@@ -688,10 +919,10 @@ for line in open("schedule.ipt"):
             df_mean['net_water_storage_mPday']=(list(df_last['rainmm'].fillna(0))-df_mean['aet_mmPday'].fillna(0)) * constants.mPmm
             df_mean['cumsum_net_water_storage_m']=np.cumsum(df_mean['net_water_storage_mPday'])
 
-            df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2019,03,18,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.35
-            df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2019,03,28,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.02
-            df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2020,01,18,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.07
-            df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2020,02,06,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.135
+            #df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2019,03,18,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.35
+            #df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2019,03,28,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.02
+            #df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2020,01,18,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.07
+            #df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2020,02,06,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.135
 
 
             waterMass_from_weather_station = df_mean['cumsum_net_water_storage_m']*1000+900 #Change unit from 'cm' to 'mm'
@@ -716,7 +947,8 @@ for line in open("schedule.ipt"):
             watermass_from_weather_station = waterMass_from_weather_station
             watermass_from_moisture_profile = waterMass_from_moisture_profile
             df_mean['cumsum_rainmm']=np.cumsum(df_last['rainmm'])
-
+            mo_surf=sp_sch[sch_name].df['mmo_surf']
+            
             pEt.loc[df_mean['pet_mmPday']>11]=11
             aEt.loc[df_mean['aet_mmPday']>11]=11
 
