@@ -25,7 +25,7 @@ for old_name in list_path[:]:
 #print(pic_dict)
 pic_dict_keys = list(pic_dict.keys())
 
-
+# plot the pic which has the cloeset date of the data
 def pic_of_closest_date(date):
   time_diff = abs(pd.to_datetime(pic_dict_keys)-date)
   min_idx = np.asarray(np.where(time_diff==min(time_diff))).flatten()

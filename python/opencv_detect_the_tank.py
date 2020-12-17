@@ -30,23 +30,16 @@ for cnt in contours :
     area = cv2.contourArea(cnt) 
    
     # Shortlisting the regions based on there area. 
+    # 4000 needs to be modified
     if area > 4000:  
-        approx = cv2.approxPolyDP(cnt,  
-                                  0.009 * cv2.arcLength(cnt, True), True) 
+        approx = cv2.approxPolyDP(cnt, 0.009 * cv2.arcLength(cnt, True), True) 
         # Checking if the no. of sides of the selected region. 
         if(len(approx) == 4):  
             #cv2.drawContours(img2, [approx], 0, (0, 0, 255), 5) 
-            #（x，y）: upleft
-            
+            #（x，y）: upleft point of the box
             x,y,w,h = cv2.boundingRect(cnt) 
+            # params need to be modified 
             img2 = cv2.rectangle(img2,(x,y-400),(x+w+900,y+h),(0,255,0),2)
    
-# Showing the image along with outlined arrow. 
-#cv2.drawContours(img2, [temp], 0, (0, 0, 255), 5)
-#cv2.imshow('temp',img2)  
 plt.imshow(img2)
 plt.show()
-   
-# Exiting the window if 'q' is pressed on the keyboard. 
-#if cv2.waitKey(0) & 0xFF == ord('q'):  
-#    cv2.destroyAllWindows() 

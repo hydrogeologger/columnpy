@@ -11,7 +11,7 @@ img_list_path = os.listdir(img_path)
 #MJPG --> .avi
 #mp4v -->.mp4
 fps = 30    
-size=(6480, 2880) # this size must be the same as plot size
+size=(6480, 2880) # this size must be the same as plot size !!!
 fourcc = cv2.VideoWriter_fourcc('m','p','4','v')
 videoWriter = cv2.VideoWriter(current_path+'/test.mp4',fourcc,fps,size)
 #i = 0
