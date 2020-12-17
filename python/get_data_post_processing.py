@@ -383,6 +383,3 @@ def find_min_and_cut_before(df,name):
 find_min_and_cut_before(sp_sch[sch_name].df,cut_list)
 
 sp_sch[sch_name].df.to_csv('data/finalresult.csv')
-
-
-  
