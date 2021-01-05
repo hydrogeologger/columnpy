@@ -2,6 +2,7 @@ import re
 import os
 import gc
 import pandas as pd
+import numpy as np
 from tqdm import tqdm
 import matplotlib
 import matplotlib.image as image
@@ -12,6 +13,7 @@ import matplotlib.dates as mdates
 
 current_path=os.getcwd()
 output_path = current_path+'/finalselected/'
+output_figure_path = current_path+'/output_figure/'
 
 list_path = os.listdir(output_path)
 pic_dict = {}
@@ -57,6 +59,7 @@ temperature_label_dict = dict(zip(raw_temperature_list,temperature_label_list))
 params = {'legend.fontsize': 4,
           #'figure.figsize': (10, 5),
          'axes.labelsize': '25',
+         'axes.linewidth':'2',
          'axes.titlesize':'20',
          'xtick.labelsize':'50',
          'ytick.labelsize':'50',
@@ -71,8 +74,8 @@ grid_width=5
 y_fontsize=50
 pylab.rcParams.update(params)
 
-# how much pic you wanna choose, use the index
-for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][:],ncols = 100)):
+
+for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][0:10],ncols = 100)):
   grid = plt.GridSpec(4, 2, wspace=0.3, hspace=0.1)
   fig = plt.figure(figsize=(90, 40)) #120,60
   ax_0 = fig.add_subplot(grid[2:3, 0:1])
@@ -149,7 +152,7 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][:],ncols = 
   ax_0.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m'))
   ax_0.set_ylim([0,1])
   ax_0.set_xlim([sp_sch[sch_name].df.index[0],sp_sch[sch_name].df.index[-1]])
-  ax_0.legend(bbox_to_anchor=(1, 0.5 ),
+  ax_0.legend(bbox_to_anchor=(1.01, 0.5 ),
               loc='center left', borderaxespad=0.,
               fontsize=40,handletextpad=0.03,
               labelspacing=0.02,ncol=1,columnspacing=0.4)
@@ -170,8 +173,8 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][:],ncols = 
   ax_2.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m'))
   ax_2.set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
   ax_2.set_ylim([10**2.4,3e4])
-  ax_2.legend(bbox_to_anchor=(0.94, 0.5),
-              loc='center left', borderaxespad=3.,
+  ax_2.legend(bbox_to_anchor=(1.01, 0.5),
+              loc='center left', borderaxespad=0.,
               fontsize=40,handletextpad=0.03,
               labelspacing=0.02,ncol=1,columnspacing=0.4)
   ax_2.set_title('(C)',x=0.02,y=0.9,fontsize=50)
@@ -180,7 +183,7 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][:],ncols = 
   ax_3.set_ylabel('TEMPERATURE\n($^\circ$C)', fontsize=y_fontsize, labelpad=20)
   ax_3.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m'))
   ax_3.set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
-  ax_3.set_ylim([20,40])
+  ax_3.set_ylim([20,42])
   ax_3.legend(bbox_to_anchor=(1.01, 0.5), loc='center left', 
               borderaxespad=0.,fontsize=40,
               handletextpad=0.03,labelspacing=0.02,
@@ -194,9 +197,9 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][:],ncols = 
 
   ax_4.axis('off')
 
-  plt.savefig('/content/drive/MyDrive/summer/output_figure/{}.jpg'.format(date_i))
+  plt.savefig(output_figure_path+'{}.jpg'.format(date_i))
   #plt.clf()
-  plt.tight_layout()
+  #plt.tight_layout()
   #plt.show()
   gc.collect()
 
