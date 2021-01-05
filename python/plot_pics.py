@@ -198,6 +198,7 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][:],ncols = 
   #plt.clf()
   plt.tight_layout()
   #plt.show()
+  gc.collect()
 
   plt.close('all')
   #plt.close(fig)
