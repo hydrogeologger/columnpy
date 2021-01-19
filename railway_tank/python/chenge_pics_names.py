@@ -5,6 +5,6 @@ file_list = os.listdir(output_figure_path)
 os.chdir(output_figure_path)
 for idx,old_name in enumerate(file_list):
     #print(old_name)
-    new_name = f'{idx}.jpg'
+    new_name = old_name.replace(' ', 'T')
     os.rename(old_name, new_name)
     pass
