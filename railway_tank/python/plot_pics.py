@@ -205,4 +205,23 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][0:10],ncols
 
   plt.close('all')
   #plt.close(fig)
-  
+
+
+
+# change the file names
+import os
+def chenge_file_names(change):
+  if change:
+    current_path=os.getcwd()
+    output_figure_path = current_path+'/railway_tank/output_figure/'
+    file_list = os.listdir(output_figure_path)
+    os.chdir(output_figure_path)
+    for idx,old_name in enumerate(file_list):
+        #print(old_name)
+        new_name = old_name.replace(' ', 'T')
+        os.rename(old_name, new_name)
+        pass
+  return None
+
+change = True
+chenge_file_names(change)
