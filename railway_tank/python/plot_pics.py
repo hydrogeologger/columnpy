@@ -172,7 +172,7 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][0:10],ncols
   ax_2.set_ylabel('SUCTION (kPa)\nIN SUBGRADE', fontsize=y_fontsize, labelpad=20)
   ax_2.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m'))
   ax_2.set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
-  ax_2.set_ylim([10**2.4,3e4])
+  ax_2.set_ylim([10**2.4,3e6])
   ax_2.legend(bbox_to_anchor=(1.01, 0.5),
               loc='center left', borderaxespad=0.,
               fontsize=40,handletextpad=0.03,
@@ -197,7 +197,7 @@ for date_idx,date_i in enumerate(tqdm(sp_sch[sch_name].df.index[::4][0:10],ncols
 
   ax_4.axis('off')
 
-  plt.savefig(output_figure_path+'{}.jpg'.format(date_i))
+  plt.savefig(output_figure_path+'{}.jpg'.format(date_i),dpi=50)
   #plt.clf()
   #plt.tight_layout()
   #plt.show()
