@@ -1,0 +1,209 @@
+#import sys
+#sys.modules[__name__].__dict__.clear()
+import os
+import numpy as np
+#http://stackoverflow.com/questions/5607283/how-can-i-manually-generate-a-pyc-file-from-a-py-file
+import py_compile
+import sys
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+import pandas as pd
+import pdb
+#https://stackoverflow.com/questions/842059/is-there-a-portable-way-to-get-the-current-username-in-python
+import getpass
+
+
+
+scale=1
+del scale
+#os.path.dirname(os.path.realpath(__file__))
+
+current_path=os.getcwd()
+sys.path.append   (os.environ['pyduino']+'/python/post_processing/')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/pandas_scale.py')
+py_compile.compile(os.environ['pyduino']+'/python/post_processing/constants.py')
+
+import pandas_scale
+import constants
+reload(pandas_scale)
+reload(constants)
+
+
+python_file_path=current_path+'/python/'
+sys.path.append(python_file_path)
+# change the date time header as datetime to make life easier
+#data_list_data_roof=os.listdir(current_path+'/data/data_roof/')
+data_file_path=current_path+'/data/bacteria_mo_su_sali/'    # warning, all the files should be .dat DO NOT FORGET THE LAST SLASH
+
+
+# things to do
+#1. change csv to dat
+#2. add header, 
+#3. arrange header formate, 
+#4. change date_time as time axis
+
+#93 fields
+data_header=['hum0','hum1','hum2','mo0','mo1','mo2','mo3','mo4','mo5','su0','su1','su2','su3','su4','su5','tempa0','tempa1','tempa2','tempa3','tempa4','tempa5','tempb0','tempb1','tempb2','tempb3','tempb4','tempb5','date_time','tmp0','tmp1','tmp2']
+
+
+data_date_time=['date_time']
+# 01/02/2018 please make sure date_time is the name for making date times
+# 09/03/2017 here x[:-5] only sorts out from start to -5 position
+# one can check the correct by
+# dateparse('2017-03-09T09:02:48.588Z')
+# and see if the parsing is successful
+#dateparse =  lambda x: pd.datetime.strptime(x[:-5], '%Y-%m-%dT%H:%M:%S')  # sparkfun output
+# this new function is better as it provides miniseconds parsing as well. 
+dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # sparkfun output
+#dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%d/%b/%Y %H:%M:%S')  # 18/Jun/2017 23:29:03
+
+# 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
+#index_col_sw='date_time'
+index_col_sw=False
+
+data_mo_su=pandas_scale.pandas_scale(file_path=data_file_path,
+    source='raw',
+    sep=',',
+    header=1,
+    names=data_header,
+    parse_dates=data_date_time,
+    date_parser=dateparse,
+    index_col=index_col_sw
+    )
+
+
+#data_mo_su.df.sort_index(ascending=True,inplace=True)
+data_mo_su.df.sort_values('date_time',inplace=True)
+## https://stackoverflow.com/questions/37787698/how-to-sort-pandas-dataframe-from-one-column
+## reverse the dataframe by timestamp as the result is upside down
+#data.df.sort_values('timestamp',inplace=True)
+#
+data_mo_su.df = data_mo_su.df.reset_index(drop=True)
+#
+## 'date_time'  is the column with corrected time zones
+data_mo_su.df['date_time']=data_mo_su.df['date_time']+pd.to_timedelta(10, unit='h')
+#data_mo_su.df.index=data_mo_su.df.index+pd.to_timedelta(10, unit='h')
+
+
+
+data_mo_su.df['tmp0'].loc[data_mo_su.df['tmp0']<1]=np.nan;
+data_mo_su.df['tmp1'].loc[data_mo_su.df['tmp1']<1]=np.nan;
+data_mo_su.df['tmp2'].loc[data_mo_su.df['tmp2']<1]=np.nan;
+#data_mo_su.df['su0'].loc[data_mo_su.df['su0']<15]=np.nan;
+#data_mo_su.df['su1'].loc[data_mo_su.df['su1']<15]=np.nan;
+#data_mo_su.df['su2'].loc[data_mo_su.df['su2']<15]=np.nan;
+#data_mo_su.df['su3'].loc[data_mo_su.df['su3']<15]=np.nan;
+#data_mo_su.df['su4'].loc[data_mo_su.df['su4']<15]=np.nan;
+#data_mo_su.df['su5'].loc[data_mo_su.df['su5']<15]=np.nan;
+
+#time_start_scale=np.datetime64('2018-03-06T08:00')
+#time_end_scale=np.datetime64('2018-03-06T12:30')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/
+#mask_scale=data_mo_su.df['date_time'].between(time_start_scale,time_end_scale)
+#data_mo_su.df.loc[mask_scale,'scale1']=np.nan;
+
+#time_start_first=np.datetime64('2018-03-05T23:30')
+#time_end_first=np.datetime64('2018-03-08T11:30')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/
+#mask_first=data_mo_su.df['date_time'].between(time_start_first,time_end_first)
+#data_mo_su.df.loc[mask_first,'su0']=np.nan;
+#data_mo_su.df.loc[mask_first,'su1']=np.nan;
+#data_mo_su.df.loc[mask_first,'su2']=np.nan;
+#data_mo_su.df.loc[mask_first,'su3']=np.nan;
+#data_mo_su.df.loc[mask_first,'su4']=np.nan;
+#data_mo_su.df.loc[mask_first,'su5']=np.nan;
+#
+#time_start_second=np.datetime64('2018-03-14T20:30')
+#time_end_second=np.datetime64('2018-03-17T14:30')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/
+#mask_second=data_mo_su.df['date_time'].between(time_start_second,time_end_second)
+#data_mo_su.df.loc[mask_second,'su0']=np.nan;
+#data_mo_su.df.loc[mask_second,'su1']=np.nan;
+#data_mo_su.df.loc[mask_second,'su2']=np.nan;
+#data_mo_su.df.loc[mask_second,'su3']=np.nan;
+#data_mo_su.df.loc[mask_second,'su4']=np.nan;
+#data_mo_su.df.loc[mask_second,'su5']=np.nan;
+#
+#time_start_third=np.datetime64('2018-03-30T20:30')
+#time_end_third=np.datetime64('2018-04-03T14:30')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/
+#mask_third=data_mo_su.df['date_time'].between(time_start_third,time_end_third)
+#data_mo_su.df.loc[mask_third,'su0']=np.nan;
+#data_mo_su.df.loc[mask_third,'su1']=np.nan;
+#data_mo_su.df.loc[mask_third,'su2']=np.nan;
+#data_mo_su.df.loc[mask_third,'su3']=np.nan;
+#data_mo_su.df.loc[mask_third,'su4']=np.nan;
+#data_mo_su.df.loc[mask_third,'su5']=np.nan;
+
+#data_mo_su.df['tmp3'].loc[data_mo_su.df['tmp3']<1]=np.nan;
+#data_mo_su.df['tmp4'].loc[data_mo_su.df['tmp4']<1]=np.nan;
+#data_mo_su.df['tmp5'].loc[data_mo_su.df['tmp5']<1]=np.nan;
+#data_mo_su.df['tmp6'].loc[data_mo_su.df['tmp6']<1]=np.nan;
+#data_mo_su.df['tmp7'].loc[data_mo_su.df['tmp7']<1]=np.nan;
+#data_mo_su.df['tmp8'].loc[data_mo_su.df['tmp8']<1]=np.nan;
+#data_mo_su.df['tmp9'].loc[data_mo_su.df['tmp9']<1]=np.nan;
+
+####   special treatment
+#time_start=np.datetime64('2018-02-22T00:00')
+#time_end=np.datetime64('2018-03-06T04:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#data_mo_su.df.loc[mask,'mo0']=281+np.random.rand(np.sum(mask))*10
+#
+##time_start=np.datetime64('2018-01-29T00:00')
+##time_end=np.datetime64('2018-02-03T04:00')
+###https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+##mask=data_mo_su.df['date_time'].between(time_start,time_end)
+##mask=data_mo_su.df['date_time'].between(time_start,time_end)
+##data_mo_su.df.loc[mask,'mo1']=500+np.random.rand(np.sum(mask))*20
+#
+##data_mo_su.df.loc[mask,'mo1']=443+np.random.rand(np.sum(mask))*20
+#time_start=np.datetime64('2018-02-22T00:00')
+#time_end=np.datetime64('2018-03-03T04:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#data_mo_su.df.loc[mask,'mo1']=443+np.random.rand(np.sum(mask))*20
+#
+#
+#time_start=np.datetime64('2018-02-22T00:00')
+#time_end=np.datetime64('2018-03-02T04:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#data_mo_su.df.loc[mask,'mo2']=495+np.random.rand(np.sum(mask))*20
+#
+#time_start=np.datetime64('2018-02-23T00:00')
+#time_end=np.datetime64('2018-03-01T04:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#data_mo_su.df.loc[mask,'mo4']=500+np.random.rand(np.sum(mask))*20
+#
+#
+#
+#time_start=np.datetime64('2018-02-24T00:00')
+#time_end=np.datetime64('2018-03-01T04:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#data_mo_su.df.loc[mask,'mo5']=324+np.random.rand(np.sum(mask))*20
+#
+#
+#time_start=np.datetime64('2018-03-27T00:00')
+#time_end=np.datetime64('2018-03-29T04:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#data_mo_su.df.loc[mask,'mo0']=280+np.random.rand(np.sum(mask))*20
+#data_mo_su.df.loc[mask,'mo1']=280+np.random.rand(np.sum(mask))*20
+#data_mo_su.df.loc[mask,'mo2']=np.nan
+#data_mo_su.df.loc[mask,'mo3']=np.nan
+#data_mo_su.df.loc[mask,'mo4']=np.nan
+#data_mo_su.df.loc[mask,'mo5']=np.nan
+#
+#time_start=np.datetime64('2018-01-28T00:00')
+#time_end=np.datetime64('2018-02-03T04:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=data_mo_su.df['date_time'].between(time_start,time_end)
+#data_mo_su.df.loc[mask,'pre']=280+np.random.rand(np.sum(mask))*20
+##data_mo_su.df.loc[mask,'mo1']=280+np.random.rand(np.sum(mask))*20
+#
