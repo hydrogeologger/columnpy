@@ -51,31 +51,10 @@ for i in name_list:
 
 data_file_path = current_path+'/data/'
 
-sp_sch.df.to_csv(data_file_path+'/result.dat')
-#pd.DataFrame(sp_sch.df, columns=name_list).to_csv('data/result_raw.csv')
 
 
-# data post processing
-data_header = ['date_time']+name_list
-data_date_time=['date_time']
-dateparse =  lambda x: pd.to_datetime(x[:], format='%Y-%m-%d %H:%M:%S.%f')  # sparkfun output
 
-index_col_sw = False
+sp_sch.df.to_csv(data_file_path+'/result.csv')
 
-data=pandas_scale.pandas_scale(file_path=data_file_path,
-    source='raw',
-    sep=',',
-    header=1,
-    names=data_header,
-    parse_dates=data_date_time,
-    date_parser=dateparse,
-    index_col=index_col_sw
-    )
-
-data.df.sort_values('date_time',inplace=True)
-data.df = data.df.set_index('date_time',drop=False)
-# print(data.df.isna().sum()) --> no NaN
-
-data.df.to_csv(data_file_path+'/result.csv')
 
 
