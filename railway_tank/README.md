@@ -2,7 +2,7 @@
 railway_tank project based on columnpy and pyduino, including get data from thingsboard, post-processing and plot figures to video
 
 ## Data: data gets from thingsboard
-
+start time and end time need to be modified in schedule.json, schedule.ipt and tb_credential.json
 ## Finalselected: the cropped images
 
 ## Tank photo: the raw tank photo
