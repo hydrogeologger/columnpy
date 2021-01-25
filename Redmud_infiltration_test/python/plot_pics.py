@@ -61,7 +61,7 @@ def pic_of_closest_date(column_name,date):
   return pic_dict[f'{column_name}'][list(pic_dict[f'{column_name}'].keys())[min_idx[0]]]
 
 
-  color_list = ['red','blue']
+color_list = ['red','blue']
 
 params = {'legend.fontsize': 4,
           #'figure.figsize': (10, 5),
@@ -82,8 +82,8 @@ y_fontsize=50
 pylab.rcParams.update(params)
 
 
-grid = fig.add_gridspec(nrows=5, ncols=4)
 fig = plt.figure(figsize=(50, 40)) #120,60
+grid = fig.add_gridspec(nrows=5, ncols=4)
 ax_0 = fig.add_subplot(grid[-2,:])
 ax_1 = fig.add_subplot(grid[0:3,0])
 ax_2 = fig.add_subplot(grid[0:3,1])
@@ -109,13 +109,13 @@ for idx,i in enumerate(df_column_list):
       label = df_column_list[idx]
   )
 
-ax_0.set_ylabel('Weight', fontsize=y_fontsize, labelpad=20)
+ax_0.set_ylabel('Weight (grams)', fontsize=y_fontsize, labelpad=20)
 ax_0.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax_0.xaxis.set_major_formatter(mdates.DateFormatter('%d/%m'))
 #ax_0.set_ylim([0,1])
 ax_0.set_xlim([data.index[0],data.index[-1]])
 ax_0.set_xlabel('DATE', fontsize=y_fontsize,labelpad=3)
-ax_0.legend(bbox_to_anchor=(0, 0.5 ),
+ax_0.legend(bbox_to_anchor=(1.01, 0.5 ),
             loc='center left', borderaxespad=0.,
             fontsize=40,handletextpad=0.03,
             labelspacing=0.02,ncol=1,columnspacing=0.4)
@@ -153,6 +153,23 @@ for date_idx,date_i in enumerate(tqdm(data.index[::10][:],ncols = 100)):
     plt.savefig(current_path+'/output_figure/{}.jpg'.format(date_i))
     line_0.remove()
     
+# change the file names
+import os
+def chenge_file_names(change):
+  if change:
+    current_path=os.getcwd()
+    output_figure_path = current_path+'/output_figure/'
+    file_list = os.listdir(output_figure_path)
+    os.chdir(output_figure_path)
+    for idx,old_name in enumerate(file_list):
+        #print(old_name)
+        new_name = old_name.replace(' ', 'T')
+        os.rename(old_name, new_name)
+        pass
+  return None
+
+change = True
+chenge_file_names(change)
 
 
 
