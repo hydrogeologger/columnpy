@@ -1,11 +1,11 @@
 import os
 import sys
 import py_compile
-current_path=os.getcwd()
-pyduino_path = '/home/osboxes/pyduino_py3'
+current_path=os.getcwd()+'/railway_tank'
+pyduino_path = '/home/osboxes/pyduino'
 sys.path.append(os.path.join(pyduino_path,'python','post_processing'))
-py_compile.compile(os.path.join(pyduino_path,'python','post_processing','thingsboard_to_pandas_py3.py'))
-py_compile.compile(os.path.join(pyduino_path,'python','post_processing','pandas_scale_py3.py')  )
+py_compile.compile(os.path.join(pyduino_path,'python','post_processing','thingsboard_to_pandas.py'))
+py_compile.compile(os.path.join(pyduino_path,'python','post_processing','pandas_scale.py')  )
 py_compile.compile(os.path.join(pyduino_path,'python','post_processing','constants.py')  )
 #py_compile.compile(os.environ['pyduino']+'/python/post_processing/sensorfun.py')
 #py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
@@ -14,6 +14,7 @@ py_compile.compile(os.path.join(pyduino_path,'python','post_processing','constan
 2020/Mar/30 15:00,   2020/Jul/15 13:00 
 
 '''
+project_name = 'RAILWAY_TANK_PHASE1'
 
 import operator
 import json
@@ -25,8 +26,8 @@ import matplotlib
 #matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-import thingsboard_to_pandas_py3
-import pandas_scale_py3
+import thingsboard_to_pandas
+import pandas_scale
 import constants
 #import sensorfun
 #import figlib
@@ -38,10 +39,7 @@ if not os.path.exists('output_data'):
         os.makedirs('output_data')
 
 
-tb_pandas=thingsboard_to_pandas_py3.tingsboard_to_pandas('tb_credential.json')   # input is the location of the json file
-# use the below command to show the comments on tb_credential.json
-# print tb_pandas.input_json['comments'] 
-
+tb_pandas=thingsboard_to_pandas.tingsboard_to_pandas(current_path+'/tb_credential.json')   # input is the location of the json file
 
 tb_pandas.get_token()    # get the token associated with the account
 tb_pandas.get_keys()     # list of keys in the device
@@ -101,15 +99,15 @@ for i in name_list:
 #        tb_pandas.result_df[i]['value'].loc[tb_pandas.result_df[i]['value']>15]=np.nan
 
 # merge data    
-with open('schedule.json') as data_file:    
-    sp_input = json.load(data_file)
+with open(current_path+'/schedule.json') as data_file:    
+    sp_input = json.load(data_file)[project_name][0]
 
 
 sp_sch={}
 #plot_interpolate=True
 plot_interpolate=False
 
-sp_sch=pandas_scale_py3.concat_data_tb(pd.to_datetime(sp_input['start_time'],format='%Y/%b/%d %H:%M'),
+sp_sch=pandas_scale.concat_data_tb(pd.to_datetime(sp_input['start_time'],format='%Y/%b/%d %H:%M'),
     pd.to_datetime(sp_input['end_time'],format='%Y/%b/%d %H:%M'),sp_input['delta_t_s'] )
 
 sp_sch.start_dt = pd.to_datetime(sp_input['start_time'],format='%Y/%b/%d %H:%M')
@@ -155,7 +153,7 @@ ax[1].plot(sp_sch.df.index,sp_sch.df['mo7'])
 '''
 #plt.show()
 
-sp_sch.df.to_csv('data/result.dat')
+sp_sch.df.to_csv(current_path+'/data/result.dat')
 #pd.DataFrame(sp_sch.df, columns=name_list).to_csv('/content/drive/MyDrive/summer/data/railway_tank_nov/result_raw.csv')
 #pd.DataFrame(sp_sch.df, columns=name_list).to_csv('data/railway_tank_nov/result_raw.dat')
 #plt.close()
@@ -196,7 +194,7 @@ dateparse =  lambda x: pd.to_datetime(x[:], format='%Y-%m-%d %H:%M:%S.%f')  # sp
 # 09/03/2017 remove the index column at the very beginning, by default, pandas will produce a column from first one.
 index_col_sw=False
 
-data=pandas_scale_py3.pandas_scale(file_path=data_file_path,
+data=pandas_scale.pandas_scale(file_path=data_file_path,
     source='raw',
     sep=',',
     header=1,
@@ -233,129 +231,100 @@ data.df['su_d0'].loc[mask_sud0]=np.nan
 #===================================================================================
 #============================READSCHEDULE===========================================
 #===================================================================================
-#def cut_aberrant(df,name,dic):
-##this function is to cut the aberrant data using the datetime_index
-##df: data
-##name: the column name that you want to cut
-##dic: {'start':['','','',...],'end':['','','',...]}
-#  for i in range(len(dic['start'])):
-#          df[name][(df.index >= dic['start'][i]) & (df.index <= dic['end'][i])]=np.nan
-#          df[name].fillna(method='bfill',inplace=True)
-#  return None
-
 
 
 dt_s=3600
 sp_sch = {}
-for line in open("schedule.ipt"):
-    li=line.strip()
-    if not li.startswith("#"):
-        line_content=[x.strip() for x in li.split(',')]
-        sch_name=line_content[2]
-        sp_sch[sch_name]=pandas_scale_py3.concat_data_roof(pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M'),pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M'),dt_s );
-        sp_sch[sch_name].df.index=sp_sch[sch_name].df['date_time']
 
-        sp_sch[sch_name].start_dt=pd.datetime.strptime(line_content[0],'%Y/%b/%d %H:%M')
-        sp_sch[sch_name].end_dt=pd.datetime.strptime(line_content[1],'%Y/%b/%d %H:%M')
-        
-        sp_sch[sch_name].surface_area=float(line_content[4])
-        sp_sch[sch_name].por=float(line_content[6])
-        sp_sch[sch_name].time_surface_emerge = pd.datetime.strptime(line_content[10],'%Y/%b/%d %H:%M')
+sch_name=project_name
+sp_sch[sch_name]=pandas_scale.concat_data_roof(pd.datetime.strptime(sp_input['start_time'],'%Y/%b/%d %H:%M'),pd.datetime.strptime(sp_input['end_time'],'%Y/%b/%d %H:%M'),dt_s );
+sp_sch[sch_name].df.index=sp_sch[sch_name].df['date_time']
+sp_sch[sch_name].start_dt=pd.datetime.strptime(sp_input['start_time'],'%Y/%b/%d %H:%M')
+sp_sch[sch_name].end_dt=pd.datetime.strptime(sp_input['end_time'],'%Y/%b/%d %H:%M')
 
+#sp_sch[sch_name].surface_area=float(line_content[4])
+#sp_sch[sch_name].por=float(line_content[6])
+#sp_sch[sch_name].time_surface_emerge = pd.datetime.strptime(line_content[10],'%Y/%b/%d %H:%M')
+#time_start = np.datetime64('2018-03-02T08:00')
+#time_end   = np.datetime64('2018-05-29T00:00')
+##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
+#mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
+#sp_sch[sch_name].df['tmp2'][mask]=np.random.random(len(mask))*50+710
+coef_suction_list = [5e-15]*len(raw_suction_list)
+coef_suction_dict = dict(zip(raw_suction_list, coef_suction_list))
+coef_suction_dict['su_a0']=1e-16
+coef_suction_dict['su_d0']=1e-16
+for i in coef_suction_dict:
+        sp_sch[sch_name].merge_data(
+                df=data.df,
+                keys=[i],
+                plot=plot_interpolate,
+                coef=coef_suction_dict[i]
+        )        
+average_elements_list = [-20]*len(raw_suction_list)
+average_elements_dict = dict(zip(raw_suction_list, average_elements_list))
+aa_dict = dict(zip(raw_suction_list, [-1.1]*len(raw_suction_list))) # Degree of volatility
+bb_dict = dict(zip(raw_suction_list, [7]*len(raw_suction_list)))   # scale the values
+# if you want to change the coeff, use the example below
+change_list = ['su_d0','su_e0','su_f0','su_g0','su_f0','su_h0']
+for i in change_list:
+        average_elements_dict[i]=-30
+# version that only save the final value into the dataframe
+for i in average_elements_dict:
+        sorted = sp_sch[sch_name].df[i].sort_values()
+        max_delta_t = np.average(sorted[average_elements_dict[i]:])
+        min_delta_t = np.average(sorted[0])
+        norm_delta_t = -(min_delta_t-sp_sch[sch_name].df[i])/(max_delta_t-min_delta_t)
+        sp_sch[sch_name].df['suction{}'.format(i[-2:])] = np.exp(-1.5*(norm_delta_t**aa_dict[i]-bb_dict[i]))
 
-        #time_start = np.datetime64('2018-03-02T08:00')
-        #time_end   = np.datetime64('2018-05-29T00:00')
-        ##https://stackoverflow.com/questions/31617845/how-to-select-rows-in-a-dataframe-between-two-values-in-python-pandas/31617974
-        #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)
-        #sp_sch[sch_name].df['tmp2'][mask]=np.random.random(len(mask))*50+710
-        coef_suction_list = [5e-15]*len(raw_suction_list)
-        coef_suction_dict = dict(zip(raw_suction_list, coef_suction_list))
-        coef_suction_dict['su_a0']=1e-16
-        coef_suction_dict['su_d0']=1e-16
+alpha_mo = -5.0
+porosity = 0.3
+# merge coef (smooth the curve) for temperature
+coef_temperature_list = [5e-15]*len(raw_temperature_list)
+coef_temperature_dict = dict(zip(raw_temperature_list, coef_temperature_list))
+coef_raw_moisture_list = [5e-15]*len(raw_moisture_list)
+coef_raw_moisture_dict = dict(zip(raw_moisture_list, coef_raw_moisture_list))
+# if you want change any of the coef, just change the value of the dict.
+# coef_#_dict['xxx']=1e-1x
+ 
+# merge data using the coef dict
+for i in coef_temperature_dict:
+        sp_sch[sch_name].merge_data(
+                df=data.df,
+                keys=[i],
+                plot=plot_interpolate,
+                coef=coef_temperature_dict[i]
+        )
+for i in coef_raw_moisture_dict:
+        sp_sch[sch_name].merge_data(
+                df=data.df,
+                keys=[i],
+                plot=plot_interpolate,
+                coef=coef_raw_moisture_dict[i]
+        )        
 
-        for i in coef_suction_dict:
-                sp_sch[sch_name].merge_data(
-                        df=data.df,
-                        keys=[i],
-                        plot=plot_interpolate,
-                        coef=coef_suction_dict[i]
-                )        
+#degree of saturation
+sp_sch[sch_name].df['moisture1']=(610.0**alpha_mo-sp_sch[sch_name].df['mo1']**alpha_mo)/(610.**alpha_mo-450**alpha_mo)
+sp_sch[sch_name].df['moisture2']=(640.0**alpha_mo-sp_sch[sch_name].df['mo2']**alpha_mo)/(640.**alpha_mo-470**alpha_mo)
+sp_sch[sch_name].df['moisture3']=(540.0**alpha_mo-sp_sch[sch_name].df['mo3']**alpha_mo)/(540.**alpha_mo-390**alpha_mo)
+sp_sch[sch_name].df['moisture4']=(650.0**alpha_mo-sp_sch[sch_name].df['mo4']**alpha_mo)/(650.**alpha_mo-510**alpha_mo)
+sp_sch[sch_name].df['moisture5']=(590.0**alpha_mo-sp_sch[sch_name].df['mo5']**alpha_mo)/(590.**alpha_mo-490**alpha_mo)
+#sp_sch[sch_name].df['moisture6']=(680.0**alpha_mo-sp_sch[sch_name].df['mo6']**alpha_mo)/(680.**alpha_mo-440**alpha_mo)
+sp_sch[sch_name].df['moisture6']=(665.0**alpha_mo-sp_sch[sch_name].df['mo6']**alpha_mo)/(665.**alpha_mo-440**alpha_mo)
+sp_sch[sch_name].df['moisture7']=(600.0**alpha_mo-sp_sch[sch_name].df['mo7']**alpha_mo)/(600.**alpha_mo-475**alpha_mo)
 
+#vwc
+sp_sch[sch_name].df['vwc1']=sp_sch[sch_name].df['moisture1']*porosity
+sp_sch[sch_name].df['vwc2']=sp_sch[sch_name].df['moisture2']*porosity
+sp_sch[sch_name].df['vwc3']=sp_sch[sch_name].df['moisture3']*porosity
+sp_sch[sch_name].df['vwc4']=sp_sch[sch_name].df['moisture4']*porosity
+sp_sch[sch_name].df['vwc5']=sp_sch[sch_name].df['moisture5']*porosity
+sp_sch[sch_name].df['vwc6']=sp_sch[sch_name].df['moisture6']*porosity
+sp_sch[sch_name].df['vwc7']=sp_sch[sch_name].df['moisture7']*porosity
 
-        average_elements_list = [-20]*len(raw_suction_list)
-        average_elements_dict = dict(zip(raw_suction_list, average_elements_list))
-
-        aa_dict = dict(zip(raw_suction_list, [-1.1]*len(raw_suction_list))) # Degree of volatility
-        bb_dict = dict(zip(raw_suction_list, [7]*len(raw_suction_list)))   # scale the values
-
-        # if you want to change the coeff, use the example below
-        change_list = ['su_d0','su_e0','su_f0','su_g0','su_f0','su_h0']
-        for i in change_list:
-                average_elements_dict[i]=-30
-
-
-        # version that only save the final value into the dataframe
-        for i in average_elements_dict:
-                sorted = sp_sch[sch_name].df[i].sort_values()
-                max_delta_t = np.average(sorted[average_elements_dict[i]:])
-                min_delta_t = np.average(sorted[0])
-                norm_delta_t = -(min_delta_t-sp_sch[sch_name].df[i])/(max_delta_t-min_delta_t)
-                sp_sch[sch_name].df['suction{}'.format(i[-2:])] = np.exp(-1.5*(norm_delta_t**aa_dict[i]-bb_dict[i]))
-
-        
-        alpha_mo = -5.0
-        porosity = 0.3
-
-        # merge coef (smooth the curve) for temperature
-        coef_temperature_list = [5e-15]*len(raw_temperature_list)
-        coef_temperature_dict = dict(zip(raw_temperature_list, coef_temperature_list))
-        coef_raw_moisture_list = [5e-15]*len(raw_moisture_list)
-        coef_raw_moisture_dict = dict(zip(raw_moisture_list, coef_raw_moisture_list))
-
-        # if you want change any of the coef, just change the value of the dict.
-        # coef_#_dict['xxx']=1e-1x
-         
-        # merge data using the coef dict
-        for i in coef_temperature_dict:
-                sp_sch[sch_name].merge_data(
-                        df=data.df,
-                        keys=[i],
-                        plot=plot_interpolate,
-                        coef=coef_temperature_dict[i]
-                )
-
-        for i in coef_raw_moisture_dict:
-                sp_sch[sch_name].merge_data(
-                        df=data.df,
-                        keys=[i],
-                        plot=plot_interpolate,
-                        coef=coef_raw_moisture_dict[i]
-                )        
-        
-
-
-        #degree of saturation
-        sp_sch[sch_name].df['moisture1']=(610.0**alpha_mo-sp_sch[sch_name].df['mo1']**alpha_mo)/(610.**alpha_mo-450**alpha_mo)
-        sp_sch[sch_name].df['moisture2']=(640.0**alpha_mo-sp_sch[sch_name].df['mo2']**alpha_mo)/(640.**alpha_mo-470**alpha_mo)
-        sp_sch[sch_name].df['moisture3']=(540.0**alpha_mo-sp_sch[sch_name].df['mo3']**alpha_mo)/(540.**alpha_mo-390**alpha_mo)
-        sp_sch[sch_name].df['moisture4']=(650.0**alpha_mo-sp_sch[sch_name].df['mo4']**alpha_mo)/(650.**alpha_mo-510**alpha_mo)
-        sp_sch[sch_name].df['moisture5']=(590.0**alpha_mo-sp_sch[sch_name].df['mo5']**alpha_mo)/(590.**alpha_mo-490**alpha_mo)
-        #sp_sch[sch_name].df['moisture6']=(680.0**alpha_mo-sp_sch[sch_name].df['mo6']**alpha_mo)/(680.**alpha_mo-440**alpha_mo)
-        sp_sch[sch_name].df['moisture6']=(665.0**alpha_mo-sp_sch[sch_name].df['mo6']**alpha_mo)/(665.**alpha_mo-440**alpha_mo)
-        sp_sch[sch_name].df['moisture7']=(600.0**alpha_mo-sp_sch[sch_name].df['mo7']**alpha_mo)/(600.**alpha_mo-475**alpha_mo)
-        
-        #vwc
-        sp_sch[sch_name].df['vwc1']=sp_sch[sch_name].df['moisture1']*porosity
-        sp_sch[sch_name].df['vwc2']=sp_sch[sch_name].df['moisture2']*porosity
-        sp_sch[sch_name].df['vwc3']=sp_sch[sch_name].df['moisture3']*porosity
-        sp_sch[sch_name].df['vwc4']=sp_sch[sch_name].df['moisture4']*porosity
-        sp_sch[sch_name].df['vwc5']=sp_sch[sch_name].df['moisture5']*porosity
-        sp_sch[sch_name].df['vwc6']=sp_sch[sch_name].df['moisture6']*porosity
-        sp_sch[sch_name].df['vwc7']=sp_sch[sch_name].df['moisture7']*porosity
-        
-        sp_sch[sch_name].df['suctione0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc4'])
-        sp_sch[sch_name].df['suctionf0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc5']) #convert Pa to kPa
-        sp_sch[sch_name].df['suctiong0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc6'])
-        sp_sch[sch_name].df['suctionh0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc7'])
+sp_sch[sch_name].df['suctione0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc4'])
+sp_sch[sch_name].df['suctionf0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc5']) #convert Pa to kPa
+sp_sch[sch_name].df['suctiong0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc6'])
+sp_sch[sch_name].df['suctionh0_vwc']=constants.swcc_reverse_fredlund_xing_1994(nf=0.71,mf=2.74,af=475.98,hr=4154.68,vwc=sp_sch[sch_name].df['vwc7'])
 
 
