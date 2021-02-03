@@ -324,5 +324,7 @@ fig.savefig('figure/plot_'+sch_name+'.png', format='png', dpi=600)
 
 
 
-#sp_sch[sch_name].df.to_csv('output_data/'+sch_name+'.csv', sep=',', encoding='utf-8')
+sp.to_csv('output_data/'+sch_name+'.csv', sep=',', encoding='utf-8')
+sp_lo.to_csv('output_data/'+sch_name+'.csv', sep=',', encoding='utf-8')
+sp_wlo.to_csv('output_data/'+sch_name+'.csv', sep=',', encoding='utf-8')
 
