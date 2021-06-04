@@ -60,7 +60,9 @@ map.contourf(xx,yy,data)
 # elev_original=sp_sch.df['p2_cs451']-0.49
 # elev_original=sp_sch.df['p2_cs451']-0.76
 elev_original=sp_sch.df['p2_cs451']-0.76
+
 elev_original[elev_original<0]=0
+
 elev_original[elev_original>120]=np.nan
 # fs = 100  # Sampling frequency
 # fc = 1  # Cut-off frequency of the filter
@@ -106,26 +108,28 @@ for i in range(elevchange.size):
 surface_water=sp_sch.df['elev']
 surface_water[surface_water<=0]=0 
 surface_water[surface_water>=1.5]=0 
+
+
 z1=elev_lidar[-1]#z1 is the sensor location
 z2=data[:]-z1
-area=np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-areav=np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-depth=np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-depthv=np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-areaTOTAL=np.zeros(shape=(surface_water.size))
-volumeML=np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-volumeTOTALML=np.zeros(shape=(surface_water.size))
-areaTOTALv=np.zeros(shape=(surface_water.size))
-surface_waterv=np.zeros(shape=(surface_water.size))
+area          = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
+areav         = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
+depth         = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
+depthv        = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
+areaTOTAL     = np.zeros(shape=(surface_water.size))
+volumeML      = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
+volumeTOTALML = np.zeros(shape=(surface_water.size))
+areaTOTALv    = np.zeros(shape=(surface_water.size))
+surface_waterv= np.zeros(shape=(surface_water.size))
 wetmap=[z2[:,1].size,z2[1,:].size]
 for k in range(surface_water.size):
             if 1<k<=surface_water.size and np.abs(surface_water[k]-surface_water[k-1])<0.05 :
             # if 2<k<=surface_water.size:
                 # surface_water[k]=(surface_water[k+2]+surface_water[k-2])/2
-                depth[k,:,:]=surface_water[k]-z2[:,:]
-                depth[k,:,:]=(depth[k,:,:]>0).choose(0,depth[k,:,:])
-                depth[k,:,:]=(surface_water[k]>0).choose(0,depth[k,:,:])   
-                area[k,:,:]=(depth[k,:,:]>0).choose(0,4)
+                depth[k,:,:]  =  surface_water[k]-z2[:,:]
+                depth[k,:,:]  =  (depth[k,:,:]>0).choose(0,depth[k,:,:])
+                depth[k,:,:]  =  (surface_water[k]>0).choose(0,depth[k,:,:])   
+                area[k,:,:]   =  (depth[k,:,:]>0).choose(0,4)
                 # wetmap[:,:]=(depth[k,:,:]>0).choose(0,1)
         # area[k,:,:]=(surface_water[k]>0).choose(0,area[k,:,:])
                 areaTOTAL[k]=np.sum(area[k,:,:])
@@ -148,6 +152,7 @@ for k in range(surface_water.size):
 #                 areaTOTALv[np.abs(areaTOTALv)>4]=0 
 #                 areaTOTALvm2day=areaTOTALv/constants.second2day
 #                 surface_watervm2day=surface_waterv/constants.second2day
+
 sp_sch.df['areaTOTAL']=areaTOTAL
 sp_sch.df['volumeTOTALML']=volumeTOTALML              
 # sp_sch.df['area_x']=area[:,]

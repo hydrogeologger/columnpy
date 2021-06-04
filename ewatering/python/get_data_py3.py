@@ -339,12 +339,34 @@ sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['wind_speed'].index, 
         input_data_series=tb_pandas.result_df['wind_speed']['value'], 
         output_time_series=sp_sch.df.index,key_name='wind_speed_mPs' ,
+<<<<<<< HEAD
         plot=plot_interpolate  ,coef=1e-15,rm_nan=True)
+=======
+        plot=plot_interpolate  ,coef=5e-12,rm_nan=True)
+>>>>>>> d9364ad48934113369a343d40db53b05b0166ff6
 sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['sa1_ec_piezo'].index, 
         input_data_series=tb_pandas.result_df['sa1_ec_piezo']['value'], 
         output_time_series=sp_sch.df.index,key_name='sa1_ec_piezo' ,
         plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+<<<<<<< HEAD
+=======
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa2_ec_piezo'].index, 
+        input_data_series=tb_pandas.result_df['sa2_ec_piezo']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa1_ec_piezo' ,
+        plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa3_ec_piezo'].index, 
+        input_data_series=tb_pandas.result_df['sa3_ec_piezo']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa3_ec_piezo' ,
+        plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa4_ec_piezo'].index, 
+        input_data_series=tb_pandas.result_df['sa4_ec_piezo']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa4_ec_piezo' ,
+        plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+>>>>>>> d9364ad48934113369a343d40db53b05b0166ff6
 sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['sa2_ec_piezo'].index, 
         input_data_series=tb_pandas.result_df['sa2_ec_piezo']['value'], 

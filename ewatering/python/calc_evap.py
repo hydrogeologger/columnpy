@@ -4,6 +4,7 @@
 
 #sp_sch.df['drhowv_sat_dt']= \
 #    constants.dsvp_dtk( sp_sch.df['sa1_sht31_temp_1'] )
+<<<<<<< HEAD
 # runfile('C:\columnpy\columnpy\ewatering\python\get_data_py3.py')
 # runfile('C:\columnpy\columnpy\ewatering\python\calc_area.py')
 # def sp_sch()
@@ -18,6 +19,16 @@ sp_sch.df['drhowv_sat_dt']= \
 #         plot=plot_interpolate  ,coef=5e-8,rm_nan=True)    
 
  
+=======
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['drhowv_sat_dt'].index, 
+        input_data_series=tb_pandas.result_df['drhowv_sat_dt']['value'], 
+        output_time_series=sp_sch.df.index,key_name='drhowv_sat_dt' ,
+        plot=plot_interpolate  ,coef=5e-8,rm_nan=True)    
+sp_sch.df['tc0_k']=sp_sch.df['sa2_t_5803'] +constants.kelvin
+sp_sch.df['drhowv_sat_dt']= \
+    constants.dsvp_dtk( sp_sch.df['tc0_k'])    
+>>>>>>> d9364ad48934113369a343d40db53b05b0166ff6
 
     
 sp_sch.df['latent_heat_JPkg']= \
