@@ -20,7 +20,7 @@ from osgeo import ogr,gdal
 
 
 
-filename = "C:/Project/MBDA/areasWGS84.tif"
+filename = "C:/Project/MBDA/mid_size.tif"
 gdal_data = gdal.Open(filename)
 gdal_band = gdal_data.GetRasterBand(1)
 nodataval = gdal_band.GetNoDataValue()
@@ -37,13 +37,13 @@ ymid=(miny+maxy)/2
 # myProj = Proj("+proj=utm +zone=54H, +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
 
 # lonmax, latmax = myProj(maxx, maxy, inverse=True)
-x = linspace(minx,maxx, num=148)
-y = linspace(miny,maxy, num=232)
+x = linspace(minx,maxx, num=width)
+y = linspace(miny,maxy, num=height)
 # #data_array
 # x = linspace(0, map.urcrnrx, data.shape[1])
 # y = linspace(0, map.urcrnry, data.shape[0])
 map= Basemap(projection='lcc', resolution='h',
-            width=296, height=464, 
+            width=width*2, height=height*2, 
             lat_0=ymid, lon_0=xmid)
 x = linspace(0, map.urcrnrx, data_array.shape[1])
 y = linspace(0, map.urcrnry, data_array.shape[0])
@@ -52,6 +52,8 @@ z=area[k,:,:]
 z=np.ma.masked_where(z==0,z)
 map.contourf(xx,yy,z,cmap='hsv')
 map.readshapefile('C:/Project/MBDA/Murtho_gps_points/shp/Current_Track__24_MAY_2021_15_36/Current_Track_24_MAY_2021_15_36-line', 'Current_Track_24_MAY_2021_15_36-line')
+map.readshapefile('C:/Project/MBDA/Murtho_gps_points/shp/20-Mar-21_1600 - Copy/202103200400', '202103200400')
+
 # map.arcgisimage(service='ESRI_Imagery_World_2D', xpixels = 1500, verbose= True)
 # plt.show()
 # m.etopo(scale=0.5, alpha=0.5)

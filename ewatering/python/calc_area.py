@@ -26,40 +26,51 @@ from numpy import meshgrid
 #elev_drone=np.loadtxt("C:/Project/MBDA/Murtho_gps_points/SA2toSA1_dron.txt")[:, 1]
 #This script is used to extract GeoTIFF data(i.e. DEM) into Python for calculating the area of a bisin.
 # runfile('C:/columnpy/columnpy/ewatering/python/get_data_py3.py')
-#import DEM data
-filename = "C:/Project/MBDA/areasWGS84.tif"
+#import DEM data by GDAL
+# filename  = "C:/Project/MBDA/areasWGS84.tif"
+filename  = "C:/Project/MBDA/mid_size.tif"
+# filename  = "C:/Project/MBDA/areas.tif"
+# filename  = "C:/Project/MBDA/zone.tif"##with smaller region
 gdal_data = gdal.Open(filename)
 gdal_band = gdal_data.GetRasterBand(1)
 nodataval = gdal_band.GetNoDataValue()
-data_array = gdal_data.ReadAsArray().astype(np.float)
-width = gdal_data.RasterXSize
-height = gdal_data.RasterYSize
+
+DEM_elevation_m_mtx = gdal_data.ReadAsArray().astype(np.float)
+
+
+# the below code only works when areas.tif is used...
+cell_width_m = gdal_data.RasterXSize
+cell_height_m = gdal_data.RasterYSize
 gt = gdal_data.GetGeoTransform()
-# minx = gt[0]
-# miny = gt[3] + width*gt[4] + height*gt[5] 
-# maxx = gt[0] + width*gt[1] + height*gt[2]
-# maxy = gt[3] 
+minx = gt[0]
+miny = gt[3] + cell_width_m*gt[4] + cell_height_m*gt[5] 
+maxx = gt[0] + cell_width_m*gt[1] + cell_height_m*gt[2]
+maxy = gt[3] 
+
+
+
 # myProj = Proj("+proj=utm +zone=54H, +south +ellps=WGS84 +datum=WGS84 +units=m +no_defs")
 # lonmin, latmin = myProj(minx, miny, inverse=True)
 # lonmax, latmax = myProj(maxx, maxy, inverse=True)
 # x = linspace(lonmin, lonmax,num=148)
 # y = linspace(latmin, latmax,num=232)
-# # #data_array
+# # #DEM_elevation_m_mtx
 
 # surface elevation data plot
-data=np.flipud(data_array)
-x = linspace(0, map.urcrnrx, data.shape[1])
-y = linspace(0, map.urcrnry, data.shape[0])
-xx, yy = meshgrid(x, y)
-map.contourf(xx,yy,data)
+data  = np.flipud(DEM_elevation_m_mtx)
+
+# x     = linspace(0, map.urcrnrx, data.shape[1])
+# y     = linspace(0, map.urcrnry, data.shape[0])
+# xx, yy = meshgrid(x, y)
+# map.contourf(xx,yy,data)
 
 #np.nan(data(data>100))
 #plt.plot(tb_pandas.result_df['temp2'].index,tb_pandas.result_df['temp2']['value'])
-#plt.plot(surface_water.ts,area_profile)
+#plt.plot(water_depth_transducer_m_t_array.ts,area_profile)
 # sp_sch.df.loc[time_start:datetime.datetime(2021,3,17,10,0),'p2_cs451']=0
 # elev_original=sp_sch.df['p2_cs451']-0.49
 # elev_original=sp_sch.df['p2_cs451']-0.76
-elev_original=sp_sch.df['p2_cs451']-0.76
+elev_original=sp_sch.df['p2_cs451']-0.48
 
 elev_original[elev_original<0]=0
 
@@ -85,6 +96,7 @@ elev_original[elev_original>120]=np.nan
 
 # sp_sch.df['elev']=elev_original
 sp_sch.df['elev']=elev_original
+
 time_start = np.datetime64('2021-03-16T00:00')
 
 sp_sch.df.loc[time_start:datetime.datetime(2021,3,17,00,0),'elev']=0
@@ -95,65 +107,98 @@ elevchange[1:]=np.diff(sp_sch.df['elev'])/sp_input['delta_t_s']
 
 sp_sch.df['elevchange']=elevchange
 
-Q=np.percentile(elevchange, [25, 50, 75])
-# Interquartile range (IQR)
-IQR=Q[2]-Q[0]
- # outlier step
-outlier_step = 1.5 * IQR            
-for i in range(elevchange.size):
-        if ( elevchange[i]< Q[0] - outlier_step) | (elevchange[i] > Q[2] + outlier_step):
-            elevchange[i]=(elevchange[i-2]+elevchange[i+2])/2
-            # print(i)
+# Q=np.percentile(elevchange, [25, 50, 75])
+# # Interquartile range (IQR)
+# IQR=Q[2]-Q[0]
+#  # outlier step
+# outlier_step = 1.5 * IQR            
+# for i in range(elevchange.size):
+#         if ( elevchange[i]< Q[0] - outlier_step) | (elevchange[i] > Q[2] + outlier_step):
+#             elevchange[i]=(elevchange[i-2]+elevchange[i+2])/2
+#             # print(i)
 
-surface_water=sp_sch.df['elev']
-surface_water[surface_water<=0]=0 
-surface_water[surface_water>=1.5]=0 
+water_depth_transducer_m_t_array = sp_sch.df['elev']
+water_depth_transducer_m_t_array[water_depth_transducer_m_t_array<=0]   = 0 
+water_depth_transducer_m_t_array[water_depth_transducer_m_t_array>=1.5] = 0 
 
 
 z1=elev_lidar[-1]#z1 is the sensor location
+z1=18.29#z1 is the sensor location
+
 z2=data[:]-z1
-area          = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-areav         = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-depth         = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-depthv        = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-areaTOTAL     = np.zeros(shape=(surface_water.size))
-volumeML      = np.zeros(shape=(surface_water.size,z2[:,1].size,z2[1,:].size))
-volumeTOTALML = np.zeros(shape=(surface_water.size))
-areaTOTALv    = np.zeros(shape=(surface_water.size))
-surface_waterv= np.zeros(shape=(surface_water.size))
-wetmap=[z2[:,1].size,z2[1,:].size]
-for k in range(surface_water.size):
-            if 1<k<=surface_water.size and np.abs(surface_water[k]-surface_water[k-1])<0.05 :
-            # if 2<k<=surface_water.size:
-                # surface_water[k]=(surface_water[k+2]+surface_water[k-2])/2
-                depth[k,:,:]  =  surface_water[k]-z2[:,:]
-                depth[k,:,:]  =  (depth[k,:,:]>0).choose(0,depth[k,:,:])
-                depth[k,:,:]  =  (surface_water[k]>0).choose(0,depth[k,:,:])   
-                area[k,:,:]   =  (depth[k,:,:]>0).choose(0,4)
-                # wetmap[:,:]=(depth[k,:,:]>0).choose(0,1)
-        # area[k,:,:]=(surface_water[k]>0).choose(0,area[k,:,:])
-                areaTOTAL[k]=np.sum(area[k,:,:])
-                areaTOTAL[k]=(areaTOTAL[k]>3000).choose(0,areaTOTAL[k])
-                volumeML[k,:,:]=depth[k,:,:]*area[k,:,:]/1000
+area          = np.zeros(shape=(water_depth_transducer_m_t_array.size,z2[:,1].size,z2[1,:].size))
+areav         = np.zeros(shape=(water_depth_transducer_m_t_array.size,z2[:,1].size,z2[1,:].size))
+ele_water_depth_m_mtx   = np.zeros(shape=(water_depth_transducer_m_t_array.size,z2[:,1].size,z2[1,:].size))
+depthv        = np.zeros(shape=(water_depth_transducer_m_t_array.size,z2[:,1].size,z2[1,:].size))
+areaTOTAL     = np.zeros(shape=(water_depth_transducer_m_t_array.size))
+volumeML      = np.zeros(shape=(water_depth_transducer_m_t_array.size,z2[:,1].size,z2[1,:].size))
+volumeTOTALML = np.zeros(shape=(water_depth_transducer_m_t_array.size))
+areaTOTALv    = np.zeros(shape=(water_depth_transducer_m_t_array.size))
+water_depth_transducer_m_t_arrayv= np.zeros(shape=(water_depth_transducer_m_t_array.size))
+# wetmap=[z2[:,1].size,z2[1,:].size]
+
+# script to plot the surface
+# fig = plt.figure()
+# ax = fig.gca(projection='3d')
+
+#Create X and Y data
+# x             =  range(0,data[1,:].size)
+# y             =  range(0,data[:,1].size)
+# X, Y = np.meshgrid(x, y)
+
+# surf = ax.plot_surface(X, Y, area[-1,:,:], rstride=1, cstride=1, antialiased=True)
+# z=area[-1,:,:]
+# z=np.ma.masked_where(z==0,z)
+# map.contourf(xx,yy,z,cmap='hsv')
+
+
+
+
+
+for k in range(water_depth_transducer_m_t_array.size):
+            #if 1<k<=water_depth_transducer_m_t_array.size and np.abs(water_depth_transducer_m_t_array[k]-water_depth_transducer_m_t_array[k-1])<0.05 :
+            # if 2<k<=water_depth_transducer_m_t_array.size:
+                # water_depth_transducer_m_t_array[k]=(water_depth_transducer_m_t_array[k+2]+water_depth_transducer_m_t_array[k-2])/2
+                ele_water_depth_m_mtx[k,:,:]  =  water_depth_transducer_m_t_array[k]-z2[:,:]
+                
+                # ele_water_depth_m_mtx[k,:,:]  =  (ele_water_depth_m_mtx[k,:,:]>0).choose(0,ele_water_depth_m_mtx[k,:,:])  
+                
+                # ele_water_depth_m_mtx[k,:,:]  =  (water_depth_transducer_m_t_array[k]>0).choose(0,ele_water_depth_m_mtx[k,:,:]) # if the pressure transducer says the water depth is 0, we do not count in the water depth at the local cell.
+                
+                area[k,:,:]   =  (ele_water_depth_m_mtx[k,:,:]>0).choose(0,4)
+                
+                # wetmap[:,:]=(ele_water_depth_m_mtx[k,:,:]>0).choose(0,1)
+                # area[k,:,:]=(water_depth_transducer_m_t_array[k]>0).choose(0,area[k,:,:])
+                
+                areaTOTAL[k]  =  np.sum(area[k,:,:])
+                areaTOTAL[k]  =  (areaTOTAL[k]>3000).choose(0,areaTOTAL[k])
+                volumeML[k,:,:]=ele_water_depth_m_mtx[k,:,:]*area[k,:,:]/1000
                 volumeTOTALML[k]=np.sum(volumeML[k,:,:])
                 # print(k)
             # volumnTOTAL[k]=(volumnTOTAL[k]==0).choose(0,volumnTOTAL[k])
 #             if k==0:
-#                 depthv[k,:,:]=0
+#                 ele_water_depth_m_mtxv[k,:,:]=0
 #                 areav[k,:,:]=0
 #                 areaTOTALv[k]=0
-#                 surface_waterv[k]=0
+#                 water_depth_transducer_m_t_arrayv[k]=0
 #             else :
-#                 depthv[k,:,:]=(depth[k,:,:]-depth[k-1,:,:])/sp_input['delta_t_s'] 
+#                 ele_water_depth_m_mtxv[k,:,:]=(ele_water_depth_m_mtx[k,:,:]-ele_water_depth_m_mtx[k-1,:,:])/sp_input['delta_t_s'] 
 #                 areav[k,:,:]=(area[k,:,:]-area[k-1,:,:])/sp_input['delta_t_s']
 #                 areaTOTALv[k]=(areaTOTAL[k]-areaTOTAL[k-1])/sp_input['delta_t_s']   
-#                 surface_waterv[k]=(surface_water[k]-surface_water[k-1])/sp_input['delta_t_s']
-# #convert depth changing rate and area changing rate to mmday and m2day
+#                 water_depth_transducer_m_t_arrayv[k]=(water_depth_transducer_m_t_array[k]-water_depth_transducer_m_t_array[k-1])/sp_input['delta_t_s']
+# #convert ele_water_depth_m_mtx changing rate and area changing rate to mmday and m2day
 #                 areaTOTALv[np.abs(areaTOTALv)>4]=0 
 #                 areaTOTALvm2day=areaTOTALv/constants.second2day
-#                 surface_watervm2day=surface_waterv/constants.second2day
+#                 water_depth_transducer_m_t_arrayvm2day=water_depth_transducer_m_t_arrayv/constants.second2day
 
-sp_sch.df['areaTOTAL']=areaTOTAL
+
+
+# below snippet check the water depth monitored by the pressure transducer
+
+# 
+
+
+sp_sch.df['areaTOTAL']    =areaTOTAL
 sp_sch.df['volumeTOTALML']=volumeTOTALML              
 # sp_sch.df['area_x']=area[:,]
 # Q=np.percentile(areaTOTALv, [25, 50, 75])
@@ -166,11 +211,11 @@ sp_sch.df['volumeTOTALML']=volumeTOTALML
 #             print(i)        
 # areaTOTALv[np.abs(areaTOTALv)>4]=0 
 # plt.ioff()
-# for i in range(1,surface_water.size,10):
+# for i in range(1,water_depth_transducer_m_t_array.size,1000):
 #     #plt.contour(area[i,:,:])
 #     #fig1=plt.figure() 
 #     #spec = gridspec.GridSpec(ncols=2, nrows=1,
-#                          #width_ratios=[2, 1])
+#                           #width_ratios=[2, 1])
 #     fig = plt.figure(figsize=(10, 5))
 #     gs = gridspec.GridSpec(nrows=4, ncols=2)                     
 #     # f,(a0,a1,a2) = plt.subplots(3, 1, gridspec_kw={'height_ratios': [10,2,2]},
@@ -185,35 +230,38 @@ sp_sch.df['volumeTOTALML']=volumeTOTALML
 #     a1 = fig.add_subplot(gs[1, 0])
 #     a1.plot(sp_sch.df['elev'].index,sp_sch.df['elev'])
 #     a1.axvline(sp_sch.df['p2_cs451'][i:i+1].index,color='red')
-#     a1.set_title('Depth at SA2 (m)', fontsize = 10.0)
+#     a1.set_title('ele_water_depth_m_mtx at SA2 (m)', fontsize = 10.0)
 #     a1.set_xticklabels([])
 #     a2 = fig.add_subplot(gs[2, 0])
-#     a2.plot(sp_sch.df['elev'].index,areaTOTALvm2day)
+#     a2.plot(sp_sch.df['elev'].index,areaTOTALv)
 #     a2.set_title('Area change rate ($\mathregular{m^2}$/day)', fontsize = 10.0)
 #     # a2.set_yticks(range(0,1,0.5))
 #     a2.set_xticklabels([])
 #     a2.axvline(sp_sch.df['p2_cs451'][i:i+1].index,color='red')
 #     a3 = fig.add_subplot(gs[3, 0])
-#     a3.plot(sp_sch.df['elev'].index,surface_watervm2day)
+#     a3.plot(sp_sch.df['elev'].index,water_depth_transducer_m_t_array)
 #     a3.axvline(sp_sch.df['p2_cs451'][i:i+1].index,color='red')
-#     a3.set_title('Depth change rate at SA2 (mm/day)', fontsize = 10.0)
+#     a3.set_title('ele_water_depth_m_mtx change rate at SA2 (mm/day)', fontsize = 10.0)
 #     a3.tick_params(axis='x', which='major', labelsize=10, rotation=30)
 #     a3.tick_params(axis='x', which='major', labelsize=10, rotation=30)
 #     a4 = fig.add_subplot(gs[:, 1])
-#     z1=a4.contourf(depth[i,:,:],cmap = "jet",levels=levels)
-#     a4.title.set_text('Water depth at different locations (m)')
+#     z1=a4.contourf(ele_water_depth_m_mtx[i,:,:],cmap = "jet",levels=levels)
+#     a4.title.set_text('Water ele_water_depth_m_mtx at different locations (m)')
 #     plt.colorbar(z1,ax=a4)
-    
+#     a5 = fig.add_subplot(gs[:, 2])
+#     z1=a4.contourf(ele_water_depth_m_mtx[i,:,:],cmap = "jet",levels=levels)
+#     a4.title.set_text('Water ele_water_depth_m_mtx at different locations (m)')
+#     plt.colorbar(z1,ax=a4)    
 #     # a2.plot(elev.index,elev)
 #     # a2.axvline(sp_sch.df['p2_cs451'][i:i+1].index,color='red')
-#     # a2.set_ylabel('depth at SA2 (m)', fontsize = 10.0)
+#     # a2.set_ylabel('ele_water_depth_m_mtx at SA2 (m)', fontsize = 10.0)
 #     # a2.tick_params(axis='x', which='major', labelsize=10, rotation=30)
 #     #F
 #     plt.tight_layout()
 #     plt.savefig(f"{i:04d}.png",dpi=300)
 #     plt.close()
 
-# for i in range(1,surface_water.size,10):
+# for i in range(1,water_depth_transducer_m_t_array.size,10):
 #     #plt.contour(area[i,:,:])
 #     #fig1=plt.figure() 
 #     #plt.ion()
@@ -222,7 +270,7 @@ sp_sch.df['volumeTOTALML']=volumeTOTALML
 #     f,(a0,a1,a2) = plt.subplots(3, 1, gridspec_kw={'height_ratios': [10,2,2]},
 #                                 figsize=(10, 10))
 #     levels = np.arange(0, 0.2, 0.01)
-#     z1=a0.contourf(depthv[i,:,:],cmap = "jet",levels=levels)
+#     z1=a0.contourf(ele_water_depth_m_mtxv[i,:,:],cmap = "jet",levels=levels)
 #     plt.colorbar(z1,ax=a0)
 #     a1.plot(elev.index,areaTOTALv)
 #     a1.set_ylabel('area ($\mathregular{m^2}$)', fontsize = 10.0)
@@ -328,25 +376,25 @@ df_mean= sp_sch.df.resample('D').mean()
 # plt.tight_layout()
 # plt.savefig("depth_volume.png",dpi=300)
 
-# #area[0:,i,j]=depth  
+# #area[0:,i,j]=ele_water_depth_m_mtx  
 # #area[0:,i,j]=0
 # #area=area*4
 # # areaTOTAL=np.cumsum(area,axis=1)
 # # area_profile=area_profile[0:,area_profile[1,0:].size-1]
-# # plt.plot(surface_water.ts,area_profile)
-# # surface_water.ts
-# # plt.plot(surface_water['ts'],area_profile)
-# # plt.plot(tb_pandas.surface_water['ser'],area_profile)
-# # plt.plot(tb_pandas['surface_water']['ts'],area_profile)
-# # plt.plot(tb_pandas['surface_water'].ts,area_profile)
-# # plt.plot(tb_pandas['surface_water'].index,area_profile)
+# # plt.plot(water_depth_transducer_m_t_array.ts,area_profile)
+# # water_depth_transducer_m_t_array.ts
+# # plt.plot(water_depth_transducer_m_t_array['ts'],area_profile)
+# # plt.plot(tb_pandas.water_depth_transducer_m_t_array['ser'],area_profile)
+# # plt.plot(tb_pandas['water_depth_transducer_m_t_array']['ts'],area_profile)
+# # plt.plot(tb_pandas['water_depth_transducer_m_t_array'].ts,area_profile)
+# # plt.plot(tb_pandas['water_depth_transducer_m_t_array'].index,area_profile)
 # # plt.plot(tb_pandas.result_df['temp2'].index,area_profile)
 # # tb_pandas.result_df['temp2'].index
-# # surface_water=tb_pandas.result_df['p2_cs451']['value'][3:]-0.47;
-# # plt.plot(tb_pandas.result_df['surface_water'].index,area_profile)
-# # tb_pandas.result_df['surface_water'].index
+# # water_depth_transducer_m_t_array=tb_pandas.result_df['p2_cs451']['value'][3:]-0.47;
+# # plt.plot(tb_pandas.result_df['water_depth_transducer_m_t_array'].index,area_profile)
+# # tb_pandas.result_df['water_depth_transducer_m_t_array'].index
 # # a=tb_pandas.result_df['temp2'].index
-# # surface_water=tb_pandas.result_df['p2_cs451'][3:]-0.47;
+# # water_depth_transducer_m_t_array=tb_pandas.result_df['p2_cs451'][3:]-0.47;
 # # a=tb_pandas.result_df['temp2']
 # # a=tb_pandas.result_df['temp2'].index
 #  f1,(a0,a1,a2) = plt.subplots(3, 1)
