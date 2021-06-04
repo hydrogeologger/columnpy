@@ -87,7 +87,7 @@ ax0.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
 ax0.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax0.set_ylabel('Water Volume (ML)', fontsize=y_fontsize, labelpad=10)
 ax0.set_xlabel('Time', fontsize=y_fontsize, labelpad=10)
-ax0.legend(loc='lower right')
+# ax0.legend(loc='lower right')
 
 ax1 = fig.add_subplot(gs[1, 0])
 ax1.plot(sp_sch.df.index,water_depth_transducer_m_t_array)

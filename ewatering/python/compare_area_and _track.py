@@ -48,11 +48,11 @@ map= Basemap(projection='lcc', resolution='h',
 x = linspace(0, map.urcrnrx, data_array.shape[1])
 y = linspace(0, map.urcrnry, data_array.shape[0])
 xx, yy = meshgrid(x, y)
-z=area[k,:,:]
+z=area[t,:,:]
 z=np.ma.masked_where(z==0,z)
 map.contourf(xx,yy,z,cmap='hsv')
 map.readshapefile('C:/Project/MBDA/Murtho_gps_points/shp/Current_Track__24_MAY_2021_15_36/Current_Track_24_MAY_2021_15_36-line', 'Current_Track_24_MAY_2021_15_36-line')
-map.readshapefile('C:/Project/MBDA/Murtho_gps_points/shp/20-Mar-21_1600 - Copy/202103200400', '202103200400')
+# map.readshapefile('C:/Project/MBDA/Murtho_gps_points/shp/20-Mar-21_1600 - Copy/202103200400', '202103200400')
 
 # map.arcgisimage(service='ESRI_Imagery_World_2D', xpixels = 1500, verbose= True)
 # plt.show()

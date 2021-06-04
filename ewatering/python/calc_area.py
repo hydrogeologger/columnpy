@@ -70,7 +70,7 @@ data  = np.flipud(DEM_elevation_m_mtx)
 # sp_sch.df.loc[time_start:datetime.datetime(2021,3,17,10,0),'p2_cs451']=0
 # elev_original=sp_sch.df['p2_cs451']-0.49
 # elev_original=sp_sch.df['p2_cs451']-0.76
-elev_original=sp_sch.df['p2_cs451']-0.48
+elev_original=sp_sch.df['p2_cs451']-SA2_water_depth_adjust
 
 elev_original[elev_original<0]=0
 
@@ -122,7 +122,7 @@ water_depth_transducer_m_t_array[water_depth_transducer_m_t_array<=0]   = 0
 water_depth_transducer_m_t_array[water_depth_transducer_m_t_array>=1.5] = 0 
 
 
-z1=elev_lidar[-1]#z1 is the sensor location
+# z1=elev_lidar[-1]#z1 is the sensor location
 z1=18.29#z1 is the sensor location
 
 z2=data[:]-z1
@@ -161,9 +161,9 @@ for k in range(water_depth_transducer_m_t_array.size):
                 # water_depth_transducer_m_t_array[k]=(water_depth_transducer_m_t_array[k+2]+water_depth_transducer_m_t_array[k-2])/2
                 ele_water_depth_m_mtx[k,:,:]  =  water_depth_transducer_m_t_array[k]-z2[:,:]
                 
-                # ele_water_depth_m_mtx[k,:,:]  =  (ele_water_depth_m_mtx[k,:,:]>0).choose(0,ele_water_depth_m_mtx[k,:,:])  
+                ele_water_depth_m_mtx[k,:,:]  =  (ele_water_depth_m_mtx[k,:,:]>0).choose(0,ele_water_depth_m_mtx[k,:,:])  
                 
-                # ele_water_depth_m_mtx[k,:,:]  =  (water_depth_transducer_m_t_array[k]>0).choose(0,ele_water_depth_m_mtx[k,:,:]) # if the pressure transducer says the water depth is 0, we do not count in the water depth at the local cell.
+                ele_water_depth_m_mtx[k,:,:]  =  (water_depth_transducer_m_t_array[k]>0).choose(0,ele_water_depth_m_mtx[k,:,:]) # if the pressure transducer says the water depth is 0, we do not count in the water depth at the local cell.
                 
                 area[k,:,:]   =  (ele_water_depth_m_mtx[k,:,:]>0).choose(0,4)
                 
