@@ -10,19 +10,20 @@ import matplotlib
 # %matplotlib qt  # run this 
 
 import matplotlib.pyplot as plt
-plt.ioff()  # disable poping out figure automatically
-# recompile post_processing in case update are required
-pyduino_path = os.environ['pyduino']
-print(os.environ['pyduino'])
-sys.path.append(os.path.join(pyduino_path,'python','post_processing'))
-py_compile.compile(
-    os.path.join(pyduino_path,'python','post_processing',
-                 'thingsboard_to_pandas_py3.py'))
+# plt.ioff()  # disable poping out figure automatically
+# # recompile post_processing in case update are required
+# pyduino_path = os.environ['pyduino']
+# print(os.environ['pyduino'])
+# sys.path.append(os.path.join(pyduino_path,'python','post_processing'))
+# py_compile.compile(
+#     os.path.join(pyduino_path,'python','post_processing',
+#                  'thingsboard_to_pandas_py3.py'))
 import thingsboard_to_pandas_py3
 #reload(thingsboard_to_pandas_py3)
 
 
-tb_pandas=thingsboard_to_pandas_py3.tingsboard_to_pandas('tb_credential.json')
+tb_pandas=thingsboard_to_pandas_py3.tingsboard_to_pandas('C:/pyduino/pyduino/python/tb_to_csv/tb_credential.json')
+
 # input is the location of the json file
 # use the below command to show the comments on tb_credential.json
 # print tb_pandas.input_json['comments'] 
@@ -54,8 +55,10 @@ tb_pandas.convert_data_to_df()  # convert each datasets to pandas dataframe
 #tb_pandas.result_df['scale1']['value'] [ tb_pandas.result_df['scale1']['value'] <5  ] =np.nan 
 
 # merge data    
-with open('schedule.json') as data_file:    
+with open('C:/pyduino/pyduino/python/tb_to_csv/schedule.json') as data_file:    
     sp_input = json.load(data_file)
+# with open('C:/pyduino/pyduino/python/tb_to_csv/schedule_column.json') as data_file:    
+#     sp_input = json.load(data_file)
 
 #sys.path.append   (os.environ['pyduino']+'/python/post_processing/')
 #py_compile.compile(os.environ['pyduino']+'/python/post_processing/pandas_scale.py')
@@ -64,10 +67,10 @@ with open('schedule.json') as data_file:
 #
 #sys.path.join(os.environ['pyduino'],'python','post_processing')
 #sys.path.append(os.path.join(os.environ['pyduino'],'python','post_processing'))
-py_compile.compile( os.path.join(
-        os.environ['pyduino'],'python','post_processing','pandas_scale.py')  )
-py_compile.compile( os.path.join(
-        os.environ['pyduino'],'python','post_processing','constants.py')  )
+# py_compile.compile( os.path.join(
+#         os.environ['pyduino'],'python','post_processing','pandas_scale.py')  )
+# py_compile.compile( os.path.join(
+#         os.environ['pyduino'],'python','post_processing','constants.py')  )
 
 import pandas_scale_py3 as pandas_scale
 import constants
@@ -75,7 +78,7 @@ import constants
 
 sp_sch={}
 #plot_interpolate=False
-plot_interpolate=True
+plot_interpolate=False
 
 sp_sch=pandas_scale.concat_data_tb(
     pd.datetime.strptime(sp_input['start_time'],'%Y/%b/%d %H:%M'),
@@ -91,7 +94,12 @@ sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['sa2_uv'].index, 
         input_data_series=tb_pandas.result_df['sa2_uv']['value'], 
         output_time_series=sp_sch.df.index,key_name='sa2_uv' ,
-        plot=plot_interpolate  ,coef=5e-8,rm_nan=True)
+        plot=plot_interpolate  ,coef=5e-11,rm_nan=True)
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa1_uv'].index, 
+        input_data_series=tb_pandas.result_df['sa1_uv']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa1_uv' ,
+        plot=plot_interpolate  ,coef=5e-11,rm_nan=True)
 #CM210408 done
 
 tb_pandas.result_df['sa1_sht31_temp_1']['value'] \
@@ -121,11 +129,16 @@ tb_pandas.result_df['p3_cs451']['value'] [mask]=np.nan
 
 coef_3=4.e-12
 coef_2=1.e-13
+# sp_sch.merge_data_from_tb(
+#         input_time_series=tb_pandas.result_df['p3_cs451'].index, 
+#         input_data_series=tb_pandas.result_df['p3_cs451']['value'], 
+#         output_time_series=sp_sch.df.index,key_name='p3_cs451' ,
+#         plot=False  ,coef=coef_3,rm_nan=True)
 sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['p3_cs451'].index, 
         input_data_series=tb_pandas.result_df['p3_cs451']['value'], 
         output_time_series=sp_sch.df.index,key_name='p3_cs451' ,
-        plot=False  ,coef=coef_3,rm_nan=True)
+        plot=plot_interpolate ,coef=1.e-10,rm_nan=True)
 #CM210408 done
 sp_sch.df['pond_falling_rate_cs451_3_mmPday']= \
     np.append(np.diff(sp_sch.df['p3_cs451'] ),np.nan) \
@@ -138,7 +151,7 @@ sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['p2_cs451'].index, 
         input_data_series=tb_pandas.result_df['p2_cs451']['value'], 
         output_time_series=sp_sch.df.index,key_name='p2_cs451' ,
-        plot=False  ,coef=coef_2,rm_nan=True)
+        plot=plot_interpolate ,coef=1.e-10,rm_nan=True)
 #CM210408
 
 sp_sch.df['pond_falling_rate_cs451_2_mmPday']= \
@@ -245,8 +258,8 @@ sp_sch.merge_data_from_tb(
         output_time_series=sp_sch.df.index,key_name='sa4_p_piezo' ,
         plot=plot_interpolate  ,coef=5e-4,rm_nan=True)
 
-time_start = np.datetime64('2021-03-01T00:00')
-time_end   = np.datetime64('2021-03-18T15:00')
+time_start = np.datetime64('2021-03-16T00:00')
+time_end   = np.datetime64('2021-04-27T15:00')
 sp_sch.df.loc[time_start:time_end,'sa4_p_piezo']=np.nan
 #tb_pandas.plot_df(['sa4_p_piezo','sa3_p_piezo'])
 #plt.figure()
@@ -291,13 +304,13 @@ sp_sch.merge_data_from_tb(
 
 
 sp_sch.df['sa1_p_kpa']=sp_sch.df['sa1_p_piezo']-  \
-    sp_sch.df['sa1_p_5803']*constants.kpaPhpa
+    sp_sch.df['sa1_p_5803']/10
 sp_sch.df['sa2_p_kpa']=sp_sch.df['sa2_p_piezo']-  \
-    sp_sch.df['sa1_p_5803']*constants.kpaPhpa
+    sp_sch.df['sa1_p_5803']/10
 sp_sch.df['sa3_p_kpa']=sp_sch.df['sa3_p_piezo']-  \
-    sp_sch.df['sa1_p_5803']*constants.kpaPhpa
+    sp_sch.df['sa1_p_5803']/10
 sp_sch.df['sa4_p_kpa']=sp_sch.df['sa4_p_piezo']-  \
-    sp_sch.df['sa1_p_5803']*constants.kpaPhpa    
+    sp_sch.df['sa1_p_5803']/10
 
 plt.figure()
 plt.scatter(x= sp_sch.df.index, y=sp_sch.df['sa1_p_kpa'],color=['blue'])
@@ -326,14 +339,42 @@ sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['wind_speed'].index, 
         input_data_series=tb_pandas.result_df['wind_speed']['value'], 
         output_time_series=sp_sch.df.index,key_name='wind_speed_mPs' ,
-        plot=plot_interpolate  ,coef=5e-9,rm_nan=True)
-
+        plot=plot_interpolate  ,coef=1e-15,rm_nan=True)
 sp_sch.merge_data_from_tb(
-        input_time_series=tb_pandas.result_df['sa2_ir'].index, 
-        input_data_series=tb_pandas.result_df['sa2_ir']['value'] /10 -25.5, 
+        input_time_series=tb_pandas.result_df['sa1_ec_piezo'].index, 
+        input_data_series=tb_pandas.result_df['sa1_ec_piezo']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa1_ec_piezo' ,
+        plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa2_ec_piezo'].index, 
+        input_data_series=tb_pandas.result_df['sa2_ec_piezo']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa2_ec_piezo' ,
+        plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa3_ec_piezo'].index, 
+        input_data_series=tb_pandas.result_df['sa3_ec_piezo']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa3_ec_piezo' ,
+        plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa4_ec_piezo'].index, 
+        input_data_series=tb_pandas.result_df['sa4_ec_piezo']['value'], 
+        output_time_series=sp_sch.df.index,key_name='sa4_ec_piezo' ,
+        plot=plot_interpolate  ,coef=5e-13,rm_nan=True)
+# sp_sch.merge_data_from_tb(
+#         input_time_series=tb_pandas.result_df['sa2_ir'].index, 
+#         input_data_series=tb_pandas.result_df['sa2_ir']['value'] /10 -25.5, 
+#         output_time_series=sp_sch.df.index,key_name='rn_wPm2' ,
+#         plot=plot_interpolate  ,coef=5e-8,rm_nan=True)
+# sp_sch.merge_data_from_tb(
+#         input_time_series=tb_pandas.result_df['sa2_ir'].index, 
+#         input_data_series=(tb_pandas.result_df['sa2_ir']['value']-255) /20, 
+#         output_time_series=sp_sch.df.index,key_name='rn_wPm2' ,
+#         plot=plot_interpolate  ,coef=5e-8,rm_nan=True)
+sp_sch.merge_data_from_tb(
+        input_time_series=tb_pandas.result_df['sa1_ir'].index, 
+        input_data_series=(tb_pandas.result_df['sa1_ir']['value']-255) /20, 
         output_time_series=sp_sch.df.index,key_name='rn_wPm2' ,
-        plot=plot_interpolate  ,coef=5e-8,rm_nan=True)
-
+        plot=plot_interpolate  ,coef=5e-11,rm_nan=True)
 sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['sa2_t_5803'].index, 
         input_data_series=tb_pandas.result_df['sa2_t_5803']['value'] , 
