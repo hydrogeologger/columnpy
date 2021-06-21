@@ -1,5 +1,9 @@
 import matplotlib
 import matplotlib.image as image
+import matplotlib.pylab as pylab
+import matplotlib.ticker as ticker
+from matplotlib.dates import DateFormatter, MONDAY, MonthLocator, YearLocator
+
 
 lw=1
 ms=1
@@ -8,8 +12,29 @@ grid_width=2
 y_fontsize=12
 
 
+params = {'legend.fontsize': 4,
+          'figure.figsize': (10, 5),
+         'axes.labelsize': 11,
+         'axes.titlesize':'11',
+         'xtick.labelsize':'11',
+         'ytick.labelsize':'11',
+         'font.weight':'bold',
+         #'font.sans-serif':'Arial',
+         'font.sans-serif':'TimesNewroman',
+         'axes.labelweight':'bold',
+         'lines.linewidth':2}#,
 
-fig, ax = plt.subplots(6,sharex=True,figsize=(9,9))
+pylab.rcParams.update(params)
+
+lw=1
+ms=1
+mew=1.5
+grid_width=1.5
+y_fontsize=13
+ticklabel_size=14
+
+
+fig, ax = plt.subplots(6,sharex=True,figsize=(10,9))
 #fig.subplots_adjust(hspace=.15)
 fig.subplots_adjust(left=0.18, right=0.87, top=0.97, bottom=0.08)
 mkevy=4
@@ -116,7 +141,8 @@ ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b/%y'))
 ax[5].set_xlabel('DATE')
 plt.show(block=False)
 
-fig.savefig('figure/update/plot_weather.png', format='png', dpi=600)
+#fig.savefig('figure/update/plot_weather.png', format='png', dpi=600)
+fig.savefig('figure/update/update_toJan2021/plot_weather_toJan2021.png', format='png', dpi=600)
 sp_sch[sch_name].df.iloc[::4].to_csv('output_data/'+'column_stanwell'+'.csv')
 #fig.close()
 

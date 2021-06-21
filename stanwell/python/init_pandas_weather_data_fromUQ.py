@@ -1,6 +1,6 @@
 
 #initial weather data from UQ weather station
-data_weather_fromUQ_path=current_path+'/data/weather_data_fromUQ/'    # warning, all the files should be .dat
+data_weather_fromUQ_path=current_path+'/data/weather_data_fromUQ/update/'    # warning, all the files should be .dat
 
 
 data_weather_fromUQ_header=['date_time','WindDir_Mean(deg)','WindSpd_Mean(km/h)','WindSpd_Min(km/h)','WindSpd_Max(km/h)','Temp_Mean(deg)','RH_Mean(%)','MSLP_Mean(hPa)','Rain_Acc(mm)','Rain_Intensity(mm/h)','Hail_Acc(hits/cm2)','Hail_Intensity(hits/cm2hr)','Solar_Mean(W/m2)']

@@ -38,7 +38,7 @@ sys.path.append(python_file_path)
 #data_file_path=current_path+'/data/stanwell_moisture_suction/'    # warning, all the files should be .dat DO NOT FORGET THE LAST SLASH
 
 #---------below line works for 20181005 ---------------------
-data_file_path=current_path+'/data/public_stanwell_moiosture_suction/'   
+data_file_path=current_path+'/data/public_stanwell_moiosture_suction/data_from_phant/'   
 
 # things to do
 #1. change csv to dat
@@ -58,6 +58,7 @@ data_date_time=['date_time']
 # and see if the parsing is successful
 #dateparse =  lambda x: pd.datetime.strptime(x[:-5], '%Y-%m-%dT%H:%M:%S')  # sparkfun output
 # this new function is better as it provides miniseconds parsing as well. 
+#dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S')  #example:2020-02-01T00:00:00
 dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%Y-%m-%dT%H:%M:%S.%f')  # sparkfun output
 #dateparse =  lambda x: pd.datetime.strptime(x[:-1], '%d/%b/%Y %H:%M:%S')  # 18/Jun/2017 23:29:03
 
@@ -106,6 +107,32 @@ data_mo_su.df['tmp6'].loc[data_mo_su.df['tmp6']<1]=np.nan;
 data_mo_su.df['tmp7'].loc[data_mo_su.df['tmp7']<1]=np.nan;
 data_mo_su.df['tmp8'].loc[data_mo_su.df['tmp8']<1]=np.nan;
 data_mo_su.df['tmp9'].loc[data_mo_su.df['tmp9']<1]=np.nan;
+
+
+#time_tb_start = np.datetime64('2020-06-30T12:00')
+#
+#data_mo_su.df['tmp0'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp1'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp2'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp3'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp4'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp5'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp6'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp7'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp8'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['tmp9'].loc[time_tb_start:]=np.nan;
+#
+#
+#data_mo_su.df['mo0'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo1'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo2'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo3'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo4'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo5'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo6'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo7'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo8'].loc[time_tb_start:]=np.nan;
+#data_mo_su.df['mo9'].loc[time_tb_start:]=np.nan;
 
 
 #------------fill missing data-------------------

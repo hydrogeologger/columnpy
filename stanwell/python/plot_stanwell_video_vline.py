@@ -6,6 +6,8 @@ import matplotlib.pylab as pylab
 import matplotlib.pyplot as plot
 import numpy as np
 from matplotlib.dates import DateFormatter, MONDAY, MonthLocator, YearLocator
+#from mpl_axes_aligner import align
+
 matplotlib.use('Agg')
 
 lw=1.5
@@ -42,7 +44,7 @@ def get_date_taken(path):
     from datetime import datetime
     return datetime.strptime(Image.open(path)._getexif()[36867],'%Y:%m:%d %H:%M:%S')
 
-path_im='/home/osboxes/stanwell/'
+path_im='/home/osboxes/stanwell_photos_for_video/'
 files = filter(os.path.isfile, glob.glob(path_im + "*.jpg"))
 files.sort(key=lambda x: get_date_taken(x))
 file_name=[i.split('/')[-1] for i in files]
@@ -71,7 +73,7 @@ for ii in range(len(date)):
 
     
     #fig, ax = plt.subplots(6,2,sharex=True,figsize=(16,9))
-    fig = plt.figure(figsize=(17,12))
+    fig = plt.figure(figsize=(18,12))
     ax = [[] for i in range(7)]
     ax[0] = plt.subplot2grid((7, 2), (0, 0), colspan=1)
     ax[1] = plt.subplot2grid((7, 2), (1, 0), colspan=1)
@@ -131,18 +133,27 @@ for ii in range(len(date)):
     #depth_y_temp=np.array([1,5,8,13,20,28,38,48,70,85])
     depth_y_temp=np.array([1,5,8,13,20,38,48,85])
     mo_x=ta.iloc[idx_im][['mmo0','mmo1','mmo2','mmo3','mmo4','mmo5','mmo6','mmo7','mmo8','mmo9']].tolist()
-    svwc_x=ta.iloc[idx_im][['svwc0','svwc1','svwc2','svwc3','svwc4','svwc5','svwc6','svwc7','svwc8','svwc9']].tolist()
+    settle_y=ta.iloc[idx_im][['settlement_cm']].tolist()
+    settle_surf=(90-ta.iloc[idx_im][['settlement_cm']]).tolist()
+    #The location of tailings surface 
+    #svwc_x=ta.iloc[idx_im][['svwc0','svwc1','svwc2','svwc3','svwc4','svwc5','svwc6','svwc7','svwc8','svwc9']].tolist()
     #temp_x=ta.iloc[idx_im][['tmp0','tmp1','tmp2','tmp3','tmp4','tmp5','tmp6','tmp7','tmp8','tmp9']].tolist()
     #temp_x=ta.iloc[idx_im][['tmp0','tmp1','tmp2','tmp3','tmp4','tmp5','tmp6','tmp7','tmp9']].tolist()
-    temp_x=ta.iloc[idx_im][['tmp0','tmp1','tmp2','tmp3','tmp4','tmp6','tmp7','tmp9']].tolist()
-    ax_mo.plot(mo_x,depth_y,'-',color='blue',label='Actual\nVWC')
-    ax_mo.plot(svwc_x,depth_y,'-',color='peru',label='Saturated\nVWC')
+    temp_x=ta.iloc[idx_im][['tmp0_comb','tmp1_comb','tmp2_comb','tmp3_comb','tmp4_comb','tmp6_comb','tmp7_comb','tmp9_comb']].tolist()
+    ax_mo.plot(mo_x,depth_y,'-',marker='s',color='blue')
+    #ax_mo.plot(svwc_x,depth_y,'-',color='peru',label='Saturated\nVWC')
     ax_mo.set_ylim([90,0])
     ax_mo.set_xlim([-0.05,1.05])
-    ax_mo.legend(bbox_to_anchor=(1.19, 0.5 ), loc='center', borderaxespad=0.,fontsize=8.8,handletextpad=0.53,labelspacing=0.52,ncol=1,columnspacing=0.4)
+    ax_mo.axhline(y=settle_y,linestyle='--',linewidth=4,color='dimgrey',label='Tailings\nsurface')#For showing surface settlement
+    #ax_settle=ax_mo.twinx()
+    #ax_settle.bar(-0.05,height=settle_surf, width=2,edgecolor='white',lw=0.1,color='dimgrey',alpha=0.75)#alpha is related to transparency, default is 1.0
+    #ax_settle.set_ylim([0,90]) 
+    #mpl_axes_aligner.align.yaxes(ax_mo,0, ax_settle, 90, 0.98) 
+    ax_mo.legend(bbox_to_anchor=(1.19, 0.84), loc='center', borderaxespad=0.,fontsize=8.8,handlelength=3.0,handletextpad=0.53,labelspacing=0.52,ncol=1,columnspacing=0.4)
 
     
-    ax_temp.plot(temp_x,depth_y_temp,'-',color='maroon')
+    ax_temp.plot(temp_x,depth_y_temp,'-',marker='^',color='maroon')
+    ax_temp.axhline(y=settle_y,linestyle='--',linewidth=4,color='dimgrey',label='Tailings\nsurface')#For showing surface settlement
     ax_temp.set_ylim([90,0])
     ax_temp.set_xlim([0,50])
 
@@ -182,15 +193,15 @@ for ii in range(len(date)):
     ax1=ax[0]
     ax1.bar(df_mean.index, df_last['rainmm'], width=1.8,edgecolor='white',lw=0.1)
     ax2=ax1.twinx()
-    #ax2.plot(df_mean.index[:idx_rainm],df_mean['cumsum_rainmm'][:idx_rainm],'-',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-    ax2.plot(df_mean.index,df_mean['cumsum_rainmm'],'-',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-    ax1.set_ylim([-0.1,80])
-    ax2.set_ylim([-0.1,1600])
+    ax2.plot(df_mean.index[:idx_rainm],df_mean['cumsum_rainmm'][:idx_rainm],'-',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r') #This is to set cumulative rainfall curve plotted with time.
+    #ax2.plot(df_mean.index,df_mean['cumsum_rainmm'],'-',color='red',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r') #This is to set cumulative rainfall curve integrally plotted.
+    ax1.set_ylim([-0.1,110])
+    ax2.set_ylim([-0.1,1650])
     ax1.yaxis.set_major_locator(ticker.MultipleLocator(20))
-    ax2.yaxis.set_major_locator(ticker.MultipleLocator(400))
+    ax2.yaxis.set_major_locator(ticker.MultipleLocator(300))
     ax1.tick_params(axis='y',colors='blue',labelsize=ticklabel_size)
     ax2.tick_params(axis='y',colors='red',labelsize=ticklabel_size)
-    ax1.vlines(date[ii], -0.1, 80,  colors='red', linestyles='-', linewidth=2).set_zorder(2)
+    ax1.vlines(date[ii], -0.1, 110,  colors='red', linestyles='-', linewidth=2).set_zorder(2)
 
 
     #yy=(ta['ir_up']-ta['ir_down'])*0.007+0.2*ta['wdspdkphavg2m'].fillna(0)
@@ -210,7 +221,7 @@ for ii in range(len(date)):
     #ax[2].plot(ta['date_time'], -(ta['pre1']-110), 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='60 cm below soil surface')
     #ax[2].set_ylim([-10-110,140-110])
     #ax[2].set_ylim([-140+110,120,])
-    #ax[2].plot(ta['date_time'], ta['Pre0'], '-',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='50 cm')
+    ax[2].plot(ta['date_time'], ta['Pre0'], '-',color='cyan',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='50 cm')
     ax[2].plot(ta['date_time'], ta['Pre1'], '-',color='darkblue',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='100 cm')
     #ax[2].set_ylim([-10-110,140-110])
     #ax[2].set_ylim([-100,1300])
@@ -230,14 +241,14 @@ for ii in range(len(date)):
     #ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp8'][::mkevy].values, '-' ,color='crimson',linewidth=lw,markerfacecolor='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='70cm',markevery=mkevy)
     #ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp9'][::mkevy].values, '-' ,color='pink'   ,linewidth=lw,markerfacecolor='grey'  ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='grey',label='85cm',markevery=mkevy)
     
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp0'][::mkevy].values, '-' ,color='maroon',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='1 cm',markevery=mkevy)
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp1'][::mkevy].values, '-' ,color='olive',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='5 cm',markevery=mkevy)
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp2'][::mkevy].values, '-' ,color='peru',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='8 cm',markevery=mkevy)
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp3'][::mkevy].values, '-' ,color='pink',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='13cm',markevery=mkevy)
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp4'][::mkevy].values, '-' ,color='gold',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='20cm',markevery=mkevy)
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp6'][::mkevy].values, '-' ,color='lightblue'  ,linewidth=lw,markerfacecolor='brown' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='38cm',markevery=mkevy)
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp7'][::mkevy].values, '-' ,color='cyan' ,linewidth=lw,markerfacecolor='yellow',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='yellow',label='48cm',markevery=mkevy)
-    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp9'][::mkevy].values, '-' ,color='darkblue'   ,linewidth=lw,markerfacecolor='grey'  ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='grey',label='85cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp0_comb'][::mkevy].values, '-' ,color='maroon',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='1 cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp1_comb'][::mkevy].values, '-' ,color='olive',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='5 cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp2_comb'][::mkevy].values, '-' ,color='peru',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='b',label='8 cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp3_comb'][::mkevy].values, '-' ,color='pink',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='c',label='13cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp4_comb'][::mkevy].values, '-' ,color='gold',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='m',label='20cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp6_comb'][::mkevy].values, '-' ,color='lightblue'  ,linewidth=lw,markerfacecolor='brown' ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='brown',label='38cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp7_comb'][::mkevy].values, '-' ,color='cyan' ,linewidth=lw,markerfacecolor='yellow',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='yellow',label='48cm',markevery=mkevy)
+    ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp9_comb'][::mkevy].values, '-' ,color='darkblue'   ,linewidth=lw,markerfacecolor='grey'  ,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='grey',label='85cm',markevery=mkevy)
     #ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp5'][::mkevy].values, '-' ,color='lightgreen',linewidth=lw,markersize=ms           ,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='28cm',markevery=mkevy)
     #ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp8'][::mkevy].values, '-' ,color='royalblue',linewidth=lw,markerfacecolor='orange',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='orange',label='70cm',markevery=mkevy)
     #ax[3].set_ylim([5,40])
@@ -247,7 +258,6 @@ for ii in range(len(date)):
     ax[3].vlines(date[ii], 5, 45,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
 
 
-    mkevy=12
     mkevy=24
     
     ax[4].plot(ta['date_time'][::mkevy], ta['mmo0'][::mkevy], '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='1 cm',markevery=mkevy)
@@ -280,13 +290,13 @@ for ii in range(len(date)):
     ax4=ax3.twinx()
     #ax4.plot(df_mean.index[:idx_rainm],df_mean['newavg_dry_density'][:idx_rainm],'-',color='darkgreen',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
     ax4.plot(df_mean.index,df_mean['newavg_dry_density'],'-',color='darkgreen',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='5 cm')
-    ax3.set_ylim([-1,300])
-    ax4.set_ylim([399,700])
+    ax3.set_ylim([-1,350])
+    ax4.set_ylim([449,750])
     ax3.tick_params(axis='y',colors='maroon',labelsize=ticklabel_size)
     ax4.tick_params(axis='y',colors='darkgreen',labelsize=ticklabel_size)
     #ax3.yaxis.set_major_locator(ticker.MultipleLocator(100))
     #ax4.yaxis.set_major_locator(ticker.MultipleLocator(100))
-    ax3.vlines(date[ii], -1, 300,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
+    ax3.vlines(date[ii], -1, 350,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
 
     
     ax[0].set_xticklabels([])
@@ -415,12 +425,13 @@ for ii in range(len(date)):
 
  
     ax[6].xaxis.set_major_formatter(mdates.DateFormatter('%b/%y'))
-    ax[6].tick_params(axis='x',labelsize=ticklabel_size)
+    ax[6].tick_params(axis='x',labelsize=13)
+    #ax[6].tick_params(axis='x',labelsize=ticklabel_size)
 
     ax[6].set_xlabel('DATE',fontsize=y_fontsize)
     #plt.xticks(rotation=45)
     plt.show(block=False)
     #plt.show(block=True)
-    output_name = 'figure/update/video_vline/000'+str(ii)+'.jpg'
+    output_name = 'figure/update/video_2years_final/surface_settle/000'+str(ii)+'.jpg'
     fig.savefig(output_name, format='jpg', dpi=100)
     plt.close()

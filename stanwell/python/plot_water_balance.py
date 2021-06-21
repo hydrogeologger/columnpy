@@ -26,6 +26,8 @@ plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['distance_to_surfsoil'],'
 plt.figure()
 plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['mmo_surf'],'r-')
 
+plt.figure()
+plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['mmo_5'],'r-')
 
 plt.figure()
 plt.plot(sp_sch[sch_name].df.index,sp_sch[sch_name].df['aet_mmPday'],'r-') 
