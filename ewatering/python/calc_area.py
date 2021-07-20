@@ -19,18 +19,19 @@ import ffmpeg
 import constants
 from scipy import signal
 import matplotlib.gridspec as gridspec
-elev_lidar=np.loadtxt("C:/Project/MBDA/Murtho_gps_points/SA2toSA1_Lidar.txt")[:, 1]
+elev_lidar=np.loadtxt("C:/Project/MDBA/Murtho_gps_points/SA2toSA1_Lidar.txt")[:, 1]
 from numpy import linspace
 from numpy import meshgrid
+import matplotlib.patches as mpatches
 
-#elev_drone=np.loadtxt("C:/Project/MBDA/Murtho_gps_points/SA2toSA1_dron.txt")[:, 1]
+#elev_drone=np.loadtxt("C:/Project/MDBA/Murtho_gps_points/SA2toSA1_dron.txt")[:, 1]
 #This script is used to extract GeoTIFF data(i.e. DEM) into Python for calculating the area of a bisin.
 # runfile('C:/columnpy/columnpy/ewatering/python/get_data_py3.py')
 #import DEM data by GDAL
-# filename  = "C:/Project/MBDA/areasWGS84.tif"
-filename  = "C:/Project/MBDA/mid_size.tif"
-# filename  = "C:/Project/MBDA/areas.tif"
-# filename  = "C:/Project/MBDA/zone.tif"##with smaller region
+# filename  = "C:/Project/MDBA/areasWGS84.tif"
+filename  = "C:/Project/MDBA/mid_size.tif"
+# filename  = "C:/Project/MDBA/areas.tif"
+# filename  = "C:/Project/MDBA/zone.tif"##with smaller region
 gdal_data = gdal.Open(filename)
 gdal_band = gdal_data.GetRasterBand(1)
 nodataval = gdal_band.GetNoDataValue()
@@ -57,7 +58,8 @@ maxy = gt[3]
 # # #DEM_elevation_m_mtx
 
 # surface elevation data plot
-data  = np.flipud(DEM_elevation_m_mtx)
+# data  = np.flipud(DEM_elevation_m_mtx)
+data  = DEM_elevation_m_mtx
 
 # x     = linspace(0, map.urcrnrx, data.shape[1])
 # y     = linspace(0, map.urcrnry, data.shape[0])
@@ -70,6 +72,7 @@ data  = np.flipud(DEM_elevation_m_mtx)
 # sp_sch.df.loc[time_start:datetime.datetime(2021,3,17,10,0),'p2_cs451']=0
 # elev_original=sp_sch.df['p2_cs451']-0.49
 # elev_original=sp_sch.df['p2_cs451']-0.76
+# elev_original=sp_sch.df['p2_cs451_coef100']-SA2_water_depth_adjust
 elev_original=sp_sch.df['p2_cs451']-SA2_water_depth_adjust
 
 elev_original[elev_original<0]=0
@@ -165,15 +168,17 @@ for k in range(water_depth_transducer_m_t_array.size):
                 
                 ele_water_depth_m_mtx[k,:,:]  =  (water_depth_transducer_m_t_array[k]>0).choose(0,ele_water_depth_m_mtx[k,:,:]) # if the pressure transducer says the water depth is 0, we do not count in the water depth at the local cell.
                 
-                area[k,:,:]   =  (ele_water_depth_m_mtx[k,:,:]>0).choose(0,4)
+                area[k,:,:]   =  area_scale*(ele_water_depth_m_mtx[k,:,:]>0).choose(0,4)
                 
                 # wetmap[:,:]=(ele_water_depth_m_mtx[k,:,:]>0).choose(0,1)
                 # area[k,:,:]=(water_depth_transducer_m_t_array[k]>0).choose(0,area[k,:,:])
                 
-                areaTOTAL[k]  =  np.sum(area[k,:,:])
-                areaTOTAL[k]  =  (areaTOTAL[k]>3000).choose(0,areaTOTAL[k])
-                volumeML[k,:,:]=ele_water_depth_m_mtx[k,:,:]*area[k,:,:]/1000
+                areaTOTAL[k]      =  np.sum(area[k,:,:])
+                areaTOTAL[k]      =  (areaTOTAL[k]>3000).choose(0,areaTOTAL[k])             
+                volumeML[k,:,:]   =  ele_water_depth_m_mtx[k,:,:]*area[k,:,:]/1000
+                volumeML[k,:,:]   =  (ele_water_depth_m_mtx[k,:,:]>0.7).choose(volumeML[k,:,:]*(1-plant_percentage1),volumeML[k,:,:]*(1-plant_percentage2))
                 volumeTOTALML[k]=np.sum(volumeML[k,:,:])
+                #z2=np.ma.masked_where(z2>1000,z2)
                 # print(k)
             # volumnTOTAL[k]=(volumnTOTAL[k]==0).choose(0,volumnTOTAL[k])
 #             if k==0:
@@ -196,10 +201,13 @@ for k in range(water_depth_transducer_m_t_array.size):
 # below snippet check the water depth monitored by the pressure transducer
 
 # 
+# ele_water_depth_m_mtx=np.ma.masked_where(ele_water_depth_m_mtx==0,ele_water_depth_m_mtx)
+# depth_mean={}
+# for k in range(water_depth_transducer_m_t_array.size):
+#     depth_mean[k]=np.mean(ele_water_depth_m_mtx[k,:,:])
 
-
-sp_sch.df['areaTOTAL']    =areaTOTAL
-sp_sch.df['volumeTOTALML']=volumeTOTALML              
+# sp_sch.df['areaTOTAL']    =areaTOTAL
+# sp_sch.df['volumeTOTALML']=volumeTOTALML              
 # sp_sch.df['area_x']=area[:,]
 # Q=np.percentile(areaTOTALv, [25, 50, 75])
 # # Interquartile range (IQR)
@@ -301,10 +309,10 @@ volumnTOTALMLv[1:]=np.diff(volumeTOTALML)
 sp_sch.df['volumeTOTALML']=volumeTOTALML
 sp_sch.df['volumnTOTALMLv']=volumnTOTALMLv
 df_mean= sp_sch.df.resample('D').mean() 
-df_mean['evp']=df_mean['areaTOTAL']*df_mean['pet_mmPday']*constants.mm2m
-sp_sch.df['evp']=areaTOTAL*sp_sch.df['pet_mmPday']*constants.mm2m
-sp_sch.df['evpmega']=sp_sch.df['evp']/1000
-df_mean['evpmega']=df_mean['evp']/1000
+# df_mean['evp']=df_mean['areaTOTAL']*df_mean['pet_mmPday']*constants.mm2m
+# sp_sch.df['evp']=areaTOTAL*sp_sch.df['pet_mmPday']*constants.mm2m
+# sp_sch.df['evpmega']=sp_sch.df['evp']/1000
+# df_mean['evpmega']=df_mean['evp']/1000
 
 #recharge into the basin
 df_mean= sp_sch.df.resample('D').mean() 
