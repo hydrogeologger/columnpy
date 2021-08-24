@@ -93,7 +93,13 @@ ax0.plot(sp_sch.df['pump']-sp_sch.df['volumeTOTALML'],label='Cumulative pump vol
 ax0.plot(df_cumsum['pet_volume_MLPDAY']*sp_input['delta_t_s'],label='Cumulative PET (ML)')
 ax0.plot(df_cumsum['rainfall_volume_ML'],label='Cumulative rainfall volume (ML)')
 ax0.plot(df_cumsum['infiltration_ML'],label='Infiltration into unsaturated zone (ML)')
-ax0.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 6, 5))
+ax0.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 8, 1))
+ax0.set_xticks([datetime.date(2021, 3, 17),
+               datetime.date(2021, 4, 28),
+               datetime.date(2021, 5, 28),
+               datetime.date(2021, 6, 28),
+               datetime.date(2021, 7, 28),
+               datetime.date(2021, 8, 16)])
 ax0.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
 ax0.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 # ax0.tick_params(axis='both', which='minor', labelsize=6)
@@ -202,7 +208,13 @@ ax5.plot(walking_track_area_m2.index,walking_track_area_m2.GPS,'r.',label='Walki
 ax5.plot(walking_track_area_m2.index,walking_track_area_m2.aerial,'b.',label='Aerial images')
 ax5.legend(loc='lower right',fontsize=font_legend)
 ax5.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-ax5.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 6, 5))
+ax5.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 8, 16))
+ax5.set_xticks([datetime.date(2021, 3, 17),
+               datetime.date(2021, 4, 28),
+               datetime.date(2021, 5, 28),
+               datetime.date(2021, 6, 28),
+               datetime.date(2021, 7, 28),
+               datetime.date(2021, 8, 16)])
 ax5.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax5.set_xlabel('Time', fontsize=label_fontsize, labelpad=10)
 ax5.set_ylabel('Surface area \nof the pond ($\mathregular{m^2}$)', fontsize=label_fontsize, labelpad=10)
@@ -219,7 +231,13 @@ ax6.plot(sp_sch.df.index,sp_sch.df['pond_falling_rate_cs451_3_mmPday'],label='cs
 ax6.plot(sp_sch.df.index,sp_sch.df['pond_falling_rate_cs451_2_mmPday'],label='cs451_2')
 ax6.legend(loc='upper right',fontsize=font_legend)
 ax6.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-ax6.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 6, 5))
+ax6.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 8, 16))
+ax6.set_xticks([datetime.date(2021, 3, 17),
+               datetime.date(2021, 4, 28),
+               datetime.date(2021, 5, 28),
+               datetime.date(2021, 6, 28),
+               datetime.date(2021, 7, 28),
+               datetime.date(2021, 8, 16)])
 ax6.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 ax6.set_ylim(-30,30)
 ax6.set_xlabel('Time', fontsize=label_fontsize, labelpad=10)
@@ -248,9 +266,15 @@ format = '%Y.%m.%d %H:%M'
 
 ax7.plot(np.cumsum(sp_sch.df['rainfall']))
 ax7.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-ax7.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 6, 5))
+ax7.set_xlim(datetime.date(2021, 3, 17), datetime.date(2021, 8, 16))
+ax7.set_xticks([datetime.date(2021, 3, 17),
+               datetime.date(2021, 4, 28),
+               datetime.date(2021, 5, 28),
+               datetime.date(2021, 6, 28),
+               datetime.date(2021, 7, 28),
+               datetime.date(2021, 8, 16)])
 ax7.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
-ax7.set_ylim(0,20)
+ax7.set_ylim(0,80)
 ax7.set_xlabel('Time', fontsize=label_fontsize, labelpad=10)
 ax7.set_ylabel('Cumulative rainfall (mm)', fontsize=label_fontsize, labelpad=10)
 plt.rcParams['xtick.labelsize'] = label_fontsize-2

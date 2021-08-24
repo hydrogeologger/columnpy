@@ -4,7 +4,7 @@ Created on Sun Jun  6 21:27:40 2021
 
 @author: s4680073
 """
-
+import operator
 import py_compile
 import os
 import sys
@@ -12,9 +12,18 @@ import json
 import pandas as pd
 import numpy as np
 import datetime
+import matplotlib.image as image
+from PIL import Image
+import cv2
+
+from pathlib import Path
 import matplotlib
 import matplotlib.dates as mdates
-
+import matplotlib.animation as animation
+def get_date_taken(path):
+    from datetime import datetime
+    return datetime.strptime(Image.open(path)._getexif()[36867],'%Y:%m:%d %H:%M:%S')
+import glob, os
 #matplotlib.use('Agg')
 # %matplotlib qt  # run this 
 
@@ -30,7 +39,7 @@ import matplotlib.pyplot as plt
 import thingsboard_to_pandas_py3
 #reload(thingsboard_to_pandas_py3)
 fontsize_label=20
-
+porosity=0.4
 tb_pandas=thingsboard_to_pandas_py3.tingsboard_to_pandas('C:/pyduino/pyduino/python/tb_to_csv/tb_credential_column.json')
 
 # input is the location of the json file
@@ -149,10 +158,17 @@ sp_sch.merge_data_from_tb(
         input_time_series=tb_pandas.result_df['scale'].index, 
         input_data_series=tb_pandas.result_df['scale']['value'], 
         output_time_series=sp_sch.df.index,key_name='scale' ,
-        plot=plot_interpolate  ,coef=5e-11,rm_nan=True)
+        plot=plot_interpolate  ,coef=5e-12,rm_nan=True)
 sp_sch.df['scale'].loc['2021-03-15':'2021-05-11 13']=np.nan
-sp_sch.df['column_mo1_volumematric_moisture']=( 523-sp_sch.df['column_mo1'])/(523-269)*porosity
-sp_sch.df['column_mo2_volumematric_moisture']=( 410-sp_sch.df['column_mo2'])/(410-269)*porosity
+sp_sch.df['scale'].loc['2021-05-31 12:30':'2021-06-03 14:00']=sp_sch.df['scale'].loc['2021-05-31 12:30':'2021-06-03 14:00']-15
+sp_sch.df['scale'].loc['2021-06-03 13:00':'2021-06-08 7:00']=sp_sch.df['scale'].loc['2021-06-03 13:00':'2021-06-08 07:00']-10
+# sp_sch.df['scale'].loc['2021-06-03 13:00':'2021-06-03 13:00']=np.nan
+sp_sch.df['scale_decreasing_rate_gPday'] = \
+    np.append(np.diff(sp_sch.df['scale']), np.nan) \
+    / sp_input['delta_t_s']*constants.sPday
+sp_sch.df['scale_decreasing_rate_gPday'].loc[np.abs(sp_sch.df['scale_decreasing_rate_gPday'])>1000]=np.nan
+sp_sch.df['column_mo1_volumematric_moisture']=( 521-sp_sch.df['column_mo1'])/(521-267)*porosity
+sp_sch.df['column_mo2_volumematric_moisture']=( 402-sp_sch.df['column_mo2'])/(402-259)*porosity
 sp_sch.df['column_mo3_volumematric_moisture']=( 410-sp_sch.df['column_mo3'])/(410-269)*porosity
 sp_sch.df['column_mo4_volumematric_moisture']=( 450-sp_sch.df['column_mo4'])/(450-269)*porosity
 sp_sch.df['column_mo5_volumematric_moisture']=( 410-sp_sch.df['column_mo5'])/(410-269)*porosity
@@ -174,25 +190,105 @@ plt.yticks(fontsize=28, rotation=0)
 plt.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
 plt.savefig('Column_moisture_sensor.png',dpi=300,bbox_inches = 'tight',
     pad_inches = 0)
+sp_sch.df['infiltrated_water_bottle']=sp_sch.df['scale'].loc['2021-05-12 8:30']-sp_sch.df['scale']
+#create dashboard
+path_im='C:\Project\MDBA\data_deliverable\photos\column-daily\cut'
+files = filter(os.path.isfile, glob.glob(path_im + "*.jpg"))
+paths = sorted(Path(path_im).iterdir(), key=os.path.getmtime)
+file_name=[str(i).split('/')[-1] for i in paths]
+y_fontsize=18
+plt.ioff()
+j=0
+# for i in range(1,len(sp_sch.df),100):
+for ii in file_name[:]: 
+    im_column=image.imread(file_name[j])
+    im_time=get_date_taken(ii)
+    idx, min_value = min(enumerate( abs(sp_sch.df.index-im_time)), key=operator.itemgetter(1))
+    cross=[sp_sch.df['column_mo1_volumematric_moisture'][idx],
+           sp_sch.df['column_mo2_volumematric_moisture'][idx],
+           sp_sch.df['column_mo3_volumematric_moisture'][idx],
+           sp_sch.df['column_mo4_volumematric_moisture'][idx],
+           sp_sch.df['column_mo5_volumematric_moisture'][idx]]
+    fig = plt.figure(figsize=(28,12),edgecolor='blue', linewidth=3)
+    ax = [[] for i in range(9)]
+    ax[0] = plt.subplot2grid((6, 6), (2, 0), colspan=1,rowspan=6)
+    ax[1] = plt.subplot2grid((6, 6), (0, 1), colspan=1,rowspan=6)
+    ax[2] = plt.subplot2grid((6, 6), (0, 2), colspan=4,rowspan=2)
+    ax[3] = plt.subplot2grid((6, 6), (2, 2), colspan=4,rowspan=2)
+    ax[4] = plt.subplot2grid((6, 6), (4, 2), colspan=4,rowspan=2)
+    
+    ax[0].imshow(im_column)
+    ax[0].axis('off')
+    fig.text(0.01,0.68,f'{im_time}',fontsize=y_fontsize,color='k')
+
+    ax[1].plot(cross,[-0.1,-0.2,-0.3,-0.5,-0.7])
+    ax[1].set_xlim([-.5,.5])
+    ax[1].set_xlabel('Volumetric water content (-)',fontsize=y_fontsize)
+    ax[1].set_ylabel('Depth (m)',fontsize=y_fontsize)
+
+    ax[2].plot(sp_sch.df['infiltrated_water_bottle'][0:idx])
+    ax[2].set_ylabel('Water loss from \nMariotte bottle (g)',fontsize=y_fontsize)    
+    ax[2].set_xlim([datetime.date(2021, 4, 29), datetime.date(2021, 7, 27)])
+    ax[2].set_ylim([0,250])
+    
+    ax[2].set_xticklabels([])
+    
+    ax[3].plot(-sp_sch.df['scale_decreasing_rate_gPday'][0:idx])
+    ax[3].set_ylabel('Water loss rate \nfrom Mariotte bottle(g/day)',fontsize=y_fontsize)    
+    ax[3].set_xlim([datetime.date(2021, 4, 29), datetime.date(2021, 7, 27)])
+    ax[3].set_ylim([0,40])
+
+    ax[3].set_xticklabels([])
+    # plt.setp(ax.spines.values(), linewidth=2)
+    
+    ax[4].plot(sp_sch.df['column_mo1_volumematric_moisture'][0:idx],label='10cm below surface')
+    ax[4].plot(sp_sch.df['column_mo2_volumematric_moisture'][0:idx],label='20cm below surface')
+    ax[4].plot(sp_sch.df['column_mo3_volumematric_moisture'][0:idx],label='30cm below surface')
+    ax[4].plot(sp_sch.df['column_mo4_volumematric_moisture'][0:idx],label='50cm below surface')
+    ax[4].plot(sp_sch.df['column_mo5_volumematric_moisture'][0:idx],label='70cm below surface')
+    ax[4].legend(loc='upper right')
+    ax[4].set_xlim([datetime.date(2021, 4, 24), datetime.date(2021, 7, 27)])
+    ax[4].set_xlabel('Time',fontsize=y_fontsize)
+    ax[4].set_ylim([0,0.5])
+    ax[4].set_ylabel('Volumetric water content (-)',fontsize=y_fontsize)
+    ax[4].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+    plt.tight_layout()
+    print(j)
+    print(idx)
+    fig.savefig(ii.split('\\')[-1], format='jpg', dpi=100)
+    plt.close()
+    j=j+1
+    
+img_array = []
+for filename in glob.glob('C:\Project\MDBA\column_dashboard\\*.jpg'):        
+    img = cv2.imread(filename)
+    height, width, layers = img.shape
+    size = (width,height)
+    img_array.append(img)
 
 
+out = cv2.VideoWriter('project.mp4',cv2.VideoWriter_fourcc(*'DIVX'), 3, size)
+ 
+for i in range(len(img_array)):
+    out.write(img_array[i])
+out.release()    
 
-sp_sch_30min=sp_sch.df.resample('30T').ffill()
+# sp_sch_30min=sp_sch.df.resample('30T').ffill()
 
-sp_sch_30min['column_mo1_volumematric_moisture']=( 523-sp_sch_30min['column_mo1'])/(523-269)*porosity
-sp_sch_30min['column_mo2_volumematric_moisture']=( 523-sp_sch_30min['column_mo2'])/(523-269)*porosity
-sp_sch_30min['column_mo3_volumematric_moisture']=( 523-sp_sch_30min['column_mo3'])/(523-269)*porosity
-sp_sch_30min['column_mo4_volumematric_moisture']=( 523-sp_sch_30min['column_mo4'])/(523-269)*porosity
-sp_sch_30min['column_mo5_volumematric_moisture']=( 523-sp_sch_30min['column_mo5'])/(523-269)*porosity
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-ax.legend(loc='upper right')
-ax.set_xlim([datetime.date(2021, 4, 24), datetime.date(2021, 6, 5)])
-ax.set_xlabel('Time',weight='bold',fontsize=fontsize_label)
-ax.set_ylabel('Moisture sensor reading',weight='bold',fontsize=fontsize_label)
-plt.savefig('Column_moisture sensor.png',dpi=300)
-fig, ax = plt.subplots(figsize=[16,9])
-ax.plot(sp_sch.df['scale'],label='Mass of Mariotte bottle')
-ax.set_xlim([datetime.date(2021, 5, 12), datetime.date(2021, 6, 5)])
-ax.set_ylim(6000,10000)
+# sp_sch_30min['column_mo1_volumematric_moisture']=( 523-sp_sch_30min['column_mo1'])/(523-269)*porosity
+# sp_sch_30min['column_mo2_volumematric_moisture']=( 523-sp_sch_30min['column_mo2'])/(523-269)*porosity
+# sp_sch_30min['column_mo3_volumematric_moisture']=( 523-sp_sch_30min['column_mo3'])/(523-269)*porosity
+# sp_sch_30min['column_mo4_volumematric_moisture']=( 523-sp_sch_30min['column_mo4'])/(523-269)*porosity
+# sp_sch_30min['column_mo5_volumematric_moisture']=( 523-sp_sch_30min['column_mo5'])/(523-269)*porosity
+# ax.xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
+# ax.legend(loc='upper right')
+# ax.set_xlim([datetime.date(2021, 4, 24), datetime.date(2021, 6, 5)])
+# ax.set_xlabel('Time',weight='bold',fontsize=fontsize_label)
+# ax.set_ylabel('Moisture sensor reading',weight='bold',fontsize=fontsize_label)
+# plt.savefig('Column_moisture sensor.png',dpi=300)
+# fig, ax = plt.subplots(figsize=[16,9])
+# ax.plot(sp_sch.df['scale'],label='Mass of Mariotte bottle')
+# ax.set_xlim([datetime.date(2021, 5, 12), datetime.date(2021, 6, 5)])
+# ax.set_ylim(6000,10000)
 
-
+# plot

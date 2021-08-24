@@ -19,7 +19,7 @@ from PIL import Image
 def get_date_taken(path):
     from datetime import datetime
     return datetime.strptime(Image.open(path)._getexif()[36867],'%Y:%m:%d %H:%M:%S')
-import glob, os
+import glob, os,cv2
 #os.chdir("/home/chenming/Projects/tailings/area_51_redmud_4cm_photo/")
 #img_list=glob.glob('/home/chenming/Projects/tailings/area_51_redmud_4cm_photo/*.jpg')
 #for file in glob.glob("*.jpg"):
@@ -29,14 +29,14 @@ sch_name='sa'
 #import json
 #inp_js = json.load(open('input/input.json'))
 
-path_im='C:\Project\MBDA\data_deliverable\photos\sa2_scaled'
+path_im='C:\Project\MDBA\data_deliverable\photos\sa2_scaled'
 #path_im=str(tb_pandas.input_json['photo_path'])
 
 files = filter(os.path.isfile, glob.glob(path_im + "*.jpg"))
 #files.sort(key=lambda x: os.path.getmtime(x))
 paths = sorted(Path(path_im).iterdir(), key=os.path.getmtime)
 file_name=[str(i).split('/')[-1] for i in paths]
-path_im_sa3='C:\Project\MBDA\data_deliverable\photos\sa3_scaled'
+path_im_sa3='C:\Project\MDBA\data_deliverable\photos\sa3_scaled'
 files_sa3 = filter(os.path.isfile, glob.glob(path_im_sa3 + "*.jpg"))
 #files.sort(key=lambda x: os.path.getmtime(x))
 paths_sa3 = sorted(Path(path_im_sa3).iterdir(), key=os.path.getmtime)
@@ -52,7 +52,9 @@ file_name_sa3=[str(i).split('/')[-1] for i in paths_sa3]
 # #files.sort(key=lambda x: os.path.getmtime(x))
 # paths = sorted(Path(path_im).iterdir(), key=os.path.getmtime)
 # file_name=[str(i).split('/')[-1] for i in paths]
-path_im_sa2='C:\Project\MBDA\data_deliverable\photos\sa2_scaled'
+# path_im_sa2='C:\Project\MBDA\data_deliverable\photos\sa2_scaled'
+path_im_sa2='C:\Project\MDBA\data_deliverable\photos\sa2_scaled'
+
 files_sa2 = filter(os.path.isfile, glob.glob(path_im_sa2 + "*.jpg"))
 #files.sort(key=lambda x: os.path.getmtime(x))
 paths_sa2 = sorted(Path(path_im_sa2).iterdir(), key=os.path.getmtime)
@@ -91,7 +93,8 @@ for i in file_name_sa3:
 sa3_time=np.array(sa3_time)   
 j=0
 plt.ioff()
-im_basin=image.imread('C:/Project/MBDA/PresentationEOFY/area.tif')
+im_basin=image.imread('C:/Project/MDBA/PresentationEOFY/area.tif')
+#ii=939 last time
 for ii in file_name_sa2[:]: #[0:3]:
 
     print(str(j)+' of '+str(len(file_name)) )
@@ -213,15 +216,15 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[8].plot(sp_sch.df.index, sp_sch.df['t3_cs451'] )         
     # ax[7].vlines(im_time, -50000, 50000,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
     # ax[7].set_xticklabels([])
-    ax[0].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[1].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[2].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[3].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[4].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[5].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[6].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[7].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
-    ax[8].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 6, 5)])
+    ax[0].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[1].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[2].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[3].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[4].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[5].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[6].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[7].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[8].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
     ax[8].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
     
     
@@ -239,7 +242,7 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[4].set_ylim([-50,1200])
     ax[5].set_ylim([-1000,2500])
     ax[6].set_ylim([0,60000])    
-    ax[7].set_ylim([-1.3,0.6])
+    ax[7].set_ylim([-6,1])
     ax[8].set_ylim([0,40])
     
     
@@ -257,9 +260,9 @@ for ii in file_name_sa2[:]: #[0:3]:
     # ax_img.axis('off')
     ax_img_sa2.imshow(im_sa2)
     ax_img_sa2.axis('off')
-    fig.text(0.62,0.95,f'{im_time}',fontsize=y_fontsize+10,color='yellow')
-    fig.text(0.62,0.37,'SA2',fontsize=y_fontsize+10,color='yellow')
-    fig.text(0.62,0.68,'SA3',fontsize=y_fontsize+10,color='yellow')
+    fig.text(0.62,0.95,f'{im_time}',fontsize=y_fontsize+10,color='red')
+    fig.text(0.62,0.37,'SA2',fontsize=y_fontsize+10,color='red')
+    fig.text(0.62,0.68,'SA3',fontsize=y_fontsize+10,color='red')
     ax_img_sa3.imshow(im_sa3)
     ax_img_sa3.axis('off')
     area_slice=area[idx_area,:,:]
@@ -270,7 +273,7 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax_area.axes.yaxis.set_ticklabels([])
     ax_area.set_xticks([])
     ax_area.set_yticks([])
-    fig.text(0.62,0.02,'Inundated area',fontsize=y_fontsize+10,color='yellow')
+    fig.text(0.62,0.02,'Inundated area',fontsize=y_fontsize+10,color='k')
     # ax[0].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
     # ax[1].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
     # ax[1].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
@@ -293,16 +296,16 @@ for ii in file_name_sa2[:]: #[0:3]:
     
     ax[8].set_xlabel('Time', loc='center',fontsize=y_fontsize+4, labelpad=13)
     
-    ax[0].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[1].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[2].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[3].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[4].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[5].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[6].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[7].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[8].get_yaxis().set_label_coords(-0.05,0.5)
-    ax[8].get_yaxis().set_label_coords(-0.05,0.4)
+    ax[0].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[1].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[2].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[3].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[4].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[5].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[6].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[7].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[8].get_yaxis().set_label_coords(-0.06,0.5)
+    ax[8].get_yaxis().set_label_coords(-0.06,0.4)
     ax[8].get_xaxis().set_label_coords(0.5,-0.25)
 
     ax[0].axvline(im_time,color='r')
@@ -331,7 +334,7 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[7].legend(bbox_to_anchor=(1.08, 0.5 ), loc='center', 
       borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
       ncol=1,columnspacing=0.4)    
-    ax[8].legend(bbox_to_anchor=(1.08, 0.4 ), loc='center', 
+    ax[8].legend(bbox_to_anchor=(1.09, 0.4 ), loc='center', 
       borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
       ncol=1,columnspacing=0.4)   
     fig.align_labels()
@@ -343,4 +346,17 @@ for ii in file_name_sa2[:]: #[0:3]:
     j=j+1
     print(ii)
     # plt.show()
-    
+    img_array = []
+# for filename in glob.glob('C:/Project/MBDA/large/*.png'):
+for filename in glob.glob('C:/Project/MBDA/large/*.png'):    
+    img = cv2.imread(filename)
+    height, width, layers = img.shape
+    size = (width,height)
+    img_array.append(img)
+
+
+out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
+ 
+for i in range(len(img_array)):
+    out.write(img_array[i])
+out.release()
