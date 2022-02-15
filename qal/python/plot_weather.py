@@ -2,12 +2,6 @@ import matplotlib
 import matplotlib.image as image
 import matplotlib.pylab as pylab
 
-lw=1.25
-ms=1
-mew=1
-grid_width=2
-y_fontsize=12
-
 params = {'legend.fontsize': 4,
           'figure.figsize': (10, 5),
          'axes.labelsize': 11,
@@ -17,16 +11,19 @@ params = {'legend.fontsize': 4,
          'font.weight':'bold',
          #'font.sans-serif':'Arial',
          'font.sans-serif':'TimesNewroman',
-         'axes.labelweight':'bold', 
+         'axes.labelweight':'bold',
          'lines.linewidth':2}#,
-#         'title.fontweight':'bold'}
 
-#         'axes.grid':'linewidth=grid_width,color = '0.5''}
-#         'linewidth':lw,'markers.size':ms,'markers.edgewidth':mew}
 pylab.rcParams.update(params)
 
+lw=1
+ms=1
+mew=1.5
+grid_width=1.5
+y_fontsize=13
+ticklabel_size=14
 
-fig, ax = plt.subplots(6,sharex=True,figsize=(9,9))
+fig, ax = plt.subplots(6,sharex=True,figsize=(10,9))
 #fig.subplots_adjust(hspace=.15)
 fig.subplots_adjust(left=0.18, right=0.87, top=0.97, bottom=0.08)
 mkevy=4
@@ -56,61 +53,58 @@ df_mean['ir_up_daisy'].loc[df_mean['ir_up_daisy']>400]=df_mean['ir_up_daisy']*0.
 #df_mean1 = sp_sch['qal1807'].df.resample('D').mean()
 #df_mean1['date_time']=df_mean1.index
 
-ax[0].bar(df_mean.index, df_last['rainmm'], width=1.8, color='maroon', edgecolor='white',lw=0.1)
-#ax[0].plot(ta['date_time'], ta['rainmm'], '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
-#ax[0].plot(ta1['date_time'], ta1['rainmm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-ax[0].set_ylim([-0.1,40])
+ax[0].plot(ta['date_time'], ta['rainmm'], '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
 
+#ax[0].bar(df_mean.index, df_last['rainmm'], width=1.8, color='maroon', edgecolor='white',lw=0.1)
+#ax[0].set_ylim([-0.1,40])
 
-ax[1].plot(ta['date_time'], (ta['ir_up_daisy']-254)*1.25, '-',color='maroon',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-ax[1].plot(df_mean['date_time'],(df_mean['ir_up_daisy']-254)*1.25, 'g-',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g')
-ax[1].plot(ta['date_time'], (ta['ir_up_concat']-254)/20.512, '-',color='maroon',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
-ax[1].plot(df_mean['date_time'],(df_mean['ir_up_concat']-254)/20.512, 'g-',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily \nAverage')
-#ax[1].plot(ta1['date_time'], (ta1['ir_up_concat']-254)/20.512, '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-#ax[1].plot(df_mean1['date_time'], (df_mean1['ir_up_concat']-254)/20.512, 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g')
-
+ax[1].plot(ta['date_time'], (ta['ir_up_concat']-254)/20.512, '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
+ax[1].plot(df_mean['date_time'], (df_mean['ir_up_concat']-254)/20.512, 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily \nAverage')
 ax[1].set_ylim([-5,1200])
-#ax[1].plot(ta['date_time'], ta['ir_up'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Incoming')
-#ax[1].plot(ta['date_time'], ta['ir_down'], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Reflected')
-#ax[1].set_ylim([-50,30200])
+
+#ax[1].plot(ta['date_time'], (ta['ir_up_daisy']-254)*1.25, '-',color='maroon',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
+#ax[1].plot(df_mean['date_time'],(df_mean['ir_up_daisy']-254)*1.25, 'g-',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g')
+#ax[1].plot(ta['date_time'], (ta['ir_up_concat']-254)/20.512, '-',color='maroon',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
+#ax[1].plot(df_mean['date_time'],(df_mean['ir_up_concat']-254)/20.512, 'g-',linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily \nAverage')
+#ax[1].set_ylim([-5,1200])
 
 
-#plt.figure()
-#plt.plot(ta['date_time'], ta['wdspdkphavg2m'])
-ax[2].plot(ta['date_time'], ta['wdspdkphavg2m'], '-',color='maroon',linewidth=lw,  markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
-ax[2].plot(ta['date_time'], ta['wdgstkph10m']/2.0, 'ko', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Gust',markevery=5)
-ax[2].plot(df_mean['date_time'], df_mean['wdspdkphavg2m'], 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily \nAverage')
+ax[2].plot(ta['date_time'], ta['wdspd2m'], '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
+ax[2].plot(ta['date_time'], ta['wdgst10m']/2.0, 'ko',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Gust',markevery=5)
+ax[2].plot(df_mean['date_time'], df_mean['wdspd2m'], 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily \nAverage')
 #ax[4].plot(ta['date_time'], ta['ec1'], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Dielectric suction A')
-#ax[2].plot(ta1['date_time'], ta1['wdspdkphavg2m'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-#ax[2].plot(ta1['date_time'], ta1['wdgstkph10m']/2.0, 'ko',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',markevery=5)
-#ax[2].plot(df_mean1['date_time'], df_mean1['wdspdkphavg2m'], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g')
-
 ax[2].set_ylim([-1,15])
 
-#ax[3].plot(ta['date_time'][::mkevy].values, ta['tp_box_7'][::mkevy].values, 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Electrical Enclosure',markevery=mkevy)
-ax[3].plot(ta['date_time'][::mkevy].values, ta['tc'][::mkevy].values, '-',color='maroon',linewidth=lw,  markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
-ax[3].plot(df_mean['date_time'], df_mean['tc'], 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
-#ax[3].set_ylim([5,33])
-#ax[3].plot(ta1['date_time'][::mkevy].values, ta1['tc'][::mkevy].values, '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',markevery=mkevy)
-#ax[3].plot(df_mean1['date_time'], df_mean1['tc'], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g')
+#ax[2].plot(ta['date_time'], ta['wdspdkphavg2m'], '-',color='maroon',linewidth=lw,  markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
+#ax[2].plot(ta['date_time'], ta['wdgstkph10m']/2.0, 'ko', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='k',label='Gust',markevery=5)
+#ax[2].plot(df_mean['date_time'], df_mean['wdspdkphavg2m'], 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily \nAverage')
+#ax[2].set_ylim([-1,15])
+
+ax[3].plot(ta['date_time'][::mkevy].values, ta['temperature'][::mkevy].values, '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
+ax[3].plot(df_mean['date_time'], df_mean['temperature'], 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
 ax[3].set_ylim([5,38])
 
+#ax[3].plot(ta['date_time'][::mkevy].values, ta['tc'][::mkevy].values, '-',color='maroon',linewidth=lw,  markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
+#ax[3].plot(df_mean['date_time'], df_mean['tc'], 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
+#ax[3].set_ylim([5,38])
 
-mkevy=12
-#ax[4].plot(ta['date_time'][::mkevy], ta['rh_box_7'][::mkevy], 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Electrical Enclosure',markevery=mkevy)
-mkevy=6
-ax[4].plot(ta['date_time'][::mkevy], ta['rh'][::mkevy]*100., '-',color='maroon', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
-ax[4].plot(df_mean['date_time'], df_mean['rh']*100., 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
-#ax[4].plot(ta1['date_time'][::mkevy], ta1['rh'][::mkevy]*100., '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',markevery=mkevy)
-#ax[4].plot(df_mean1['date_time'], df_mean1['rh']*100., 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g')
+
+ax[4].plot(ta['date_time'][::mkevy], ta['RH'][::mkevy]*100., '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
+ax[4].plot(df_mean['date_time'], df_mean['RH']*100., 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
 ax[4].set_ylim([0,100])
 
+#ax[4].plot(ta['date_time'][::mkevy], ta['rh'][::mkevy]*100., '-',color='maroon', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant',markevery=mkevy)
+#ax[4].plot(df_mean['date_time'], df_mean['rh']*100., 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
+#ax[4].set_ylim([0,100])
 
-ax[5].plot(ta['date_time'], ta['p']/1000, '-',color='maroon', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
-ax[5].plot(df_mean['date_time'], df_mean['p']/1000, 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
-#ax[5].plot(ta1['date_time'], ta1['p']/1000, '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-#ax[5].plot(df_mean1['date_time'], df_mean1['p']/1000, 'g-',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g')
+
+ax[5].plot(ta['date_time'], ta['AP']/1000, '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
+ax[5].plot(df_mean['date_time'], df_mean['AP']/1000, 'g-',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
 ax[5].set_ylim([100,103])
+
+#ax[5].plot(ta['date_time'], ta['p']/1000, '-',color='maroon', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='Instant')
+#ax[5].plot(df_mean['date_time'], df_mean['p']/1000, 'g-', linewidth=lw, markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='Daily\nAverage')
+#ax[5].set_ylim([100,103])
 
 
 
@@ -146,12 +140,14 @@ ax[5].legend(bbox_to_anchor=(1.09, 0.5 ), loc='center', borderaxespad=0.,fontsiz
 
 
 ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
-ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%d/%b/%y'))
+#ax[3].xaxis.set_major_formatter(mdates.DateFormatter('%d/%b/%y'))
 ax[5].set_xlabel('DATE')
 plt.show(block=False)
 
-fig.savefig('figure/figure_update/plot_weather.png', format='png', dpi=600)
-sp_sch[sch_name].df.iloc[::4].to_csv('output_data/'+'column_qal'+'.csv')
+#fig.savefig('figure/figure_update/plot_weather.png', format='png', dpi=600)
+fig.savefig('figure/figure_update/update_to_2021/plot_weather.png', format='png', dpi=600)
+#sp_sch[sch_name].df.iloc[::4].to_csv('output_data/'+'column_qal'+'.csv')
+sp_sch[sch_name].df.to_csv('output_data/'+'column_qal_1h_mkevy'+'.csv')
 #fig.close()
 
 

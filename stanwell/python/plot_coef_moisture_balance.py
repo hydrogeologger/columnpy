@@ -10,13 +10,8 @@ ax1.tick_params(axis='y',labelsize=28)
 ax1.set_ylim([0,900])
 
 ax2=ax1.twinx()
-#ax2.bar(df_mean.index, df_last['distance_to_surfsoil'], width=1.8,edgecolor='white',lw=0.1)
 ax2.plot(df_mean.index, df_last['distance_to_surfsoil']*1000, '-',color='peru',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
 ax2.tick_params(axis='y',colors='peru',labelsize=28)
-#ax2.plot(, settle_mmo1,'-',color='peru',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-#ax2.plot(df_mean.index, settle_mmo3,'-',color='peru',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-#ax2.plot(df_mean.index, settle_mmo4,'-',color='peru',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-#ax2.plot(df_mean.index, settle_mmo5,'-',color='peru',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
 ax2.set_ylim([-1,450])
 
 #-----plot surface moisture---------------
@@ -44,5 +39,6 @@ ax1.set_ylabel('EQUIVALENT WATER STORAGE\nIN COLUMN (mm)',fontsize=28, labelpad=
 ax2.set_ylabel('DISTANCE TO SOIL SURFACE\n (mm)',fontsize=28,color='peru', labelpad=6)
 ax1.legend(bbox_to_anchor=(0.3, 0.999 ), loc='upper left', borderaxespad=0.,fontsize=26,handletextpad=0.4,labelspacing=0.3,ncol=1,columnspacing=0.1)
 ax1.grid(True,which="both",ls=":",linewidth=grid_width,color = '0.5')
-fig.savefig('figure/update/plot_water_balance_over_time.png', format='png', dpi=100)
+#fig.savefig('figure/update/plot_water_balance_over_time.png', format='png', dpi=100)
+fig.savefig('figure/update/update_toJan2021/final_report/plot_water_balance_over_time.png', format='png', dpi=600)
 

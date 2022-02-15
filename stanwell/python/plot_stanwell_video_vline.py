@@ -425,13 +425,14 @@ for ii in range(len(date)):
 
  
     ax[6].xaxis.set_major_formatter(mdates.DateFormatter('%b/%y'))
-    ax[6].tick_params(axis='x',labelsize=13)
+    ax[6].tick_params(axis='x',labelsize=12)
     #ax[6].tick_params(axis='x',labelsize=ticklabel_size)
 
     ax[6].set_xlabel('DATE',fontsize=y_fontsize)
     #plt.xticks(rotation=45)
     plt.show(block=False)
     #plt.show(block=True)
-    output_name = 'figure/update/video_2years_final/surface_settle/000'+str(ii)+'.jpg'
+    #output_name = 'figure/update/video_2years_final/surface_settle/000'+str(ii)+'.jpg'
+    output_name = 'figure/update/update_toJan2021/final_report/video/000'+str(ii)+'.jpg'
     fig.savefig(output_name, format='jpg', dpi=100)
     plt.close()
