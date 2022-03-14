@@ -54,7 +54,7 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].merge_data(df=data.df, keys=['tmp1']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_up_newpower'] )  #UV data ir_up from 20/09/2019
         #sp_sch[sch_name].merge_data(df=data.df, keys=['tmp7']   ,plot=plot_interpolate  ,coef=5e-13, new_keys=['ir_down_newpower'] )  #UV data ir_down from 20/09/2019
         #-------------surface settlement----------------- 
-        sp_sch[sch_name].merge_data(df=data_settlement.df, keys=['settlement_mm']   ,plot=plot_interpolate  ,coef=5e-10)  # this is to merge datetime in data of surface settlement in accordant with the moisture porfiles
+        sp_sch[sch_name].merge_data(df=data_settlement.df, keys=['settlement_mm']   ,plot=plot_interpolate  ,coef=5e-15)  # this is to merge datetime in data of surface settlement in accordant with the moisture porfiles coef=5e-10
         sp_sch[sch_name].df['settlement_mm'].loc[sp_sch[sch_name].df['settlement_mm']<0]=0
         sp_sch[sch_name].df['settlement_cm']=sp_sch[sch_name].df['settlement_mm']*0.1
         initial_heightm=1.2 #initial height of material which is the same as the height of column on the roof of Building 50 in UQ
@@ -630,7 +630,6 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].merge_data(df=data_weather_camellia.df, keys=['p']   ,plot=plot_interpolate  ,coef=5e-08)  # done
         sp_sch[sch_name].merge_data(df=data_weather_fromUQ.df, keys=['MSLP_Mean(hPa)']   ,plot=plot_interpolate  ,coef=5e-08)  # done
-        sp_sch[sch_name]
         sp_sch[sch_name].df['p'].loc[time_start_weatherUQ:]=0 #had lost data of weather station on the roof since that time, so I used data from UQ weather station since then.
         sp_sch[sch_name].df['MSLP_Mean(hPa)'].loc[:time_start_weatherUQ]=0
         sp_sch[sch_name].df['AP']=sp_sch[sch_name].df['p'] + sp_sch[sch_name].df['MSLP_Mean(hPa)']*100 #Because the unit of 'p' is Pa, the unit of 'MSLP_Mean(hPa)' is hPa
@@ -937,6 +936,7 @@ for line in open("schedule.ipt"):
             df_mean = sp_sch['stanwell'].df.resample('D').mean()
             df_max = sp_sch['stanwell'].df.resample('D').max()
             df_last = sp_sch['stanwell'].df.resample('D').last()
+            #df_daily_sum = sp_sch['stanwell'].df.resample('D').sum()  #This function is used to get daily cumulative rainfall if the data is downloaded from Thingsboard. 03/Feb/2022, chat with Ximing
 
             df_mean.index=df_mean.index+pd.to_timedelta(12, unit='h')
             df_mean['date_time']=df_mean.index
@@ -1312,7 +1312,8 @@ for line in open("schedule.ipt"):
             #df_mean['cumsum_net_water_storage_m'].loc[datetime.datetime(2020,02,06,12,00):]=df_mean['cumsum_net_water_storage_m'] + 0.135
 
 
-            waterMass_from_weather_station = df_mean['cumsum_net_water_storage_m']*constants.m2mm + 860 #Change unit from 'cm' to 'mm'. The value in the last is the initial storage of water in the column
+            #waterMass_from_weather_station = df_mean['cumsum_net_water_storage_m']*constants.m2mm + 860 #Change unit from 'cm' to 'mm'. The value in the last is the initial storage of water in the column
+            waterMass_from_weather_station = df_mean['cumsum_net_water_storage_m']*constants.m2mm + 900 #Change unit from 'cm' to 'mm'. The value in the last is the initial storage of water in the column
             waterMass_from_moisture_profile = df_mean['total_moisture_cm']*constants.cm2mm #Change unit from 'cm' to 'mm'
             Mass_1 = list(waterMass_from_weather_station)[::10]
             Mass_2 = list(waterMass_from_moisture_profile)[::10]
@@ -1341,6 +1342,20 @@ for line in open("schedule.ipt"):
 
 sp_sch[sch_name].df.to_csv('stanwell_final_data.csv')
 df_mean['cumsum_rainmm'].to_csv('cumsum_rainmm.csv')
+watermass_from_moisture_profile.to_csv('watermass_from_moisture_profile.csv')
+
+df_mean['mmo0'].to_csv('output_data/VWC_profile/avg_mmo0.csv')
+df_mean['mmo1'].to_csv('output_data/VWC_profile/avg_mmo1.csv')
+df_mean['mmo2'].to_csv('output_data/VWC_profile/avg_mmo2.csv')
+df_mean['mmo3'].to_csv('output_data/VWC_profile/avg_mmo3.csv')
+df_mean['mmo4'].to_csv('output_data/VWC_profile/avg_mmo4.csv')
+df_mean['mmo5'].to_csv('output_data/VWC_profile/avg_mmo5.csv')
+df_mean['mmo6'].to_csv('output_data/VWC_profile/avg_mmo6.csv')
+df_mean['mmo7'].to_csv('output_data/VWC_profile/avg_mmo7.csv')
+df_mean['mmo8'].to_csv('output_data/VWC_profile/avg_mmo8.csv')
+df_mean['mmo9'].to_csv('output_data/VWC_profile/avg_mmo9.csv')
+
+
 #time_start=np.datetime64('2018-11-11 00:00')
 #time_end=np.datetime64('2018-11-12 00:00')
 #mask=sp_sch[sch_name].df['date_time'].between(time_start,time_end)

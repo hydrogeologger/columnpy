@@ -5,12 +5,6 @@ import matplotlib.ticker as ticker
 from matplotlib.dates import DateFormatter, MONDAY, MonthLocator, YearLocator
 
 
-lw=1.5
-ms=1
-mew=3
-grid_width=0.5
-y_fontsize=12
-
 params = {'legend.fontsize': 4,
           'figure.figsize': (10, 5),
          'axes.labelsize': 11,
@@ -32,12 +26,13 @@ lw=2
 ms=6
 mew=2
 grid_width=0.5
-y_fontsize=13
-ticklabel_size=14
+y_fontsize=15
+ticklabel_size=15
+legend_fsz=12
 
-fig, ax = plt.subplots(7,sharex=True,figsize=(11,12))
+fig, ax = plt.subplots(7,sharex=True,figsize=(11,13))
 fig.subplots_adjust(hspace=.10)
-fig.subplots_adjust(left=0.17, right=0.89, top=0.97, bottom=0.05)
+fig.subplots_adjust(left=0.14, right=0.89, top=0.97, bottom=0.05)
 
 
 #fig, ax = plt.subplots(6,sharex=True,figsize=(6,8))
@@ -129,7 +124,7 @@ ax[3].set_ylim([5,45])
 ax[3].yaxis.set_major_locator(ticker.MultipleLocator(10))
 
 
-mkevy=24
+#mkevy=24
 
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo0'][::mkevy], '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='15 mm',markevery=mkevy)
 ax[4].plot(ta['date_time'][::mkevy], ta['mmo1'][::mkevy], '-',color='olive',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='50 mm',markevery=mkevy)
@@ -161,10 +156,13 @@ ax3=ax[6]
 ax3.plot(ta['date_time'], ta['settlement_mm'], '-',color='maroon',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
 ax4=ax3.twinx()
 ax4.plot(ta['date_time'],ta['newavg_dry_density'],'-',color='darkgreen',markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r')
-ax3.set_ylim([-1,350])
-ax4.set_ylim([449,750])
+ax3.set_ylim([-1,400])
+ax4.set_ylim([450,850])
 ax3.tick_params(axis='y',colors='maroon',labelsize=ticklabel_size)
 ax4.tick_params(axis='y',colors='darkgreen',labelsize=ticklabel_size)
+ax3.yaxis.set_major_locator(ticker.MultipleLocator(100))
+ax4.yaxis.set_ticks(np.arange(450,851,100)) #This function is to change the "tick frequency" on X or Y axis in matplotlib. e.g. ax.xaxis.set_ticks(np.arange(min(x),max(x)+1,stepsize))   reference: https://stackoverflow.com/questions/12608788/changing-the-tick-frequency-on-x-or-y-axis-in-matplotlib
+#ax4.yaxis.set_major_locator(ticker.MultipleLocator(100))
 
 
 #ax[0].set_ylabel('DAILY\nACCUMULATED\nRAINFALL\n(mm)', fontsize=y_fontsize, labelpad=15)
@@ -197,11 +195,11 @@ ax[2].set_axisbelow(True)
 ax[3].set_axisbelow(True)
 ax[4].set_axisbelow(True)
 ax[5].set_axisbelow(True)
-ax[1].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=11,handletextpad=0.83,labelspacing=1.32,ncol=1,columnspacing=0.4)
-ax[2].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=11,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-ax[3].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=11,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-ax[4].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=11,handletextpad=0.02,labelspacing=0.01,ncol=1,columnspacing=0.4)
-ax[5].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=11,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[1].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.83,labelspacing=1.32,ncol=1,columnspacing=0.4)
+ax[2].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[3].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[4].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.02,labelspacing=0.01,ncol=1,columnspacing=0.4)
+ax[5].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
 
 
 #ax[1].label_params(labeltop='off', labelright='off')
@@ -264,5 +262,9 @@ plt.show(block=False)
 
 
 #fig.savefig('figure/update/plot_stanwell.png', format='png', dpi=600)
-fig.savefig('figure/update/update_toJan2021/plot_stanwell.png', format='png', dpi=600)
-#    plt.close()
+#fig.savefig('figure/update/update_toJan2021/plot_stanwell_toJan2021.png', format='png', dpi=600)
+fig.savefig('figure/update/update_toJan2021/final_report/plot_stanwell_toJan2021.png', format='png', dpi=600)
+#df_last['rainmm'].to_csv('output_data/'+'last_rainmm'+'.csv')
+#df_mean['cumsum_rainmm'].to_csv('output_data/'+'cumsum_rainmm'+'.csv')
+#pEt.to_csv('output_data/'+'pEt'+'.csv')
+#aEt.to_csv('output_data/'+'aEt'+'.csv')
