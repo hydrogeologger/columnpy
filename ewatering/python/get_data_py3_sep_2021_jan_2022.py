@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Mar 10 09:18:37 2022
+
+@author: s4680073
+"""
+
 import constants
 import pandas_scale_py3 as pandas_scale
 import py_compile
@@ -27,7 +34,7 @@ import thingsboard_to_pandas_py3
 # tb_pandas = thingsboard_to_pandas_py3.tingsboard_to_pandas(
 #     'C:/pyduino/pyduino/python/tb_to_csv/tb_credential_mar_2021_oct_2021.json')
 tb_pandas = thingsboard_to_pandas_py3.tingsboard_to_pandas(
-    'C:/pyduino/pyduino/python/tb_to_csv/tb_credential.json')
+    'C:/pyduino/pyduino/python/tb_to_csv/tb_credential_sep_2021_jan_2022.json')
 # input is the location of the json file
 # use the below command to show the comments on tb_credential.json
 # print tb_pandas.input_json['comments']
@@ -59,7 +66,7 @@ tb_pandas.convert_data_to_df()  # convert each datasets to pandas dataframe
 # merge data
 # with open('C:/pyduino/pyduino/python/tb_to_csv/schedule_mar_2021_oct_2021.json') as data_file:
 #     sp_input = json.load(data_file)
-with open('C:/pyduino/pyduino/python/tb_to_csv/schedule.json') as data_file:
+with open('C:/pyduino/pyduino/python/tb_to_csv/schedule_sep_2021_jan_2022.json') as data_file:
     sp_input = json.load(data_file)
 
 #sys.path.append   (os.environ['pyduino']+'/python/post_processing/')
@@ -458,7 +465,7 @@ sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa2_raw1'].index,
     input_data_series=tb_pandas.result_df['sa2_raw1']['value'],
     output_time_series=sp_sch.df.index, key_name='sa2_mo1',
-    plot=plot_interpolate, coef=2e-18, rm_nan=True)
+    plot=plot_interpolate, coef=2e-12, rm_nan=True)
 sp_sch.df['sa2_mo1'][sp_sch.df['sa2_mo1'] < 1900] = np.nan
 sp_sch.df['sa2_mo1'].loc['2021-5-23'] = np.nan
 
@@ -469,7 +476,7 @@ sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa2_raw2'].index,
     input_data_series=tb_pandas.result_df['sa2_raw2']['value'],
     output_time_series=sp_sch.df.index, key_name='sa2_mo2',
-    plot=plot_interpolate, coef=2e-20, rm_nan=True)
+    plot=plot_interpolate, coef=2e-12, rm_nan=True)
 sp_sch.df['sa2_mo2_volumematric_moisture'] = (
     sp_sch.df['sa2_mo2']-1800)/(3050-1800)*porosity
 
@@ -477,7 +484,7 @@ sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa2_raw3'].index,
     input_data_series=tb_pandas.result_df['sa2_raw3']['value'],
     output_time_series=sp_sch.df.index, key_name='sa2_mo3',
-    plot=plot_interpolate, coef=2e-20, rm_nan=True)
+    plot=plot_interpolate, coef=2e-12, rm_nan=True)
 
 # sp_sch.df['sa2_mo3'][sp_sch.df['sa2_mo3']>3040]=np.nan
 sp_sch.df['sa2_mo3_volumematric_moisture'] = (
@@ -497,7 +504,7 @@ sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa2_raw5'].index,
     input_data_series=tb_pandas.result_df['sa2_raw5']['value'],
     output_time_series=sp_sch.df.index, key_name='sa2_mo5',
-    plot=plot_interpolate, coef=2e-20, rm_nan=True)
+    plot=plot_interpolate, coef=2e-12, rm_nan=True)
 sp_sch.df['sa2_mo5_volumematric_moisture'] = (
     sp_sch.df['sa2_mo5']-1800)/(3001-1800)*porosity
 
@@ -620,22 +627,22 @@ sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa3_mo2'].index,
     input_data_series=tb_pandas.result_df['sa3_mo2']['value'],
     output_time_series=sp_sch.df.index, key_name='sa3_mo2',
-    plot=plot_interpolate, coef=2e-18, rm_nan=True)
+    plot=plot_interpolate, coef=2e-15, rm_nan=True)
 
 sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa3_mo3'].index,
     input_data_series=tb_pandas.result_df['sa3_mo3']['value'],
     output_time_series=sp_sch.df.index, key_name='sa3_mo3',
-    plot=plot_interpolate, coef=2e-18, rm_nan=True)
+    plot=plot_interpolate, coef=2e-15, rm_nan=True)
 sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa3_mo4'].index,
     input_data_series=tb_pandas.result_df['sa3_mo4']['value'],
     output_time_series=sp_sch.df.index, key_name='sa3_mo4',
-    plot=plot_interpolate, coef=2e-18, rm_nan=True)
+    plot=plot_interpolate, coef=2e-15, rm_nan=True)
 sp_sch.merge_data_from_tb(
     input_time_series=tb_pandas.result_df['sa3_mo5'].index,
     input_data_series=tb_pandas.result_df['sa3_mo5']['value'],
     output_time_series=sp_sch.df.index, key_name='sa3_mo5',
-    plot=plot_interpolate, coef=2e-18, rm_nan=True)
+    plot=plot_interpolate, coef=2e-15, rm_nan=True)
 
 sp_sch.df=sp_sch.df.ffill()

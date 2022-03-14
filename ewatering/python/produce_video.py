@@ -93,9 +93,13 @@ for i in file_name_sa3:
 sa3_time=np.array(sa3_time)   
 j=0
 plt.ioff()
-im_basin=image.imread('C:/Project/MDBA/PresentationEOFY/area.tif')
+# im_basin=image.imread('C:/Project/MDBA/PresentationEOFY/area.tif')
+im_basin=image.imread('C:/Project/MDBA/map_with_channel.tif')
+
 #ii=939 last time
-for ii in file_name_sa2[:]: #[0:3]:
+interval=10
+n=0
+for ii in file_name_sa2[0:-1:interval]: #[0:3]:
 
     print(str(j)+' of '+str(len(file_name)) )
     # im=image.imrd(ii) 
@@ -107,7 +111,7 @@ for ii in file_name_sa2[:]: #[0:3]:
 
     # #im=np.rot90(im,-1)
     
-    fig = plt.figure(figsize=(28,12))
+    fig = plt.figure(figsize=(26,12))
     ax = [[] for i in range(9)]
     ax[0] = plt.subplot2grid((9, 6), (0, 0), colspan=3)
     ax[1] = plt.subplot2grid((9, 6), (1, 0), colspan=3)
@@ -146,14 +150,14 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[2].set_xticklabels([])
     # ax[1].vlines(im_time, -100, 300,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
     ax[3].set_xticklabels([])
-    ax[3].plot( sp_sch.df.index, sp_sch.df['recharge_mmPday_p3'])
+    ax[3].plot( sp_sch.df.index, sp_sch.df['infiltration_mmPday_p3'])
     # ax[2].plot( sp_sch.df.index, sp_sch.df['recharge_mmPday_p3'])
     # ax[2].plot( sp_sch.df.index, sp_sch.df['pond_falling_rate_cs451_3_mmPday'])
     # ax[2].vlines(im_time, -300, 700,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
     ax[3].set_xticklabels([])   
     
     # ax[4].plot( sp_sch.df.index, (sp_sch.df['p2_cs451']-0.34-0.2213+0.032) * constants.mmPm, label='cs451 sensor 1')    
-    ax[4].plot( sp_sch.df.index, (sp_sch.df['p2_cs451']-SA2_water_depth_adjust)* constants.mmPm, label='cs451 sensor 2') 
+    ax[4].plot( sp_sch.df.index, (sp_sch.df['p2_cs451']-SA2_water_depth_adjust)* constants.mmPm) 
     # ax[3].vlines(im_time, -1000, 3000,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
     ax[4].set_xticklabels([])
     
@@ -216,15 +220,15 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[8].plot(sp_sch.df.index, sp_sch.df['t3_cs451'] )         
     # ax[7].vlines(im_time, -50000, 50000,  colors='red', linestyles='-', linewidth=2).set_zorder(10)
     # ax[7].set_xticklabels([])
-    ax[0].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[1].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[2].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[3].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[4].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[5].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[6].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[7].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
-    ax[8].set_xlim([datetime.date(2021, 3, 16), datetime.date(2021, 8, 16)])
+    ax[0].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[1].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[2].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[3].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[4].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[5].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[6].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[7].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
+    ax[8].set_xlim([datetime.date(2021, 3, 16), datetime.date(2022, 3, 7)])
     ax[8].xaxis.set_major_formatter(mdates.DateFormatter('%b/%d'))
     
     
@@ -236,7 +240,7 @@ for ii in file_name_sa2[:]: #[0:3]:
     # ax[5].xticklabels([])
     # ax[6].xticklabels([])
     
-    ax[0].set_ylim([-3,18])
+    ax[0].set_ylim([-3,22])
     ax[2].set_ylim([-40,10])
     ax[3].set_ylim([-15,30])
     ax[4].set_ylim([-50,1200])
@@ -265,8 +269,12 @@ for ii in file_name_sa2[:]: #[0:3]:
     fig.text(0.62,0.68,'SA3',fontsize=y_fontsize+10,color='red')
     ax_img_sa3.imshow(im_sa3)
     ax_img_sa3.axis('off')
-    area_slice=area[idx_area,:,:]
-    area_slice=np.ma.masked_where(area_slice==0,area_slice)
+    area   = np.zeros(shape=(elevation_to_sa2_m[:,1].size,elevation_to_sa2_m[1,:].size))
+    ele_water_depth_m_mtx[:,:]  =  sp_sch.df['elevation_sa2_m'][idx_area]-elevation_to_sa2_m[:,:]
+    ele_water_depth_m_mtx[:,:]  =  (ele_water_depth_m_mtx[:,:]>0).choose(0,ele_water_depth_m_mtx[:,:])      
+    # ele_water_depth_m_mtx[:,:]  =  (water_depth_transducer_m_t_array[k]>0).choose(0,ele_water_depth_m_mtx[:,:]) # if the pressure transducer says the water depth is 0, we do not count in the water depth at the local cell.  
+    area[:,:]   =  area_scale*(ele_water_depth_m_mtx[:,:]>0).choose(0,4)   
+    area_slice=np.ma.masked_where(area==0,area)
     ax_area.imshow(im_basin)
     ax_area.contourf(area_slice,alpha=0.5)
     ax_area.axes.xaxis.set_ticklabels([])
@@ -287,7 +295,7 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[0].set_ylabel('POTENTIAL \nEVAPPORATION\nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=10)
     ax[1].set_ylabel('CUMU.\nRAINFALL \n(mm)', fontsize=y_fontsize, labelpad=25)
     ax[2].set_ylabel('SURFACE \nWATER\nRISING RATE\n(mm/Day)', fontsize=y_fontsize, labelpad=25)
-    ax[3].set_ylabel('RECHARGE \nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=25)
+    ax[3].set_ylabel('INFILTRATION \nRATE\n(mm/Day)', fontsize=y_fontsize, labelpad=25)
     ax[4].set_ylabel('SURFACE \nWATER\nDEPTH (mm)', fontsize=y_fontsize, labelpad=5)
     ax[5].set_ylabel('GROUND. \nHEAD RISE \n(mm)', fontsize=y_fontsize, labelpad=13)
     ax[6].set_ylabel('GROUND. \nEC \n(µS/cm)', fontsize=y_fontsize, labelpad=15)
@@ -322,9 +330,9 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[0].legend(bbox_to_anchor=(1.08, 0.5 ), loc='center', 
       borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
       ncol=1,columnspacing=0.4)
-    ax[4].legend(bbox_to_anchor=(1.10, 0.5 ), loc='center', 
-      borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
-      ncol=1,columnspacing=0.4)
+    # ax[4].legend(bbox_to_anchor=(1.10, 0.5 ), loc='center', 
+    #   borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
+    #   ncol=1,columnspacing=0.4)
     ax[5].legend(bbox_to_anchor=(1.08, 0.5 ), loc='center', 
       borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
       ncol=1,columnspacing=0.4)
@@ -334,7 +342,7 @@ for ii in file_name_sa2[:]: #[0:3]:
     ax[7].legend(bbox_to_anchor=(1.08, 0.5 ), loc='center', 
       borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
       ncol=1,columnspacing=0.4)    
-    ax[8].legend(bbox_to_anchor=(1.09, 0.4 ), loc='center', 
+    ax[8].legend(bbox_to_anchor=(1.10, 0.4 ), loc='center', 
       borderaxespad=0.,fontsize=y_fontsize,handletextpad=0.23,labelspacing=0.22,
       ncol=1,columnspacing=0.4)   
     fig.align_labels()
@@ -343,16 +351,17 @@ for ii in file_name_sa2[:]: #[0:3]:
     plt.tight_layout(pad=0.05)    
     fig.savefig(ii.split('\\')[-1], format='jpg', dpi=100)
     plt.close()
-    j=j+1
+    n=n+1
+    j=j+interval
     print(ii)
     # plt.show()
-    img_array = []
+img_array = []
 # for filename in glob.glob('C:/Project/MBDA/large/*.png'):
-for filename in glob.glob('C:/Project/MBDA/large/*.png'):    
-    img = cv2.imread(filename)
-    height, width, layers = img.shape
-    size = (width,height)
-    img_array.append(img)
+for filename in glob.glob('C:\Project\MDBA\dashboard\\*.jpg'):    
+        img = cv2.imread(filename)
+        height, width, layers = img.shape
+        size = (width,height)
+        img_array.append(img)
 
 
 out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)

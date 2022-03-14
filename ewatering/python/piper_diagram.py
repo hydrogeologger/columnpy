@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from peeter_piper import piper
 
-filename = "C:/Project/MBDA/post process/piper_diagram/piper_diagram.csv"
+filename = "C:/Project/MDBA/post process/piper_diagram/piper_diagram.csv"
 # filename = "C:/Project/MBDA/post process/piper_diagram/GW20130314-0057-s02_additional_field.csv"
 
 df = pd.read_csv(filename)
