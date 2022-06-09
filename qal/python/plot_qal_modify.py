@@ -25,18 +25,18 @@ lw=2
 ms=6
 mew=2
 grid_width=0.5
-y_fontsize=15
-ticklabel_size=15
+y_fontsize=18
+ticklabel_size=18
 legend_fsz=12
 
 fig, ax = plt.subplots(6,sharex=True,figsize=(11,12))
 fig.subplots_adjust(hspace=.10)
-fig.subplots_adjust(left=0.17, right=0.89, top=0.97, bottom=0.05)
+fig.subplots_adjust(left=0.17, right=0.87, top=0.97, bottom=0.05)
 
 
 #fig, ax = plt.subplots(6,sharex=True,figsize=(6,8))
 #fig.subplots_adjust(hspace=.15)
-mkevy=4
+mkevy=15
 
 
 for i in ax:
@@ -112,7 +112,7 @@ ax[3].plot(ta['date_time'][::mkevy].values, ta['tmp9'][::mkevy].values, '-' ,col
 ax[3].set_ylim([5,45])
 ax[3].tick_params(axis='y',labelsize=ticklabel_size)
 
-mkevy=24
+#mkevy=24
 
 #ax[4].plot(ta['date_time'][::mkevy], ta['mmo0'][::mkevy], '-',color='maroon',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='r',label='1 cm',markevery=mkevy)
 #ax[4].plot(ta['date_time'][::mkevy], ta['mmo1'][::mkevy], '-',color='peru',linewidth=lw,markersize=ms,markeredgewidth=mew,fillstyle='full', markeredgecolor='g',label='5 cm',markevery=mkevy)

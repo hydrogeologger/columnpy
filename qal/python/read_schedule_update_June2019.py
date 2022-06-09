@@ -5,6 +5,7 @@ py_compile.compile(os.environ['pyduino']+'/python/post_processing/sensorfun.py')
 import sensorfun
 reload(sensorfun)
 py_compile.compile(os.environ['pyduino']+'/python/post_processing/figlib.py')
+import datetime
 import figlib
 import wafo.interpolate as wf
 reload(figlib)
@@ -70,7 +71,7 @@ for line in open("schedule.ipt"):
 
         sp_sch[sch_name].df['tmp6'].loc[sp_sch[sch_name].df['tmp6']>48]=sp_sch[sch_name].df['tmp6']*0.85
 
-
+#---------------Suction sensor data------------------------------------------------------------------------------
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su0']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su1']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su2']   ,plot=plot_interpolate  ,coef=5e-10)  # done
@@ -82,7 +83,41 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su8']   ,plot=plot_interpolate  ,coef=5e-10)  # done
         sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['su9']   ,plot=plot_interpolate  ,coef=5e-10)  # done
 
+	#aa=-1.1 #coef tested best
+	##aa=-0.91 #coef tested best
+	#bb=7 #coef tested best       
 
+	#delta_t_su5_low_2_high=sorted(sp_sch[sch_name].df['su5'], key=float)
+	#sp_sch[sch_name].df.delta_t_su5=sp_sch[sch_name].df['su5']
+	#sp_sch[sch_name].max_delta_t_su5=np.average(delta_t_su5_low_2_high[-20:])
+	#sp_sch[sch_name].min_delta_t_su5=np.average(delta_t_su5_low_2_high[-100:-20]) #np.average(delta_t_su5_low_2_high[0])
+	#sp_sch[sch_name].df['norm_delta_t_su5'] =- (sp_sch[sch_name].min_delta_t_su5 -sp_sch[sch_name].df.delta_t_su5)/(sp_sch[sch_name].max_delta_t_su5-sp_sch[sch_name].min_delta_t_su5)
+	#
+	#delta_t_su6_low_2_high=sorted(sp_sch[sch_name].df['su6'], key=float)
+	#sp_sch[sch_name].df.delta_t_su6 =sp_sch[sch_name].df['su6']
+	#sp_sch[sch_name].max_delta_t_su6=np.average(delta_t_su6_low_2_high[-20:])
+	#sp_sch[sch_name].min_delta_t_su6=np.average(delta_t_su6_low_2_high[0])
+	#sp_sch[sch_name].df['norm_delta_t_su6'] =- (sp_sch[sch_name].min_delta_t_su6 -sp_sch[sch_name].df.delta_t_su6)/(sp_sch[sch_name].max_delta_t_su6-sp_sch[sch_name].min_delta_t_su6)
+	#
+	#delta_t_su8_low_2_high=sorted(sp_sch[sch_name].df['su8'], key=float)
+	#sp_sch[sch_name].df.delta_t_su8 =sp_sch[sch_name].df['su8']
+	#sp_sch[sch_name].max_delta_t_su8=np.average(delta_t_su8_low_2_high[-20:])
+	#sp_sch[sch_name].min_delta_t_su8=np.average(delta_t_su8_low_2_high[:5])
+	#sp_sch[sch_name].df['norm_delta_t_su8'] =- (sp_sch[sch_name].min_delta_t_su8 -sp_sch[sch_name].df.delta_t_su8)/(sp_sch[sch_name].max_delta_t_su8-sp_sch[sch_name].min_delta_t_su8)
+	#
+	#delta_t_su9_low_2_high=sorted(sp_sch[sch_name].df['su9'], key=float)
+	#sp_sch[sch_name].df.delta_t_su9 =sp_sch[sch_name].df['su9']
+	#sp_sch[sch_name].max_delta_t_su9=np.average(delta_t_su9_low_2_high[-20:])
+	#sp_sch[sch_name].min_delta_t_su9=np.average(delta_t_su9_low_2_high[:5])
+	#sp_sch[sch_name].df['norm_delta_t_su9'] =- (sp_sch[sch_name].min_delta_t_su9 -sp_sch[sch_name].df.delta_t_su9)/(sp_sch[sch_name].max_delta_t_su9-sp_sch[sch_name].min_delta_t_su9)
+	#
+	#
+	#sp_sch[sch_name].df['suction5']=np.exp(-1.5*(sp_sch[sch_name].df['norm_delta_t_su5']**aa-bb))
+	#sp_sch[sch_name].df['suction6']=np.exp(-1.5*(sp_sch[sch_name].df['norm_delta_t_su6']**aa-bb))
+	#sp_sch[sch_name].df['suction8']=np.exp(-1.5*(sp_sch[sch_name].df['norm_delta_t_su8']**aa-bb))
+	#sp_sch[sch_name].df['suction9']=np.exp(-1.5*(sp_sch[sch_name].df['norm_delta_t_su9']**aa-bb))
+
+#-------------------------------------------------------------------------------------------------
         #time_start=np.datetime64('2018-01-29T09:40')
         #time_switch=np.datetime64('2018-04-09T18:03')
         time_start=np.datetime64('2018-12-20T16:40')
@@ -142,8 +177,7 @@ for line in open("schedule.ipt"):
         sp_sch[sch_name].df['mo7'][mask2]=sp_sch[sch_name].df['mo7']*0.86
         sp_sch[sch_name].df['mo8'][mask2]=sp_sch[sch_name].df['mo8']*0.85
         sp_sch[sch_name].df['mo9'][mask2]=sp_sch[sch_name].df['mo9']*0.85
-
-       
+#--------------------------------------------------------------------------------------------- 
        
         #sp_sch[sch_name].df['mo1'].loc[sp_sch[sch_name].df['mo1']<260]=260
         #sp_sch[sch_name].df['mo2'].loc[sp_sch[sch_name].df['mo2']<260]=260
@@ -197,41 +231,94 @@ for line in open("schedule.ipt"):
         #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo7']   ,plot=plot_interpolate  ,coef=5e-12, start_time=time_switch,end_time=time_end)  # done coef=5e-14 
         #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo8']   ,plot=plot_interpolate  ,coef=5e-12, start_time=time_switch,end_time=time_end)  # done coef=5e-14
         #sp_sch[sch_name].merge_data(df=data_mo_su.df, keys=['mo9']   ,plot=plot_interpolate  ,coef=5e-12, start_time=time_switch,end_time=time_end)  # done coef=5e-14
-        
+
+
+        #------------------------------Degree of saturation in cover soil----------------------------------------
+        sp_sch[sch_name].df['sat0']=(310.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(310.**alpha-265**alpha) # 1 cm
+        #sp_sch[sch_name].df['sat0']=(310.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(310.**alpha-270**alpha)  # 1 cm
+        #sp_sch[sch_name].df['mmo0']=(310.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(310.**alpha-270**alpha)*porosity_cover #schedule['porosity']   # 1 cm
+        sp_sch[sch_name].df['sat1']=(380.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(380.**alpha-270**alpha) # 5 cm
+        #sp_sch[sch_name].df['sat1']=(350.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(350.**alpha-284**alpha) # 5 cm
+        #sp_sch[sch_name].df['sat1']=(550.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(550.**alpha-270**alpha) # 5 cm
+        #sp_sch[sch_name].df['mmo1']=(350.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(350.**alpha-284**alpha)*porosity_cover #schedule['porosity']   # 5 cm
+        sp_sch[sch_name].df['sat2']=(550.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(550.**alpha-265**alpha) # 8 cm 
+        #sp_sch[sch_name].df['sat2']=(340.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(340.**alpha-273**alpha) # 8 cm 
+        #sp_sch[sch_name].df['sat2']=(550.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(550.**alpha-265**alpha) # 8 cm 
+        #sp_sch[sch_name].df['mmo2']=(340.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(340.**alpha-273**alpha)*porosity_cover #schedule['porosity']   # 8 cm 
+        sp_sch[sch_name].df['sat3']=(550.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(550.0**alpha-270**alpha) # 13cm
+        #sp_sch[sch_name].df['sat3']=(340.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(340.0**alpha-272**alpha) # 13cm
+        #sp_sch[sch_name].df['sat3']=(550.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(550.0**alpha-265**alpha) # 13cm
+        #sp_sch[sch_name].df['mmo3']=(340.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(340.0**alpha-272**alpha)*porosity_cover #schedule['porosity']   # 13cm
+        sp_sch[sch_name].df['sat4']=(550.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(550.**alpha-265**alpha)  # 20cm
+        #sp_sch[sch_name].df['sat4']=(350.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(350.**alpha-273**alpha)  # 20cm
+        #sp_sch[sch_name].df['sat4']=(550.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(550.**alpha-260**alpha)  # 20cm
+        #sp_sch[sch_name].df['mmo4']=(350.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(350.**alpha-273**alpha)*porosity_cover #schedule['porosity']   # 20cm
+        sp_sch[sch_name].df['sat5']=(550.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(550.**alpha-278**alpha)  # 28cm
+        #sp_sch[sch_name].df['sat5']=(340.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(340.**alpha-280**alpha)  # 28cm
+        #sp_sch[sch_name].df['sat5']=(550.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(550.**alpha-275**alpha)  # 28cm
+        #sp_sch[sch_name].df['mmo5']=(340.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(340.**alpha-280**alpha)*porosity_cover #schedule['porosity']   # 28cm
+        sp_sch[sch_name].df['sat6']=(550.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(550.**alpha-275**alpha)  # 38cm
+        #sp_sch[sch_name].df['sat6']=(340.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(340.**alpha-276**alpha)  # 38cm
+        #sp_sch[sch_name].df['mmo6']=(340.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(340.**alpha-276**alpha)*porosity_cover #schedule['porosity']   # 38cm
+        sp_sch[sch_name].df['sat7']=(400.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(400.**alpha-275**alpha)  # 48cm
+        #sp_sch[sch_name].df['sat7']=(380.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(380.**alpha-297**alpha)  # 48cm
+        #sp_sch[sch_name].df['sat7']=(550.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(550.**alpha-275**alpha)  # 48cm
+        #sp_sch[sch_name].df['mmo7']=(380.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(380.**alpha-297**alpha)*porosity_cover #schedule['porosity']   # 48cm
+        #--------------------------------Degrees of saturation in red mud-----------------------------------
+        sp_sch[sch_name].df['sat8']=(550.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(550.**alpha-286**alpha)  # 70cm
+        #sp_sch[sch_name].df['mmo8']=(400.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(400.**alpha-288**alpha)   # 70cm
+        sp_sch[sch_name].df['sat9']=(550.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(550.**alpha-276**alpha)  # 85cm 
+        #sp_sch[sch_name].df['mmo9']=(400.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(400.**alpha-280**alpha)   # 85cm
+
+        sp_sch[sch_name].df['sat0'].loc[sp_sch[sch_name].df['sat0']<0] = 0.0
+
+        sp_sch[sch_name].df['sat0'].loc[sp_sch[sch_name].df['sat0']>1.01] = 1.0
+        sp_sch[sch_name].df['sat1'].loc[sp_sch[sch_name].df['sat1']>1.01] = 1.0
+        sp_sch[sch_name].df['sat2'].loc[sp_sch[sch_name].df['sat2']>1.01] = 1.0
+        sp_sch[sch_name].df['sat3'].loc[sp_sch[sch_name].df['sat3']>1.01] = 1.0
+        sp_sch[sch_name].df['sat4'].loc[sp_sch[sch_name].df['sat4']>1.01] = 1.0
+        sp_sch[sch_name].df['sat5'].loc[sp_sch[sch_name].df['sat5']>1.01] = 1.0
+        sp_sch[sch_name].df['sat6'].loc[sp_sch[sch_name].df['sat6']>1.01] = 1.0
+        sp_sch[sch_name].df['sat7'].loc[sp_sch[sch_name].df['sat7']>1.01] = 1.0
+        sp_sch[sch_name].df['sat8'].loc[sp_sch[sch_name].df['sat8']>1.01] = 1.0
+        sp_sch[sch_name].df['sat9'].loc[sp_sch[sch_name].df['sat9']>1.01] = 1.0
+
+#-----------------Change the unit of degree of saturation to 100%-----------------------
+        sp_sch[sch_name].df['dosat0'] = sp_sch[sch_name].df['sat0']*100
+        sp_sch[sch_name].df['dosat1'] = sp_sch[sch_name].df['sat1']*100
+        sp_sch[sch_name].df['dosat2'] = sp_sch[sch_name].df['sat2']*100
+        sp_sch[sch_name].df['dosat3'] = sp_sch[sch_name].df['sat3']*100
+        sp_sch[sch_name].df['dosat4'] = sp_sch[sch_name].df['sat4']*100
+        sp_sch[sch_name].df['dosat5'] = sp_sch[sch_name].df['sat5']*100
+        sp_sch[sch_name].df['dosat6'] = sp_sch[sch_name].df['sat6']*100
+        sp_sch[sch_name].df['dosat7'] = sp_sch[sch_name].df['sat7']*100
+        sp_sch[sch_name].df['dosat8'] = sp_sch[sch_name].df['sat8']*100
+        sp_sch[sch_name].df['dosat9'] = sp_sch[sch_name].df['sat9']*100
+
+       
         porosity_cover = 0.45 # This is the porosity of the cover soil got from the SWCC result
         #-------------------------------Moisture sensors in cover soil----------------------------------
-        sp_sch[sch_name].df['mmo0']=(310.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(310.**alpha-265**alpha)*porosity_cover #schedule['porosity']   # 1 cm
+        sp_sch[sch_name].df['mmo0']=sp_sch[sch_name].df['sat0']*porosity_cover #schedule['porosity']   # 1 cm
         #sp_sch[sch_name].df['mmo0']=(310.0**alpha-sp_sch[sch_name].df['mo0']**alpha)/(310.**alpha-270**alpha)*porosity_cover #schedule['porosity']   # 1 cm
-        sp_sch[sch_name].df['mmo1']=(350.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(350.**alpha-270**alpha)*porosity_cover #schedule['porosity']   # 5 cm
+        sp_sch[sch_name].df['mmo1']=sp_sch[sch_name].df['sat1']*porosity_cover #schedule['porosity']   # 5 cm
         #sp_sch[sch_name].df['mmo1']=(345.0**alpha-sp_sch[sch_name].df['mo1']**alpha)/(345.**alpha-284**alpha)*porosity_cover #schedule['porosity']   # 5 cm
-        sp_sch[sch_name].df['mmo2']=(340.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(340.**alpha-275**alpha)*porosity_cover #schedule['porosity']   # 8 cm 
+        sp_sch[sch_name].df['mmo2']=sp_sch[sch_name].df['sat2']*porosity_cover #schedule['porosity']   # 8 cm 
         #sp_sch[sch_name].df['mmo2']=(310.0**alpha-sp_sch[sch_name].df['mo2']**alpha)/(310.**alpha-273**alpha)*porosity_cover #schedule['porosity']   # 8 cm 
-        sp_sch[sch_name].df['mmo3']=(340.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(340.0**alpha-274**alpha)*porosity_cover #schedule['porosity']   # 13cm
+        sp_sch[sch_name].df['mmo3']=sp_sch[sch_name].df['sat3']*porosity_cover #schedule['porosity']   # 13cm
         #sp_sch[sch_name].df['mmo3']=(300.0**alpha-sp_sch[sch_name].df['mo3']**alpha)/(300.0**alpha-272**alpha)*porosity_cover #schedule['porosity']   # 13cm
-        sp_sch[sch_name].df['mmo4']=(340.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(340.**alpha-270**alpha)*porosity_cover #schedule['porosity']   # 20cm
+        sp_sch[sch_name].df['mmo4']=sp_sch[sch_name].df['sat4']*porosity_cover #schedule['porosity']   # 20cm
         #sp_sch[sch_name].df['mmo4']=(320.0**alpha-sp_sch[sch_name].df['mo4']**alpha)/(320.**alpha-273**alpha)*porosity_cover #schedule['porosity']   # 20cm
-        sp_sch[sch_name].df['mmo5']=(340.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(340.**alpha-280**alpha)*porosity_cover #schedule['porosity']   # 28cm
+        sp_sch[sch_name].df['mmo5']=sp_sch[sch_name].df['sat5']*porosity_cover #schedule['porosity']   # 28cm
         #sp_sch[sch_name].df['mmo5']=(310.0**alpha-sp_sch[sch_name].df['mo5']**alpha)/(310.**alpha-280**alpha)*porosity_cover #schedule['porosity']   # 28cm
-        sp_sch[sch_name].df['mmo6']=(340.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(340.**alpha-276**alpha)*porosity_cover #schedule['porosity']   # 38cm
+        sp_sch[sch_name].df['mmo6']=sp_sch[sch_name].df['sat6']*porosity_cover #schedule['porosity']   # 38cm
         #sp_sch[sch_name].df['mmo6']=(320.0**alpha-sp_sch[sch_name].df['mo6']**alpha)/(320.**alpha-276**alpha)*porosity_cover #schedule['porosity']   # 38cm
-        sp_sch[sch_name].df['mmo7']=(380.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(380.**alpha-275**alpha)*porosity_cover #schedule['porosity']   # 48cm
+        sp_sch[sch_name].df['mmo7']=sp_sch[sch_name].df['sat7']*porosity_cover #schedule['porosity']   # 48cm
         #sp_sch[sch_name].df['mmo7']=(540.0**alpha-sp_sch[sch_name].df['mo7']**alpha)/(540.**alpha-297**alpha)*porosity_cover #schedule['porosity']   # 48cm
         #--------------------------------Moisture sensors in red mud-----------------------------------
-        sp_sch[sch_name].df['mmo8']=(400.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(400.**alpha-288**alpha)*schedule['porosity']   # 70cm
+        sp_sch[sch_name].df['mmo8']=sp_sch[sch_name].df['sat8']*schedule['porosity']   # 70cm
         #sp_sch[sch_name].df['mmo8']=(550.0**alpha-sp_sch[sch_name].df['mo8']**alpha)/(550.**alpha-285**alpha)   # 70cm
-        sp_sch[sch_name].df['mmo9']=(400.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(400.**alpha-280**alpha)*schedule['porosity']   # 85cm 
+        sp_sch[sch_name].df['mmo9']=sp_sch[sch_name].df['sat9']*schedule['porosity']   # 85cm 
         #sp_sch[sch_name].df['mmo9']=(550.0**alpha-sp_sch[sch_name].df['mo9']**alpha)/(550.**alpha-275**alpha)   # 85cm
-
-        #sp_sch[sch_name].df['mmo0']=sp_sch[sch_name].df['mmo0_p1'].fillna(0)+sp_sch[sch_name].df['mmo0_p2'].fillna(0)    # 1 cm
-        #sp_sch[sch_name].df['mmo1']=sp_sch[sch_name].df['mmo1_p1'].fillna(0)+sp_sch[sch_name].df['mmo1_p2'].fillna(0)    # 5 cm
-        #sp_sch[sch_name].df['mmo2']=sp_sch[sch_name].df['mmo2_p1'].fillna(0)+sp_sch[sch_name].df['mmo2_p2'].fillna(0)    # 8 cm
-        #sp_sch[sch_name].df['mmo3']=sp_sch[sch_name].df['mmo3_p1'].fillna(0)+sp_sch[sch_name].df['mmo3_p2'].fillna(0)    # 13 cm
-        #sp_sch[sch_name].df['mmo4']=sp_sch[sch_name].df['mmo4_p1'].fillna(0)+sp_sch[sch_name].df['mmo4_p2'].fillna(0)    # 20 cm
-        #sp_sch[sch_name].df['mmo5']=sp_sch[sch_name].df['mmo5_p1'].fillna(0)+sp_sch[sch_name].df['mmo5_p2'].fillna(0)    # 28 cm
-        #sp_sch[sch_name].df['mmo6']=sp_sch[sch_name].df['mmo6_p1'].fillna(0)+sp_sch[sch_name].df['mmo6_p2'].fillna(0)    # 38 cm
-        #sp_sch[sch_name].df['mmo7']=sp_sch[sch_name].df['mmo7_p1'].fillna(0)+sp_sch[sch_name].df['mmo7_p2'].fillna(0)    # 48 cm
-        #sp_sch[sch_name].df['mmo8']=sp_sch[sch_name].df['mmo8_p1'].fillna(0)+sp_sch[sch_name].df['mmo8_p2'].fillna(0)    # 70 cm
-        #sp_sch[sch_name].df['mmo9']=sp_sch[sch_name].df['mmo9_p1'].fillna(0)+sp_sch[sch_name].df['mmo9_p2'].fillna(0)    # 85 cm
 
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_up']   ,plot=plot_interpolate  ,coef=5e-4)
         sp_sch[sch_name].merge_data(df=data_weather_daisy.df, keys=['ir_down']   ,plot=plot_interpolate  ,coef=5e-4)
@@ -597,21 +684,51 @@ df_mean['cumsum_rainmm']=np.cumsum(df_last['rainmm'])
 df_mean.index=df_mean.index+pd.to_timedelta(12, unit='h')
 df_mean['date_time']=df_mean.index
 
-depth_y_2=np.array([3,7.5,11.5,15.5,22.5,32,40,50,72,87])
-#responsible_depth_cm=np.concatenate( (np.diff(depth_y),np.array([36])) )
-responsible_depth_cm_2=np.array([3,4.5,4,4,7,9.5,8.5,10,22,15,33])
+#depth_y_2=np.array([3,7.5,11.5,15.5,22.5,32,40,50,72,87])
+#responsible_depth_cm_2=np.array([3,4.5,4,4,7,9.5,8,10,22,15,33])
+#depth_y_2=np.array([1.5,5,8,13.5,20,28.5,38.5,48.5,70,85])
+#responsible_depth_cm_2=np.array([2.5,4.5,4,4,7,9.5,8,10,22,15,33])
 
-df_mean['total_moisture_cm']=df_mean['mmo0'].fillna(0)*responsible_depth_cm_2[0] \
-    +((df_mean['mmo0'].fillna(0)+df_mean['mmo1'].fillna(0))/2)*responsible_depth_cm_2[1] \
-    +((df_mean['mmo1'].fillna(0)+df_mean['mmo2'].fillna(0))/2)*responsible_depth_cm_2[2] \
-    +((df_mean['mmo2'].fillna(0)+df_mean['mmo3'].fillna(0))/2)*responsible_depth_cm_2[3] \
-    +((df_mean['mmo3'].fillna(0)+df_mean['mmo4'].fillna(0))/2)*responsible_depth_cm_2[4] \
-    +((df_mean['mmo4'].fillna(0)+df_mean['mmo5'].fillna(0))/2)*responsible_depth_cm_2[5] \
-    +((df_mean['mmo5'].fillna(0)+df_mean['mmo6'].fillna(0))/2)*responsible_depth_cm_2[6] \
-    +((df_mean['mmo6'].fillna(0)+df_mean['mmo7'].fillna(0))/2)*responsible_depth_cm_2[7] \
-    +((df_mean['mmo7'].fillna(0)+df_mean['mmo8'].fillna(0))/2)*responsible_depth_cm_2[8] \
-    +((df_mean['mmo8'].fillna(0)+df_mean['mmo9'].fillna(0))/2)*responsible_depth_cm_2[9] \
-    +df_mean['mmo9'].fillna(0)*responsible_depth_cm_2[10]
+#df_mean['total_moisture_cm']=df_mean['mmo0'].fillna(0)*responsible_depth_cm_2[0] \
+#    +((df_mean['mmo0'].fillna(0)+df_mean['mmo1'].fillna(0))/2)*responsible_depth_cm_2[1] \
+#    +((df_mean['mmo1'].fillna(0)+df_mean['mmo2'].fillna(0))/2)*responsible_depth_cm_2[2] \
+#    +((df_mean['mmo2'].fillna(0)+df_mean['mmo3'].fillna(0))/2)*responsible_depth_cm_2[3] \
+#    +((df_mean['mmo3'].fillna(0)+df_mean['mmo4'].fillna(0))/2)*responsible_depth_cm_2[4] \
+#    +((df_mean['mmo4'].fillna(0)+df_mean['mmo5'].fillna(0))/2)*responsible_depth_cm_2[5] \
+#    +((df_mean['mmo5'].fillna(0)+df_mean['mmo6'].fillna(0))/2)*responsible_depth_cm_2[6] \
+#    +((df_mean['mmo6'].fillna(0)+df_mean['mmo7'].fillna(0))/2)*responsible_depth_cm_2[7] \
+#    +((df_mean['mmo7'].fillna(0)+df_mean['mmo8'].fillna(0))/2)*responsible_depth_cm_2[8] \
+#    +((df_mean['mmo8'].fillna(0)+df_mean['mmo9'].fillna(0))/2)*responsible_depth_cm_2[9] \
+#    +df_mean['mmo9'].fillna(0)*responsible_depth_cm_2[10]
+
+#depth_y=np.array([1,3,8,13,20,28,38,48,70,85]) #acordording to location sensor
+depth_y=np.array([1.5,5,8,13.5,20,28.5,38.5,48.5,70,85]) #acordording to location sensor
+responsible_depth_cm=np.concatenate( (np.diff(depth_y),np.array([36.5])) )
+
+
+df_mean['total_moisture_cm']=df_mean['mmo0'].fillna(0)*responsible_depth_cm[0] \
+    +df_mean['mmo1'].fillna(0)*responsible_depth_cm[1] \
+    +df_mean['mmo2'].fillna(0)*responsible_depth_cm[2] \
+    +df_mean['mmo3'].fillna(0)*responsible_depth_cm[3] \
+    +df_mean['mmo4'].fillna(0)*responsible_depth_cm[4] \
+    +df_mean['mmo5'].fillna(0)*responsible_depth_cm[5] \
+    +df_mean['mmo6'].fillna(0)*responsible_depth_cm[6] \
+    +df_mean['mmo7'].fillna(0)*responsible_depth_cm[7] \
+    +df_mean['mmo8'].fillna(0)*responsible_depth_cm[8] \
+    +df_mean['mmo9'].fillna(0)*responsible_depth_cm[9]
+
+
+#-------------ponding water during the wet season II-------------------------------------------
+
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,06,12,00):datetime.datetime(2020,02,07,12,00)]=df_mean['total_moisture_cm'] + 1 #This number is the height of ponding water, the same meaning hereafter
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,9,12,00):datetime.datetime(2020,02,10,12,00)]=df_mean['total_moisture_cm'] + 1.5
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,10,12,00):datetime.datetime(2020,02,11,12,00)]=df_mean['total_moisture_cm'] + 2.5
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,11,12,00):datetime.datetime(2020,02,12,12,00)]=df_mean['total_moisture_cm'] + 1.9
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,12,12,00):datetime.datetime(2020,02,13,12,00)]=df_mean['total_moisture_cm'] + 2.8
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,13,12,00):datetime.datetime(2020,02,14,12,00)]=df_mean['total_moisture_cm'] + 2.9
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,14,12,00):datetime.datetime(2020,02,15,12,00)]=df_mean['total_moisture_cm'] + 2.2
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,15,12,00):datetime.datetime(2020,02,16,12,00)]=df_mean['total_moisture_cm'] + 1.2
+df_mean['total_moisture_cm'].loc[datetime.datetime(2020,02,16,12,00):datetime.datetime(2020,02,17,12,00)]=df_mean['total_moisture_cm'] + 0.2
 
 
 #depth_y=np.array([1,3,8,13,20,28,38,48,70,85]) #acordording to location sensor
@@ -649,7 +766,7 @@ df_last['total_water_in_m']=np.cumsum(df_last['rainmm'].fillna(0))*constants.mPm
 df_mean['net_water_storage_mPday']=(list(df_last['rainmm'].fillna(0))-df_mean['aet_mmPday'].fillna(0)) * constants.mPmm
 df_mean['cumsum_net_water_storage_m']=np.cumsum(df_mean['net_water_storage_mPday'])
 
-waterMass_from_weather_station = df_mean['cumsum_net_water_storage_m']*constants.m2mm + 600 #Change unit from 'cm' to 'mm'. The value in the last is the initial storage of water in the column
+waterMass_from_weather_station = df_mean['cumsum_net_water_storage_m']*constants.m2mm + 560 #580 #Change unit from 'cm' to 'mm'. The value in the last is the initial storage of water in the column
 waterMass_from_moisture_profile = df_mean['total_moisture_cm']*constants.cm2mm #Change unit from 'cm' to 'mm'
 
 #--------------------------------------------------------------------------------------------------
