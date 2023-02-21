@@ -253,7 +253,9 @@ for line in open("schedule.ipt"):
 
         time_mo9_start = np.datetime64('2020-07-25T14:40')
         time_mo9_end = np.datetime64('2020-08-21T23:40')
-        sp_sch[sch_name].df['mo9_comb'].loc[time_mo9_start:time_mo9_end] = sp_sch[sch_name].df['mo9_comb']*1.1 #This is to revise the sudden decrease in mo9 raw data 
+        mask_time_mo9=sp_sch[sch_name].df['date_time'].between(time_mo9_start,time_mo9_end)
+        sp_sch[sch_name].df['mo9_comb'][mask_time_mo9] = sp_sch[sch_name].df['mo9_comb']*1.1 #This is to revise the sudden decrease in mo9 raw data 
+        #sp_sch[sch_name].df['mo9_comb'].loc[time_mo9_start:time_mo9_end] = sp_sch[sch_name].df['mo9_comb']*1.1 #This is to revise the sudden decrease in mo9 raw data 
         #sp_sch[sch_name].df['mo0_comb'] = pd.concat([sp_sch[sch_name].df['mo0'],sp_sch[sch_name].df['mo0_tb']],ignore_index = True, sort = False)
         #sp_sch[sch_name].df['mo1_comb'] = pd.concat([sp_sch[sch_name].df['mo1'],sp_sch[sch_name].df['mo1_tb']],ignore_index = True, sort = False)
         #sp_sch[sch_name].df['mo2_comb'] = pd.concat([sp_sch[sch_name].df['mo2'],sp_sch[sch_name].df['mo2_tb']],ignore_index = True, sort = False)

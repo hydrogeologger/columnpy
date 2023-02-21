@@ -624,14 +624,14 @@ sp_sch[sch_name].df['ra_sPm']=np.log(2/0.000001) **2.0 /0.41**2.0/sp_sch[sch_nam
 #rs1994_param=0.18;rs1994_param2=35.63 # good 
 #rs1994_param=0.21;rs1994_param2=35.63 # good 
 
-rs1994_param=0.18;rs1994_param2=35.63 # good 
-rs1994_param=0.21;rs1994_param2=35.63 # good 
+#rs1994_param=0.18;rs1994_param2=35.63 # good 
+#rs1994_param=0.21;rs1994_param2=35.63 # good 
 
 #rs1994_param=0.41;rs1994_param2=50 # good 
-rs1994_param=0.32;rs1994_param2=35.63 # gooda TO190712 
-rs1994_param=0.345;rs1994_param2=35.63 # good T20190713
-rs1994_param=0.36;rs1994_param2=35.63 # good T20190723
-rs1994_param=0.39;rs1994_param2=35.63 # good T20190723
+#rs1994_param=0.32;rs1994_param2=35.63 # gooda TO190712 
+#rs1994_param=0.345;rs1994_param2=35.63 # good T20190713
+#rs1994_param=0.36;rs1994_param2=35.63 # good T20190723
+#rs1994_param=0.39;rs1994_param2=35.63 # good T20190723
 rs1994_param=0.78;rs1994_param2=35.63 # good T20190723
 
 sp_sch[sch_name].df['rs_sPm']=10.*np.exp(rs1994_param2*(rs1994_param*porosity_cover -sp_sch[sch_name].df['mmo_surf']))

@@ -27,7 +27,7 @@ mew=2
 grid_width=0.5
 y_fontsize=18
 ticklabel_size=18
-legend_fsz=12
+legend_fsz=11
 
 fig, ax = plt.subplots(6,sharex=True,figsize=(11,12))
 fig.subplots_adjust(hspace=.10)
@@ -170,11 +170,11 @@ ax[3].set_axisbelow(True)
 ax[4].set_axisbelow(True)
 ax[5].set_axisbelow(True)
 
-ax[1].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.83,labelspacing=1.32,ncol=1,columnspacing=0.4)
-ax[2].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-ax[3].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
-ax[4].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.02,labelspacing=0.01,ncol=1,columnspacing=0.4)
-ax[5].legend(bbox_to_anchor=(1.07, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.02,ncol=1,columnspacing=0.4)
+ax[1].legend(bbox_to_anchor=(1.11, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.53,labelspacing=0.52,ncol=1,columnspacing=0.3)
+ax[2].legend(bbox_to_anchor=(1.08, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.01,ncol=1,columnspacing=0.3)
+ax[3].legend(bbox_to_anchor=(1.12, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.01,ncol=2,columnspacing=0.3)
+ax[4].legend(bbox_to_anchor=(1.12, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.01,ncol=2,columnspacing=0.3)
+ax[5].legend(bbox_to_anchor=(1.12, 0.5 ), loc='center', borderaxespad=0.,fontsize=legend_fsz,handletextpad=0.03,labelspacing=0.01,ncol=2,columnspacing=0.3)
 
 ax1.minorticks_on()
 ax[1].minorticks_on()
